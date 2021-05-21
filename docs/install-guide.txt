@@ -1,0 +1,4 @@
+# Python 3.7.9
+# pip 21.0.1 from /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/pip (python 3.7)
+
+pip3 install PyGithub
