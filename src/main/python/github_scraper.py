@@ -1,28 +1,24 @@
-from github import Github
+import requests
+from collections import namedtuple
+
 GITHUB_AUTH_TOKEN = 'dummy'
-github_client = Github(GITHUB_AUTH_TOKEN)
+GithubItem = namedtuple('GithubItem', 'file_name file_url repository_name repository_owner')
 
 
-def search_github(keyword):
-    rate_limit = github_client.get_rate_limit()
-    rate = rate_limit.search
-    if rate.remaining == 0:
-        print(f'You have 0/{rate.limit} API calls remaining. Reset time: {rate.reset}')
-        return
-    else:
-        print(f'You have {rate.remaining}/{rate.limit} API calls remaining')
-
-    query = f'"{keyword} english" in:file extension:po'
-    result = github_client.search_code(query, order='desc')
-
-    max_size = 100
-    print(f'Found {result.totalCount} file(s)')
-    if result.totalCount > max_size:
-        result = result[:max_size]
-
-    for file in result:
-        print(f'{file.download_url}')
+def search_github(phrase, prog_language):
+    query_url = f"https://api.github.com/search/code?q={phrase}+in:file+language:{prog_language}"
+    params = {
+        "state": "open",
+    }
+    headers = {'Authorization': f'token {GITHUB_AUTH_TOKEN}'}
+    r = requests.get(query_url, headers=headers, params=params)
+    result_items = r.json()['items']
+    items = [GithubItem(t['name'], t['html_url'], t['repository']['full_name'], t['repository']['owner']['id']) for t in result_items]
+    return items
 
 
 if __name__ == '__main__':
-    keyword = input('Enter your search term: ')
+    natural_language = input('Enter natural language for code searching: ')
+    search_phrase = input(f'Enter search phrase on {natural_language} language: ')
+    programming_language = input('Enter programming language for code searching: ')
+    files = search_github(search_phrase, programming_language)
