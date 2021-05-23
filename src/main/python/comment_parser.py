@@ -2,6 +2,7 @@ import os
 import pathlib
 import re
 import tokenize
+from collections import namedtuple
 
 MAIN_RESOURCE_DIR = '../resources'
 JAVA_FILE_EXTENSION = '.java'
@@ -12,6 +13,8 @@ extension_mapping = {
     'java': JAVA_FILE_EXTENSION,
     'python': PYTHON_FILE_EXTENSION
 }
+
+Comment = namedtuple('Comment', 'comment_text start_line end_line')
 
 
 def get_directories():
@@ -36,8 +39,33 @@ def get_python_single_line_comments(file):
     return comments
 
 
-def find_range(comment_block, content, extension):
-    print('finding comment start and end line in source code...')
+def find_comment(file_name, string_to_search):
+    line_number = 0
+    list_of_results = []
+    with open(file_name, 'r') as read_obj:
+        for line in read_obj:
+            line_number += 1
+            if string_to_search in line:
+                # If yes, then add the line number & line as a tuple in the list
+                list_of_results.append(line_number)
+    return list_of_results
+
+
+def find_range(comment_block, filename, content, language):
+    print(f'finding {language} comment start and end line in source code...')
+    if extension_mapping.get(language) == JAVA_FILE_EXTENSION:
+        if comment_block.startswith('//'):
+            print('one line java comment')
+            start_line = find_comment(filename,comment_block)
+            return Comment(comment_block, start_line, start_line)
+        elif comment_block.startsWith('/*'):
+            print('multiline java comment')
+            start_line = find_comment(filename,comment_block[4:20])
+            end_line = find_comment(filename,comment_block[len(comment_block)-20:len(comment_block)-4])
+            return Comment(comment_block, start_line, end_line)
+    elif extension_mapping.get(language) == PYTHON_FILE_EXTENSION:
+        print('start python analyzing...')
+        # TODO: same for python like java
 
 
 def parse_file_comments(filename, file_content, language):
@@ -47,8 +75,11 @@ def parse_file_comments(filename, file_content, language):
     elif extension_mapping.get(language) == PYTHON_FILE_EXTENSION:
         file_comments = re.findall(r'([^:]"""[^\(]*)"""', file_content, re.DOTALL) + get_python_single_line_comments(filename)
 
+    comments_full_info = []
     for comment in file_comments:
-        comment_line_range = find_range(comment, file_content)
+        comment_info = find_range(comment, filename, file_content, language)
+        comments_full_info.append(comment_info)
+    return comments_full_info
 
 
 def parse_files(dir, language):
@@ -71,4 +102,5 @@ if __name__ == '__main__':
         file_names, file_contents = parse_files(directory, programming_language.lower())
         for idx, file_content in enumerate(file_contents):
             comments = parse_file_comments(file_names[idx], file_content, programming_language.lower())
+            print('write comments to file')
             #write_comments_to_file(comments)
