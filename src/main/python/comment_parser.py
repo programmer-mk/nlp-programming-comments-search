@@ -2,6 +2,7 @@ import os
 import pathlib
 import re
 import tokenize
+import csv
 from collections import namedtuple
 
 MAIN_RESOURCE_DIR = '../resources'
@@ -26,6 +27,21 @@ def create_directory_for_search_phrase(directory_name):
     if not os.path.exists(full_directory_path):
         os.makedirs(full_directory_path)
 
+    full_directory_path = f'../resources/{directory_name}/processed_comments'
+    if not os.path.exists(full_directory_path):
+        os.makedirs(full_directory_path)
+
+
+def write_comments_to_file(comments, file_path):
+    print(f'start writing comments from {file_path}')
+    with open(f'{file_path.parent}/processed_comments/{file_path.stem}.csv', 'w', encoding='UTF8') as f:
+        writer = csv.writer(f)
+        header = ['comment_text', 'start_line', 'end_line']
+        writer.writerow(header)
+        for comment in comments:
+            data = [comment.comment_text, comment.start_line, comment.end_line]
+            writer.writerow(data)
+    f.close()
 
 def get_python_single_line_comments(file):
     comments = []
@@ -99,8 +115,13 @@ if __name__ == '__main__':
     programming_language = input('Enter programming language for code parsing: ')
     directories = get_directories()
     for directory in directories:
+        create_directory_for_search_phrase(directory)
         file_names, file_contents = parse_files(directory, programming_language.lower())
+        processed_files = 0
         for idx, file_content in enumerate(file_contents):
             comments = parse_file_comments(file_names[idx], file_content, programming_language.lower())
             print('write comments to file')
-            #write_comments_to_file(comments)
+            write_comments_to_file(comments, file_names[idx])
+            processed_files += 1
+            if processed_files == 2:
+                break
