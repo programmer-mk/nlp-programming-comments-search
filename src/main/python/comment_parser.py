@@ -117,11 +117,7 @@ if __name__ == '__main__':
     for directory in directories:
         create_directory_for_search_phrase(directory)
         file_names, file_contents = parse_files(directory, programming_language.lower())
-        processed_files = 0
         for idx, file_content in enumerate(file_contents):
             comments = parse_file_comments(file_names[idx], file_content, programming_language.lower())
             print('write comments to file')
             write_comments_to_file(comments, file_names[idx])
-            processed_files += 1
-            if processed_files == 2:
-                break
