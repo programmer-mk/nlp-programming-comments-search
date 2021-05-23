@@ -74,7 +74,7 @@ def find_range(comment_block, filename, content, language):
             print('one line java comment')
             start_line = find_comment(filename,comment_block)
             return Comment(comment_block, start_line, start_line)
-        elif comment_block.startsWith('/*'):
+        elif comment_block.startswith('/*'):
             print('multiline java comment')
             start_line = find_comment(filename,comment_block[4:20])
             end_line = find_comment(filename,comment_block[len(comment_block)-20:len(comment_block)-4])
