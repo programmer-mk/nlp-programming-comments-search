@@ -1,102 +1,100 @@
-// TODO: translate these
-
-query
-convert int to string
-priority queue
-string to date
-sort string list
-save list to file
-postgresql connection
-confusion matrix
-set working directory
-group by count
-binomial distribution
-aes encryption
-linear regression
-socket recv timeout
-write csv
-convert decimal to hex
-export to excel
-scatter plot
-convert json to csv
-pretty print json
-replace in file
-k means clustering
-connect to sql
-html encode string
-finding time elapsed using a timer
-parse binary file to custom class
-get current ip address
-convert int to bool
-read text file line by line
-get executable path
-httpclient post json
-get inner html
-convert string to number
-format date
-readonly array
-filter array
-map to json
-parse json file
-get current observable value
-get name of enumerated value
-encode url
-create cookie
-how to empty array
-how to get current date
-how to make the checkbox checked
-initializing array
-how to reverse a string
-read properties file
-copy to clipboard
-convert html to pdf
-json to xml conversion
-how to randomly pick a number
-normal distribution
-nelder mead optimize
-hash set for counting distinct elements
-how to get database table name
-deserialize json
-find int in string
-get current process id
-regex case insensitive
-custom http error response
-how to determine a string is a valid word
-html entities replace
-set file attrib hidden
-sorting multiple arrays based on another arrays sorted order
-string similarity levenshtein
-how to get html of website
-buffered file reader read text
-encrypt aes ctr mode
-matrix multiply
-print model summary
-unique elements
-extract data from html content
-heatmap from 3d coordinates
-get all parents of xml node
-how to extract zip file recursively
-underline text in label widget
-unzipping large files
-copying a file to a path
-get the description of a http status code
-randomly extract x items from a list
-convert a date string into yyyymmdd
-convert a utc time to epoch
-all permutations of a list
-extract latitude and longitude from given input
-how to check if a checkbox is checked
-converting uint8 array to image
-memoize to disk  - persistent memoization
-parse command line argument
-how to read the contents of a .gz compressed file?
-sending binary data over a serial connection
-extracting data from a text file
-positions of substrings in string
-reading element from html - <td>
-deducting the median from each column
-concatenate several file remove header lines
-parse query string in url
-fuzzy match ranking
-output to html file
-how to read .csv file in an efficient way?
+upit
+pretvoriti int u string
+prioritetni red
+string u datum
+sortirajte listu niza
+sačuvaj listu u fajl
+postgresql veza
+konfuzija matrica
+set radni direktorijum
+grupa po brojanju
+binomna distribucija
+AES šifrovanje
+linearna regresija
+utičnica recv tajmeout
+pisati CSV
+pretvoriti u decimalni da hek
+izvoz u ekcel
+rasejanje parcela
+pretvoriti u json csv
+prilično štampanje JSON
+zamenite u fajlu
+k znači grupisanje
+povezati sa SKL
+html kodiranje string
+pronalaženje vremena proteklo pomoću tajmera
+analizirati binarni fajl na prilagođenu klasu
+dobiti trenutnu IP adresu
+pretvoriti u int da bool
+čitati tekst fajl liniju po liniji
+dobiti izvršnu putanju
+httpclient poruka JSON
+dobiti unutrašnji HTML
+pretvoriti niz za broj
+format datum
+readonly niz
+filter niz
+karta za json
+analizirati json fajl
+dobiti trenutnu posmatrati vrednost
+dobiti ime nabrajane vrednosti
+kodiranje url
+kreirajte kolačić
+kako da isprazni niz
+kako da dobijete trenutni datum
+kako napraviti potvrdni okvir proverio
+inicijalizaciju niz
+kako da preokrenete niz
+pročitao svojstva fajl
+kopirajte u klipbord
+pretvoriti html da pdf
+json u xml konverzija
+kako nasumično izabrati broj
+normalna distribucija
+nelder medovina optimizovati
+heš set za brojanje različitih elemenata
+kako dobiti ime tabele baze podataka
+deserializuje JSON
+naći int u nizu
+dobiti trenutni ID procesa
+regek slučaj neosetljiv
+prilagođeni odgovor na grešku http
+kak da se opredeli niz e validna duma
+html entiteta zameniti
+set fajl atrib skrivene
+sortiranje više nizova na osnovu drugog nizova sortirani red
+niz sličnost levenshtein
+kak da se HTML na veb
+buferovani čitač datoteka čita tekst
+šifrovanje AES ctr režim
+matrica umnožiti
+rezime modela štampanja
+jedinstvene elemente
+ekstrakt podataka iz HTML sadržaja
+heatmap iz 3d koordinata
+dobiti sve roditelje kml čvora
+kako izvući zip fajl rekurzivno
+podvlači tekst u vidžetu etikete
+raspakiranje velikih datoteka
+kopiranje fajla na putanju
+dobiti opis koda statusa http
+nasumično izdvojiti k stavke sa liste
+pretvoriti datumski niz u yyyymmdd
+pretvoriti utc vreme za da epoha
+sve permutacije liste
+izdvojiti geografsku širinu i dužinu iz datog ulaza
+kako proveriti da li je potvrđeno polje
+pretvaranje uint8 niza u sliku
+memoize na disk - uporna memoizacija
+analizirati argument komandne linije
+kako čitati sadržaj komprimovane datoteke .gz?
+slanje binarnih podataka preko serijske veze
+vađenje podataka iz tekstualnog fajla
+pozicije podnizova u nizu
+čitanje element iz html - <td>
+oduzimajući medijan iz svake kolone
+Concatenate nekoliko datoteka uklonite linije zaglavlja
+analizirati niz upita u url
+fuzzi meč rangiranje
+izlaz na html fajl
+kako čitati .csv fajl na efikasan način?

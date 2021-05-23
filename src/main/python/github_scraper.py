@@ -1,28 +1,47 @@
-from github import Github
+import os
+import requests
+from collections import namedtuple
+
 GITHUB_AUTH_TOKEN = 'dummy'
-github_client = Github(GITHUB_AUTH_TOKEN)
+GithubItem = namedtuple('GithubItem', 'file_name file_url repository_name repository_owner')
 
 
-def search_github(keyword):
-    rate_limit = github_client.get_rate_limit()
-    rate = rate_limit.search
-    if rate.remaining == 0:
-        print(f'You have 0/{rate.limit} API calls remaining. Reset time: {rate.reset}')
-        return
-    else:
-        print(f'You have {rate.remaining}/{rate.limit} API calls remaining')
+def compute_directory_name(phrase):
+    terms = phrase.split()
+    return '_'. join(terms)
 
-    query = f'"{keyword} english" in:file extension:po'
-    result = github_client.search_code(query, order='desc')
 
-    max_size = 100
-    print(f'Found {result.totalCount} file(s)')
-    if result.totalCount > max_size:
-        result = result[:max_size]
+def create_directory_for_search_phrase(directory_name):
+    full_directory_path = f'../resources/{directory_name}'
+    if not os.path.exists(full_directory_path):
+        os.makedirs(full_directory_path)
 
-    for file in result:
-        print(f'{file.download_url}')
+
+def download_files(github_files, search_phrase):
+    directory_name = compute_directory_name(search_phrase)
+    create_directory_for_search_phrase(directory_name)
+    for github_file in github_files:
+        url = github_file.file_url
+        headers = {'accept': 'application/vnd.github.VERSION.raw'}
+        r = requests.get(url, headers=headers)
+        open(f'../resources/{directory_name}/{github_file.file_name}', 'wb').write(r.content)
+
+
+def search_github(phrase, prog_language):
+    query_url = f"https://api.github.com/search/code?q={phrase}+in:file+language:{prog_language}"
+    params = {
+        "state": "open",
+    }
+    headers = {'Authorization': f'token {GITHUB_AUTH_TOKEN}'}
+    r = requests.get(query_url, headers=headers, params=params)
+    result_items = r.json()['items']
+    items = [GithubItem(t['name'], t['git_url'], t['repository']['full_name'], t['repository']['owner']['id']) for t in result_items]
+    return items
 
 
 if __name__ == '__main__':
-    keyword = input('Enter your search term: ')
+    natural_language = input('Enter natural language for code searching: ')
+    search_phrase = input(f'Enter search phrase on {natural_language} language: ')
+    programming_language = input('Enter programming language for code searching: ')
+    files = search_github(search_phrase, programming_language)
+    download_files(files, search_phrase)
