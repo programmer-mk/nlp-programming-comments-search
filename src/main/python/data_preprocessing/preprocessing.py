@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 from sklearn.feature_extraction.text import CountVectorizer
 
 cv_unigram = CountVectorizer(ngram_range=(1, 1))
@@ -33,11 +34,15 @@ def init_variables(comments):
     cv_trigram.fit(comments['CommentText'])
 
 
+def remove_outliers(data):
+    pass
+
+
 def create_bag_of_words(data_set):
-    return cv_unigram.transform(data_set['Comment'])
+    return cv_unigram.transform(data_set['CommentText'])
 
 
-def start_preprocessing(step, data_set):
+def start_processing(step, data_set):
     processing_technique = processing_steps.get(step)
     if processing_technique is None:
         print('Unrecognized processing type. Please specify number between 1 - x')
@@ -45,8 +50,33 @@ def start_preprocessing(step, data_set):
         processing_technique(data_set)
 
 
+def remove_special_characters(text):
+    # removes special characters with ' '
+    cleaned = re.sub('[^a-zA-z\s]', ' ', text)
+    cleaned = re.sub('_', ' ', cleaned)
+
+    # Change any white space and new line to one space
+    cleaned = cleaned.replace('\\n', ' ')
+    cleaned = re.sub('\s+', ' ', cleaned)
+
+    # Remove start and end white spaces
+    cleaned = cleaned.strip()
+    if cleaned != '':
+        return cleaned
+
+
+def init_preprocessing(data):
+    # Remove special characters, outliers, duplicates, null values, html tags
+    data = data.dropna()
+    data['CommentText'] = data['CommentText'].apply(remove_special_characters)
+    data = remove_outliers(data)
+    #labels are already encoded(assume SimilarityScore is integer)
+    return data
+
+
 if __name__ == '__main__':
-    init_data_set = read_raw_data()
-    init_variables(init_data_set)
+    raw_data = read_raw_data()
+    init_variables(raw_data)
+    preprocessed_data = init_preprocessing(raw_data)
     for step in list(range(9)):
-        start_preprocessing(step, init_data_set)
+        start_processing(step, preprocessed_data)
