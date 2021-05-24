@@ -6,17 +6,17 @@ cv_bigram = CountVectorizer(ngram_range=(2, 2))
 cv_trigram = CountVectorizer(ngram_range=(3, 3))
 
 
-def without_preprocessing():
+def without_preprocessing(data_set):
     pass
 
 
-def lowercasing():
+def lowercasing(data_set):
     pass
 
 
 processing_steps = {
-    1: without_preprocessing(),
-    2: lowercasing()
+    1: without_preprocessing,
+    2: lowercasing
 }
 
 
@@ -38,11 +38,11 @@ def create_bag_of_words(data_set):
 
 
 def start_preprocessing(step, data_set):
-    function = processing_steps.get(step)
-    if function is None:
+    processing_technique = processing_steps.get(step)
+    if processing_technique is None:
         print('Unrecognized processing type. Please specify number between 1 - x')
     else:
-        function(data_set)
+        processing_technique(data_set)
 
 
 if __name__ == '__main__':
