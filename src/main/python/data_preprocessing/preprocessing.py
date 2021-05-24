@@ -1,23 +1,54 @@
 import pandas as pd
 import re
 from sklearn.feature_extraction.text import CountVectorizer
+from nltk.tokenize import word_tokenize
+
+MAIN_CONFIG_DIR = '../../config'
 
 cv_unigram = CountVectorizer(ngram_range=(1, 1))
 cv_bigram = CountVectorizer(ngram_range=(2, 2))
 cv_trigram = CountVectorizer(ngram_range=(3, 3))
 
 
-def without_preprocessing(data_set):
+def remove_stop_words_and_tokenize_word(text, stopwords):
+    words = word_tokenize(text)
+    return "".join([stem_word(word) + " " for word in words if word not in stopwords.words()])
+
+
+def read_stop_words():
+    stopwords = []
+    with open(f'{MAIN_CONFIG_DIR}/stopwords.txt', 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            # remove linebreak
+            line_cleaned = line[:-1]
+            stopwords.append(line_cleaned)
+    return stopwords
+
+
+def stem_word(word):
     pass
+
+
+def stemming_and_remove_stopwords(data_set):
+    stopwords = read_stop_words()
+    data_set['CommentText'] = data_set['CommentText'].apply(remove_stop_words_and_tokenize_word, stopwords)
+    return create_bag_of_words(data_set)
+
+
+def without_preprocessing(data_set):
+    return create_bag_of_words(data_set)
 
 
 def lowercasing(data_set):
-    pass
+    data_set['CommentText'] = data_set['CommentText'].apply(lambda comment: comment.lower())
+    return create_bag_of_words(data_set)
 
 
 processing_steps = {
     1: without_preprocessing,
-    2: lowercasing
+    2: lowercasing,
+    3: stemming_and_remove_stopwords,
 }
 
 
@@ -35,7 +66,7 @@ def init_variables(comments):
 
 
 def remove_outliers(data):
-    pass
+    return data
 
 
 def create_bag_of_words(data_set):
@@ -70,7 +101,7 @@ def init_preprocessing(data):
     data = data.dropna()
     data['CommentText'] = data['CommentText'].apply(remove_special_characters)
     data = remove_outliers(data)
-    #labels are already encoded(assume SimilarityScore is integer)
+    # labels are already encoded(assume SimilarityScore is integer)
     return data
 
 
