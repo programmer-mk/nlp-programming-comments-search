@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import re
 from sklearn.feature_extraction.text import CountVectorizer
@@ -12,7 +13,7 @@ cv_trigram = CountVectorizer(ngram_range=(3, 3))
 
 def remove_stop_words_and_tokenize_word(text, stopwords):
     words = word_tokenize(text)
-    return "".join([stem_word(word) + " " for word in words if word not in stopwords.words()])
+    return "".join([word + " " for word in words if word not in stopwords.words()])
 
 
 def read_stop_words():
@@ -26,12 +27,49 @@ def read_stop_words():
     return stopwords
 
 
-def stem_word(word):
-    pass
+def get_stemming_result(file_name):
+    stemmed_corpus = []
+    with open(f'{MAIN_CONFIG_DIR}/{file_name}', 'w') as file:
+        lines = file.readlines()
+        for line in lines:
+            # remove linebreak
+            line_cleaned = line[:-1]
+            stemmed_corpus.append(line_cleaned)
+    return pd.Series(stemmed_corpus)
+
+
+def execute_stemming_command(input_file_name, output_file_name):
+    """
+        StemmerIds:
+
+    1 - Keselj & Sipka - Greedy
+    2 - Keselj & Sipka - Optimal
+    3 - Milosevic
+    4 - Ljubesic & Pandzic
+    """
+
+    stemmer_id = 4
+    stemmer_implementation = 'SCStemmers.jar'
+    stem_command = f'java -jar {stemmer_implementation} {stemmer_id} {input_file_name} {output_file_name}'
+    os.system(stem_command)
+
+
+def prepare_files_for_stemming(data_frame, input_file_name):
+    with open(f'{MAIN_CONFIG_DIR}/{input_file_name}', 'w') as file:
+        for row in data_frame:
+            file.write(row)
+            file.write('\n')
+
+
+def do_file_stemming(input_file_name, output_file_name):
+    prepare_files_for_stemming(input_file_name, output_file_name)
+    execute_stemming_command(input_file_name, output_file_name)
+    return get_stemming_result(output_file_name)
 
 
 def stemming_and_remove_stopwords(data_set):
     stopwords = read_stop_words()
+    data_set['CommentText'] = do_file_stemming('input-stemming.txt', 'input-stemming.txt')
     data_set['CommentText'] = data_set['CommentText'].apply(remove_stop_words_and_tokenize_word, stopwords)
     return create_bag_of_words(data_set)
 
