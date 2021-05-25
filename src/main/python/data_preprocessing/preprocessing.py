@@ -5,6 +5,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from nltk.tokenize.toktok import ToktokTokenizer
 
 MAIN_CONFIG_DIR = '../../config'
+PROCESSED_DATA_DIR = '../../resources/processed_data'
 
 # TODO: should we use (1, 2), (1,3) and (2,3) combinations
 # analyzer needed for multiple columns
@@ -63,11 +64,15 @@ def execute_stemming_command(input_file_name, output_file_name):
     os.system(stem_command)
 
 
-def prepare_files_for_stemming(data_frame, input_file_name):
-    with open(f'{MAIN_CONFIG_DIR}/{input_file_name}', 'w') as file:
+def write_data_frame_to_file(data_frame, file_path):
+    with open(f'{file_path}', 'w') as file:
         for row in data_frame:
             file.write(row)
             file.write('\n')
+
+
+def prepare_files_for_stemming(data_frame, input_file_name):
+    write_data_frame_to_file(data_frame, f'{MAIN_CONFIG_DIR}/{input_file_name}')
 
 
 def do_file_stemming(input_file_name, output_file_name):
@@ -101,7 +106,7 @@ processing_steps = {
 
 
 def read_raw_data():
-    comments = pd.read_csv("../../resources/comments.csv", names=['ProgrammingLanguageName', 'QueryID',
+    comments = pd.read_csv("../../resources/raw_data/comments.csv", names=['ProgrammingLanguageName', 'QueryID',
                                                                          'PairID', 'QueryText', 'CommentText',
                                                                          'SimilarityScore'])
     return comments[['QueryText', 'CommentText']]
@@ -123,6 +128,7 @@ def start_processing(step, data_set):
     else:
         processed_data = processing_technique(data_set)
         print(processed_data)
+        write_data_frame_to_file(processed_data, f'{PROCESSED_DATA_DIR}/{processing_technique.__name__}.txt')
 
 
 def remove_special_characters(text):
