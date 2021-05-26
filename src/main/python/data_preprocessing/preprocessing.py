@@ -89,6 +89,32 @@ def stemming_and_remove_stopwords(data_set):
     return create_bag_of_words(do_file_stemming(data_set, 'input-stemming.csv', 'output-stemming.csv'))
 
 
+"""
+    This does not mean outputs will have only 0/1 values, only that the tf term in tf-idf is binary.
+     (Set idf and normalization to False to get 0/1 outputs).
+"""
+def binary_bow(data_set):
+    binary_tf = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False, binary=True)
+    data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
+    binary_tf.fit(data_set["Merged Text"])
+    print(binary_tf.get_feature_names())
+    bow = pd.DataFrame(binary_tf.fit_transform(data_set["Merged Text"]).todense())
+    return bow
+
+
+"""
+    ignore terms that have a document frequency strictly higher than 0.9 and lower than 0.1
+    parameters could be tuned if it's needed
+"""
+def frequency_filtering(data_set):
+    freq_filter = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False,  min_df=0.1, max_df=0.9)
+    data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
+    freq_filter.fit(data_set["Merged Text"])
+    print(freq_filter.get_feature_names())
+    bow = pd.DataFrame(freq_filter.fit_transform(data_set["Merged Text"]).todense())
+    return bow
+
+
 def idf(data_set):
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     cv = CountVectorizer(lowercasing )
@@ -96,7 +122,6 @@ def idf(data_set):
     tfidf_transformer = TfidfTransformer()
     tfidf_transformer.fit_transform(words)
     idf = pd.DataFrame({'feature_name':cv.get_feature_names(), 'idf_weights':tfidf_transformer.idf_})
-
     return idf
 
 
@@ -149,7 +174,10 @@ processing_steps = {
     4: trigrams,
     5: tf,
     #6: idf, skipping for now, not sure that make sense doing it
-    7: tf_idf
+    6: tf_idf,
+    7: frequency_filtering,
+    8: binary_bow
+
 }
 
 
