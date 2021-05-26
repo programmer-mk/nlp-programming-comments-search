@@ -9,14 +9,6 @@ from nltk.tokenize.toktok import ToktokTokenizer
 
 MAIN_CONFIG_DIR = '../../config'
 PROCESSED_DATA_DIR = '../../resources/processed_data'
-
-# TODO: should we use (1, 2), (1,3) and (2,3) combinations?
-cv_unigram = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False)
-cv_bigram = CountVectorizer(ngram_range=(2, 2), lowercase=False)
-cv_trigram = CountVectorizer(ngram_range=(3, 3), lowercase=False)
-tf_vectorizer = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False)
-#idf_vectorizer = TfidfTransformer(use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
-tf_idf_vectorizer = TfidfVectorizer(use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
 tokenizer = ToktokTokenizer()
 
 
@@ -37,6 +29,7 @@ def read_stop_words():
 
 
 def create_bag_of_words(data_set):
+    cv_unigram = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     cv_unigram.fit(data_set["Merged Text"])
     print(cv_unigram.get_feature_names())
@@ -126,12 +119,14 @@ def idf(data_set):
 
 
 def tf(data_set):
+    tf_vectorizer = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     tfs = pd.DataFrame(tf_vectorizer.fit_transform(data_set["Merged Text"]).todense())
     return tfs
 
 
 def tf_idf(data_set):
+    tf_idf_vectorizer = TfidfVectorizer(use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     tf_idfs = tf_idf_vectorizer.fit_transform(data_set["Merged Text"])
     print(tf_idf_vectorizer.get_feature_names())
@@ -141,6 +136,7 @@ def tf_idf(data_set):
 
 
 def bigrams(data_set):
+    cv_bigram = CountVectorizer(ngram_range=(2, 2), lowercase=False)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     cv_bigram.fit(data_set["Merged Text"])
     print(cv_bigram.get_feature_names())
@@ -149,6 +145,7 @@ def bigrams(data_set):
 
 
 def trigrams(data_set):
+    cv_trigram = CountVectorizer(ngram_range=(3, 3), lowercase=False)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     cv_trigram.fit(data_set["Merged Text"])
     print(cv_trigram.get_feature_names())
