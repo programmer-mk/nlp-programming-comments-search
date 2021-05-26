@@ -12,6 +12,11 @@ PROCESSED_DATA_DIR = '../../resources/processed_data'
 tokenizer = ToktokTokenizer()
 
 
+def remove_files(files):
+    for file in files:
+        os.remove(file)
+
+
 def remove_stop_words_and_tokenize_word(text, stopwords):
     words = tokenizer.tokenize(text)
     return "".join([word + " " for word in words if word not in stopwords])
@@ -73,8 +78,9 @@ def prepare_files_for_stemming(data_frame, input_file_name):
 def do_file_stemming(data, input_file_name, output_file_name):
     prepare_files_for_stemming(data, input_file_name)
     execute_stemming_command(input_file_name, output_file_name)
-    return get_stemming_result(output_file_name)
-
+    stemm_result = get_stemming_result(output_file_name)
+    remove_files([f'{MAIN_CONFIG_DIR}/{input_file_name}', f'{MAIN_CONFIG_DIR}/{output_file_name}'])
+    return stemm_result
 
 def stemming_and_remove_stopwords(data_set):
     stopwords = read_stop_words()
