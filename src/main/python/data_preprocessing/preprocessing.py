@@ -11,8 +11,8 @@ PROCESSED_DATA_DIR = '../../resources/processed_data'
 # TODO: should we use (1, 2), (1,3) and (2,3) combinations
 # analyzer needed for multiple columns
 cv_unigram = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False)
-cv_bigram = CountVectorizer(ngram_range=(2, 2))
-cv_trigram = CountVectorizer(ngram_range=(3, 3))
+cv_bigram = CountVectorizer(ngram_range=(2, 2), lowercase=False)
+cv_trigram = CountVectorizer(ngram_range=(3, 3), lowercase=False)
 tokenizer = ToktokTokenizer()
 
 
@@ -76,7 +76,6 @@ def prepare_files_for_stemming(data_frame, input_file_name):
 def do_file_stemming(data, input_file_name, output_file_name):
     prepare_files_for_stemming(data, input_file_name)
     execute_stemming_command(input_file_name, output_file_name)
-    p = get_stemming_result(output_file_name)
     return get_stemming_result(output_file_name)
 
 
@@ -84,6 +83,22 @@ def stemming_and_remove_stopwords(data_set):
     stopwords = read_stop_words()
     data_set['CommentText'] = data_set['CommentText'].apply(lambda text: remove_stop_words_and_tokenize_word(text, stopwords))
     return create_bag_of_words(do_file_stemming(data_set, 'input-stemming.csv', 'output-stemming.csv'))
+
+
+def bigrams(data_set):
+    data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
+    cv_bigram.fit(data_set["Merged Text"])
+    print(cv_bigram.get_feature_names())
+    bow = pd.DataFrame(cv_bigram.fit_transform(data_set["Merged Text"]).todense())
+    return bow
+
+
+def trigrams(data_set):
+    data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
+    cv_trigram.fit(data_set["Merged Text"])
+    print(cv_trigram.get_feature_names())
+    bow = pd.DataFrame(cv_trigram.fit_transform(data_set["Merged Text"]).todense())
+    return bow
 
 
 def without_preprocessing(data_set):
@@ -100,6 +115,8 @@ processing_steps = {
     0: without_preprocessing,
     1: lowercasing,
     2: stemming_and_remove_stopwords,
+    3: bigrams,
+    4: trigrams
 }
 
 
