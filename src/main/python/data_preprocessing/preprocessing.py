@@ -3,16 +3,20 @@ import pandas as pd
 import numpy as np
 import re
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize.toktok import ToktokTokenizer
 
 MAIN_CONFIG_DIR = '../../config'
 PROCESSED_DATA_DIR = '../../resources/processed_data'
 
-# TODO: should we use (1, 2), (1,3) and (2,3) combinations
-# analyzer needed for multiple columns
+# TODO: should we use (1, 2), (1,3) and (2,3) combinations?
 cv_unigram = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False)
 cv_bigram = CountVectorizer(ngram_range=(2, 2), lowercase=False)
 cv_trigram = CountVectorizer(ngram_range=(3, 3), lowercase=False)
+tf_vectorizer = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False)
+#idf_vectorizer = TfidfTransformer(use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
+tf_idf_vectorizer = TfidfVectorizer(use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
 tokenizer = ToktokTokenizer()
 
 
@@ -66,7 +70,7 @@ def write_data_frame_to_file(data_frame, file_path, file_name):
 
 
 def write_bow_data_frame_to_file(data_frame, file_path):
-    np.savetxt(f'{file_path}', data_frame.to_numpy(), fmt="%d")
+    np.savetxt(f'{file_path}', data_frame.to_numpy(), fmt="%f")
 
 
 def prepare_files_for_stemming(data_frame, input_file_name):
@@ -83,6 +87,32 @@ def stemming_and_remove_stopwords(data_set):
     stopwords = read_stop_words()
     data_set['CommentText'] = data_set['CommentText'].apply(lambda text: remove_stop_words_and_tokenize_word(text, stopwords))
     return create_bag_of_words(do_file_stemming(data_set, 'input-stemming.csv', 'output-stemming.csv'))
+
+
+def idf(data_set):
+    data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
+    cv = CountVectorizer(lowercasing )
+    words = cv.fit_transform(data_set["Merged Text"])
+    tfidf_transformer = TfidfTransformer()
+    tfidf_transformer.fit_transform(words)
+    idf = pd.DataFrame({'feature_name':cv.get_feature_names(), 'idf_weights':tfidf_transformer.idf_})
+
+    return idf
+
+
+def tf(data_set):
+    data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
+    tfs = pd.DataFrame(tf_vectorizer.fit_transform(data_set["Merged Text"]).todense())
+    return tfs
+
+
+def tf_idf(data_set):
+    data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
+    tf_idfs = tf_idf_vectorizer.fit_transform(data_set["Merged Text"])
+    print(tf_idf_vectorizer.get_feature_names())
+    #df_tf_idf = pd.DataFrame(tf_idfs, index=tf_idf_vectorizer.get_feature_names(),columns=["tf_idf_weights"])
+    pda = pd.DataFrame(tf_idfs.toarray())
+    return pd.DataFrame(pda)
 
 
 def bigrams(data_set):
@@ -116,7 +146,10 @@ processing_steps = {
     1: lowercasing,
     2: stemming_and_remove_stopwords,
     3: bigrams,
-    4: trigrams
+    4: trigrams,
+    5: tf,
+    #6: idf, skipping for now, not sure that make sense doing it
+    7: tf_idf
 }
 
 
