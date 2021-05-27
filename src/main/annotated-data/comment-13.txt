@@ -1,0 +1,55 @@
+// Učitavanje iz datoteke
+
+static public Matrica UcitajIzDatoteke(string adresaDatoteke)
+        {
+            List<double> listaUcitanihBrojeva = new List<double>();
+            string ucitaniRedak;
+            int brojRedaka = 0, brojStupaca = 0, provjeraBrojaStupaca=0;
+            StreamReader citac = null;
+            citac = new StreamReader(adresaDatoteke);
+            while ((ucitaniRedak = citac.ReadLine()) != null)
+            {
+                brojRedaka++;
+                foreach (string element in ucitaniRedak.Split(' ', '\t'))
+                {
+                    try
+                    {
+                        listaUcitanihBrojeva.Add(double.Parse(element));
+                    }
+                    catch
+                    {
+                        throw new Exception("Element matrice koju pokušavate iščitati iz datoteke nije broj!");
+                    }
+                    provjeraBrojaStupaca++;
+                }
+                if (brojRedaka==1)
+                {
+                    brojStupaca = listaUcitanihBrojeva.Count;
+                }
+                else
+                {
+                    if (provjeraBrojaStupaca != brojStupaca)
+                    {
+                        throw new Exception("Matrica nije učitana. Neispravno zadan oblik matrice u datoteci " + adresaDatoteke + "!");
+                    }
+                }
+                provjeraBrojaStupaca = 0;
+            }
+
+            citac.Close();
+
+            Matrica matrica = new Matrica(brojRedaka, brojStupaca);
+
+            for (int i = 0; i < brojRedaka; i++)
+            {
+                for (int j = 0; j < brojStupaca; j++)
+                {
+                    matrica[i, j] = listaUcitanihBrojeva[i * brojStupaca + j];
+                }
+            }
+            return matrica;
+        }
+
+
+
+https://github.com/studosi-fer/AIPR/blob/c62d409fb851ee4852f8a622e7bb48f89f125915/zadace/dz-4/2011-12/by_unknown/Matrica.cs

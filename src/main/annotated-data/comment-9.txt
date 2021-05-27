@@ -1,0 +1,24 @@
+// Indekser
+
+public double this[int i, int j]
+        {
+            get
+            {
+                if (i < 0 || i >= brojRedaka)
+                    throw new Exception("Pokušali ste pristupiti nepostojećem retku matrice!");
+                if (j < 0 || j >= brojStupaca)
+                    throw new Exception("Pokušali ste pristupiti nepostojećem stupcu matrice!");
+                return matrica[i, j];
+            }
+            set
+            {
+                if (i < 0 || i >= brojRedaka)
+                    throw new Exception("Pokušali ste zapisati vrijednost u nepostojeći redak matrice!");
+                if (j < 0 || j >= brojStupaca)
+                    throw new Exception("Pokušali ste zapisati vrijednost u nepostojeći stupac matrice!");
+                matrica[i, j] = value;
+            }
+        }
+
+
+https://github.com/studosi-fer/AIPR/blob/c62d409fb851ee4852f8a622e7bb48f89f125915/zadace/dz-4/2011-12/by_unknown/Matrica.cs

@@ -1,0 +1,13 @@
+// Otvaranje binarnog file stream objekta za čitanje iz fajla (obezbeđeno implicitno oslobađanje resursa)
+
+using (FileStream fajlStream = new FileStream(fajlIme, FileMode.Open, FileAccess.Read, FileShare.Read))
+{
+                int length = (int)fajlStream.Length;   // Dužina fajla
+                bafer = new byte[length];              // Kreiranje bafera čija je veličina ista kao veličina fajla
+                int count = 0;                         // Broj isčitanih bajtova u trenutnoj iteraciji
+                int sum = 0;                           // Ukupan broj isčitanih bajtova
+
+                // Čitanje dok 'Read' metoda ne vrati 0 (do kraja stream-a)
+                while ((count = fajlStream.Read(bafer, sum, length - sum)) > 0)
+                    sum += count;                       // 'sum' je ofset za sledeću iteraciju
+} // Implicitno se poziva fajlStream.Close() za oslobađanje resursa

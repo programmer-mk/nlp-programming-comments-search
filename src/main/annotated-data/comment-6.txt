@@ -1,0 +1,16 @@
+// TODO:082 Pokrenuti testove i provjeriti prolaze li testovi u grupi TestPetljeWhileDoWhile
+
+static void Main(string[] args)
+        {
+
+            int brojPređenihPolja = BrojBacanjaDoBačeneŠestice();
+
+            brojPređenihPolja = BacajDokNeProđe12Polja(brojPređenihPolja);
+            Console.WriteLine("Zbroj = {0}", brojPređenihPolja);
+
+            Console.WriteLine("GOTOVO!!!");
+            Console.ReadKey();
+        }
+
+
+https://github.com/vsite-csharp/04-KontrolaToka/blob/a03b98d8aebaf72cf1bc275cf730ffeba59af7e4/PetljeWhileDoWhile/PetljeWhileDoWhile.cs

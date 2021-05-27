@@ -1,0 +1,25 @@
+// Siroviji ispis :)
+
+public string ToFormatString()
+        {
+            string matricaString = "";
+            for (int i = 0; i < brojRedaka; i++)
+            {
+                for (int j = 0; j < brojStupaca; j++)
+                {
+                    if (j < brojStupaca - 1)
+                    {
+                        matricaString += matrica[i, j] + " ";
+                    }
+                    else matricaString += matrica[i, j];
+                }
+                if (i < brojRedaka - 1)
+                {
+                    matricaString += Environment.NewLine;
+                }
+            }
+            return matricaString;
+        }
+
+
+https://github.com/studosi-fer/AIPR/blob/c62d409fb851ee4852f8a622e7bb48f89f125915/zadace/dz-4/2011-12/by_unknown/Matrica.cs

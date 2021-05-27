@@ -1,0 +1,28 @@
+// zahtev za prijavu
+
+private bool PrijavaIgraca(Igrac noviIgrac, List<Igrac> igraci)
+        {
+             stream = new NetworkStream(noviIgrac.serverskiSocketIgraca);
+             formatter = new BinaryFormatter();
+            ZahtevOdKlijenta zahtev = (ZahtevOdKlijenta)formatter.Deserialize(stream);
+            // MessageBox.Show($"Poslato korisnicko ime {zahtev.KorisnickoIme}");
+            noviIgrac.KorisnickoIme = zahtev.KorisnickoIme;
+            OdgovorServera odgovor = new OdgovorServera();
+            if (!igraci.Any(i => i.KorisnickoIme == noviIgrac.KorisnickoIme))
+            {
+                odgovor.Signal = Signal.Ok;
+                igraci.Add(noviIgrac);
+                Sesija.Instance.listaPlayera.Add(noviIgrac);
+                IzmenjenRezultat();
+                formatter.Serialize(stream, odgovor);
+                return true;
+            }
+            else {
+                odgovor.Signal = Signal.ImeZauzeto;
+                formatter.Serialize(stream, odgovor);
+                return false;
+            }
+
+        }
+
+https://github.com/vrana28/Kolokvijum2_Kviz_priprema/blob/master/Kolokvijum2_priprema/Server.cs
