@@ -1,0 +1,9 @@
+// Ova metoda asinhrono vraća html element stranice čiju adresu proslijedimo u constructor-u
+
+public async Task<string> GetHtmlAsync()
+{
+    var webClient = new WebClient();
+    return await webClient.DownloadStringTaskAsync(_url);
+}
+
+StefanBalaban DotNet

@@ -1,0 +1,9 @@
+// Ova metoda poziva metodu koja poziva event, onVideoEncoded.
+public void Encode(Video video)
+{
+    Console.WriteLine($"Video {video.GetTitle()} has been encoded");
+    Thread.Sleep(3000);
+    OnVideoEncoded(video);
+}
+
+StefanBalaban DotNet

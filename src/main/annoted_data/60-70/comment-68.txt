@@ -1,0 +1,14 @@
+// Ova metoda služi da mjerimo vrijeme između poziva GetHtmlAsync i da nam ispiše prvih 10 slova html elementa
+// Vrijeme izvršavanja 2.5 sec
+
+public async void TimeOfExecutionAync() // Vrijeme izvršavanja 0.5 sec
+{
+    stoperica = new Stopwatch();
+    var getHtmlTask = GetHtmlAsync();
+    stoperica.Stop();
+    Console.WriteLine(stoperica.Elapsed());
+    var html = await getHtmlTask;
+    Console.WriteLine(html.Substring(0,10));
+}
+
+StefanBalaban DotNet

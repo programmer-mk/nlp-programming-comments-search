@@ -1,0 +1,8 @@
+// Ova podklasa služi da testiramo Is.InsanceOf metod na Volkwagen klasi
+
+public class Golf : Volkswagen
+{
+
+}
+
+StefanBalaban Testiranje

@@ -1,0 +1,36 @@
+// korisnik se ulogovao kao obicni korisnik
+
+private void btnUser_Click(object sender, EventArgs e)
+{
+    if (txtUsername.Equals(""))
+    {
+        MessageBox.Show("Username should not be empty");
+        return;
+    }
+    if (txtPassword.Equals(""))
+    {
+        MessageBox.Show("Password should not be empty");
+        return;
+    }
+
+    User korisnik = _ctx.Users.Find(txtUsername.Text);
+
+    if (korisnik == null)
+    {
+        MessageBox.Show("User does not exist");
+        return;
+    }
+
+    if (korisnik.password != txtPassword.Text)
+    {
+        MessageBox.Show("Invalid password");
+        return;
+    }
+
+    Form1 f = new Form1(false, korisnik, _ctx);
+
+    f.Show();
+}
+
+
+hamzamuric Sortiranje

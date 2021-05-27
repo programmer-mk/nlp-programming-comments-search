@@ -2,7 +2,7 @@ import os
 import requests
 from collections import namedtuple
 
-GITHUB_AUTH_TOKEN = 'dummy'
+GITHUB_AUTH_TOKEN = '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'
 GithubItem = namedtuple('GithubItem', 'file_name file_url repository_name repository_owner')
 
 
@@ -27,15 +27,21 @@ def download_files(github_files, search_phrase):
         open(f'../resources/{directory_name}/{github_file.file_name}', 'wb').write(r.content)
 
 
+def remove_dir_from_name(path):
+    startIndex = path.rfind('/')
+    file_name = path[startIndex+1: len(path)]
+    return file_name
+
+
 def search_github(phrase, prog_language):
-    query_url = f"https://api.github.com/search/code?q={phrase}+in:file+language:{prog_language}"
+    query_url = f"https://api.github.com/repos/stankela/bilten/git/trees/master?recursive=1"
     params = {
         "state": "open",
     }
     headers = {'Authorization': f'token {GITHUB_AUTH_TOKEN}'}
     r = requests.get(query_url, headers=headers, params=params)
-    result_items = r.json()['items']
-    items = [GithubItem(t['name'], t['git_url'], t['repository']['full_name'], t['repository']['owner']['id']) for t in result_items]
+    result_items = r.json()['tree']
+    items = [GithubItem(remove_dir_from_name(t['path']), t['url'], 'empty', 'empty') for t in result_items if t['path'].endswith('.cs') ]
     return items
 
 

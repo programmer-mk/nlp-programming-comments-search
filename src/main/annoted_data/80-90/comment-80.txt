@@ -1,0 +1,19 @@
+ // Ova metoda prima broj i ako nije 5 throw-a novi Exception sa porukom problema
+// Catch dio throw-a custom exception ExceptionalException i kao parametar, innerException šalje prvi exception
+
+public bool NumberFiveChecker(int possibleFive)
+{
+    try
+    {
+        if (possibleFive != 5)
+            throw new Exception("That is not a number five");
+        return true;
+    }
+    catch (Exception ex)
+    {
+
+        throw new ExceptionalException("Sorry, but an error has ocured", ex);
+    }
+}
+
+StefanBalaban DotNet

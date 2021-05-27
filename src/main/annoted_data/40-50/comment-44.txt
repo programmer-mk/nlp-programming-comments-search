@@ -1,0 +1,8 @@
+// racuna x koordinatu na osnovu indeksa u listi
+
+private int calcX(int index)
+{
+    return (middleScreen + index * 50) - 350;
+}
+
+hamzamuric Sortiranje

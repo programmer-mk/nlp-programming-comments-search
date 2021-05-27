@@ -1,0 +1,12 @@
+// iscrtava element
+
+public void draw(Graphics g)
+        {
+            rect = new Rectangle(X, Y, Width, Width);
+            g.DrawRectangle(pen, rect); // crtanje okvira elementa
+            g.FillRectangle(Brushes.Yellow, rect); // farbanje unutrasnjosti elementa
+            rectString = new Rectangle(X, Y + Width / 3, Width, Width); // tekst u elementu
+            g.DrawString(Broj.ToString(), font, brush, rectString, formatCenter);
+        }
+
+hamzamuric Sortiranje

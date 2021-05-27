@@ -1,0 +1,12 @@
+// crta J ako postoji
+
+public void DrawJ(Graphics g)
+{
+    StringFormat formatCenter = new StringFormat();
+    Rectangle rectString = new Rectangle((jX ?? 0) + 15, (jY ?? 0) + 180 / 3, 60, 60);
+    Font font = new Font("Arial", 20);
+    SolidBrush brush = new SolidBrush(Color.Black);
+    g.DrawString("j", font, brush, rectString, formatCenter);
+}
+
+hamzamuric Sortiranje
