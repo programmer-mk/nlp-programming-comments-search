@@ -1,0 +1,46 @@
+ // animirano transliranje elementa odozgo udesno/ulevo
+
+public void translateFromUp(int x, int y)
+        {
+            // pomeranje elementa na gore
+            while (Y >= y - 60)
+            {
+                Y -= 7;
+                Thread.Sleep(150 - context.animationSpeed);
+                context.Invalidate();
+            }
+
+            // pomeranje udesno ili ulevo
+            if (X < x)
+            {
+                while (x >= X)
+                {
+                    X += 7;
+                    Thread.Sleep(150 - context.animationSpeed);
+                    context.Invalidate();
+                }
+            }
+            else
+            {
+                while (x <= X)
+                {
+                    X -= 7;
+                    Thread.Sleep(150 - context.animationSpeed);
+                    context.Invalidate();
+                }
+            }
+            X = x; // ako se promeniza x koordinata vise nego sto je potrebno, vrati je na x iz argumenta
+
+            // pomeranje na dole
+            while (Y <= y)
+            {
+                Y += 7;
+                Thread.Sleep(150 - context.animationSpeed);
+                context.Invalidate();
+            }
+            Y = y; // ako se promeniza y koordinata vise nego sto je potrebno, vrati je na y iz argumenta
+            context.Invalidate();
+        }
+
+
+hamzamuric Sortiranje

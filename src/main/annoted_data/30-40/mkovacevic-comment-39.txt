@@ -1,0 +1,32 @@
+// menja mesto dva elementa
+
+
+private void swap(int i1, int i2)
+{
+    int x1 = elements[i1].X, y1 = elements[i1].Y;
+    int x2 = elements[i2].X, y2 = elements[i2].Y;
+    Thread up = new Thread(() =>
+    {
+        elements[i1].translateFromUp(x2, y2);
+    });
+    Thread down = new Thread(() =>
+    {
+        elements[i2].translateFromDown(x1, y1);
+    });
+
+    Form1.t1 = up;
+    Form1.t2 = down;
+
+    up.Start();
+    down.Start();
+    up.Join();
+    down.Join();
+
+    Element temp = elements[i1];
+    elements[i1] = elements[i2];
+    elements[i2] = temp;
+}
+
+
+
+hamzamuric Sortiranje

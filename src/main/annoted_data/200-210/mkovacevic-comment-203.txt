@@ -1,0 +1,20 @@
+/// <summary>
+/// Metoda za filtiranje godišnjih odmora prema odabranom datumu sa kalendara.
+/// </summary>
+/// <param name="datum">daum po kojem se filtira</param>
+/// <returns>Listu godišnjih odmora na zadani datum</returns>
+
+public List<GodisnjiOdmor> godisnjiOdmorNaDatum(DateTime datum)
+{
+    List<GodisnjiOdmor> filtrirana = new List<GodisnjiOdmor>();
+    foreach (GodisnjiOdmor i in model.dohvatiGodisnjiOdmor("see"))
+    {
+        if (datum >= i.pocetak_godisnjeg && datum <= i.kraj_godisnjeg)
+        {
+            filtrirana.Add(i);
+        }
+    }
+    return filtrirana;
+}
+
+https://github.com/foivz/RepositoryTeam25/blob/b79ebfc2e8478b139fc27785cee8585f7d4e2e4d/Projekt/TrApp_desktop_dizajn/DesingPi/TrAppController.cs

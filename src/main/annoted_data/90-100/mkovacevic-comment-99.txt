@@ -1,0 +1,10 @@
+// Ovom metodom se duhu javlja da je pojedana trula jagoda.
+
+public void ateRottenStrawberrie()
+{
+    strawberrieDuration = Form1.RottenFruitDuration;
+    if (!isStrawberrieActive) increaseSpeedBy33Percent();
+    isStrawberrieActive = true;
+}
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Ghosts.cs

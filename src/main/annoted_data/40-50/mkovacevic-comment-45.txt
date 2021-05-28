@@ -1,0 +1,14 @@
+// rekurzivni inorder algoritam
+
+private void inOrderRec(Node n)
+{
+    if (n == null) return;
+
+    inOrderRec(n.left);
+    n.inner.translateTo(calcX(i) + 10 * i, 100);
+    i++;
+    inOrderRec(n.right);
+}
+
+
+hamzamuric Sortiranje

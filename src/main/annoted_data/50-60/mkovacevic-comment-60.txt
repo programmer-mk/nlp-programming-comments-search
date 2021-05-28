@@ -1,0 +1,10 @@
+// stampanje dokumentacije
+
+private void btnPrint_Click(object sender, EventArgs e)
+{
+    PrintDocument pd = new PrintDocument();
+    pd.PrintPage += printanje;
+    pd.Print();
+}
+
+hamzamuric Sortiranje

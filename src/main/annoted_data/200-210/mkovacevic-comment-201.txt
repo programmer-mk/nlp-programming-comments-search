@@ -1,0 +1,28 @@
+ /// <summary>
+/// Metoda koja čini unesenu lozinku čitljivim nizom znakova
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
+
+private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+{
+    bool stanje = chkBox.IsChecked.Value;
+    if (pssBox.Password.Length == 0)
+    {
+        txtLozinka.SelectAll();
+        txtLozinka.Copy();
+        pssBox.Paste();
+        Clipboard.Clear();
+    }
+    else if(txtLozinka.Text!=pssBox.Password)
+    {
+        pssBox.Clear();
+        txtLozinka.SelectAll();
+        txtLozinka.Copy();
+        pssBox.Paste();
+        Clipboard.Clear();
+    }
+    pssBox.Visibility = System.Windows.Visibility.Visible;
+}
+
+https://github.com/foivz/RepositoryTeam25/blob/b79ebfc2e8478b139fc27785cee8585f7d4e2e4d/Projekt/TrApp_desktop/DesingPi/frmPrijava.xaml.cs

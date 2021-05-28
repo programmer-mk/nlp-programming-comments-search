@@ -1,0 +1,21 @@
+/* ------- Genericka klasa. T moze biti zamenjeno sa bilo kojim tipom. ---- */
+// Moguce je navesti i vise tipova
+// npr. public class Podaci<T1, T2, T3>
+
+public class Podaci<T>
+{
+    public Podaci() { }
+    public Podaci(T parametar)
+    {
+        Parametar = parametar;
+    }
+
+    public T Parametar { get; set; }
+
+    public void Stampaj()
+    {
+        Console.WriteLine(Parametar);
+    }
+}
+
+https://github.com/MatfRS2/Vezbe-2020-2021/blob/079e250405a72de1ed6a0df765a3d524922e3c67/vezbe.2020.2021./01_cas/Nutshell/Nutshell_uvod/Program.cs

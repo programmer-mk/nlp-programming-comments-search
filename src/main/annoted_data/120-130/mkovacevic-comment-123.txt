@@ -1,0 +1,26 @@
+// funkcija koja snima semu pod novim imenom i vraca vrednost True ako je
+// snimanje uspesno (snimanje moze da bude neuspesno jedino u slucaju da
+// korisnik u dijalogu SaveAs pritisne Cancel)
+
+private bool saveAs()
+{
+    form.prekini();
+    SaveFileDialog dlg = new SaveFileDialog();
+    dlg.FileName = "";  // pocetni sadrzaj okvira za text FileName
+    // u dijalogu SaveAs
+    dlg.DefaultExt = "edc";
+    dlg.Filter = "Editor Document (*.edc)|*.edc";
+    if (dlg.ShowDialog() == DialogResult.OK)
+    {
+        form.saved = true; // obezbedjuje da ne dodje do beskonacnog pozivanja
+        // funkcije SaveAs iz funkcije Save
+        form.fileName = dlg.FileName;
+        Save();  // snimi semu pod novim imenom
+        form.Text = "Editor - " + form.fileName;  // nov naziv u glavnom prozoru
+        return true;
+    }
+    else // pritisnuto je Cancel
+        return false;
+}
+
+https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/EditorPresenter.cs

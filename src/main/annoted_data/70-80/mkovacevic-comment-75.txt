@@ -1,0 +1,9 @@
+// Ova metoda poziva event. Prvo provjerava ima li ijedan subsrciber (metoda dodijeljena delegatu VideoEncoded) i ako ima poziva VideoEncoded
+// U parametre šalje this, trenutni objekat koji pizva VideoEncoded (VideoEncoder), i VideoEventArgs inicijaliziran sa Video objektom
+
+protected virtual void OnVideoEncoded(Video video)
+{
+    VideoEncoded?.Invoke(this, new VideoEventArgs(video));
+}
+
+StefanBalaban DotNet

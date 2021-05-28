@@ -1,0 +1,9 @@
+//uvećava broj njiga i sabira cenu prosleđene knjige
+
+public void formiranjeUkupneCene(Knjiga k)
+{
+    brojKnjiga += 1;
+    cenaKnjiga += k.Cena;
+}
+
+kameleon00 Delegati2

@@ -1,0 +1,16 @@
+// jedan cvor u stablu
+
+class Node
+{
+    public Element inner;
+    public Node left;
+    public Node right;
+
+    public Node(Element e)
+    {
+        inner = e;
+    }
+}
+
+
+hamzamuric Sortiranje

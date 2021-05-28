@@ -1,0 +1,28 @@
+// Ova klasa je publisher eventova. Ona poziva metode koje sadrži event VideoEncoded.
+//Event je u principu samo delegat kao polje na klasi, koji kao parametre prima object i EventArgs.
+// Možemo sami definisati delegat(object source, EventArgs e) ili možemo koristiti već definisane EventArgs i EventArgs<T>
+
+public class VideoEncoder
+{
+    // Ova metoda poziva metodu koja poziva event, onVideoEncoded.
+    public void Encode(Video video)
+    {
+        Console.WriteLine($"Video {video.GetTitle()} has been encoded");
+        Thread.Sleep(3000);
+        OnVideoEncoded(video);
+    }
+    // Ovo je event. EventHandler je ustvari samo delegat, što je samo ustvari kolekcija pointera na metode
+    // Deklaracija EventHandler-a izgleda ovako:  public delegate void EventHandle(object sender, EventArgs e);
+    // EventHandler može biti i generički kao što je ispod deklarisan.
+    public event EventHandler<VideoEventArgs> VideoEncoded;
+
+    // Ova metoda poziva event. Prvo provjerava ima li ijedan subsrciber (metoda dodijeljena delegatu VideoEncoded) i ako ima poziva VideoEncoded
+    // U parametre šalje this, trenutni objekat koji pizva VideoEncoded (VideoEncoder), i VideoEventArgs inicijaliziran sa Video objektom
+    protected virtual void OnVideoEncoded(Video video)
+    {
+        VideoEncoded?.Invoke(this, new VideoEventArgs(video));
+    }
+
+}
+
+StefanBalaban DotNet

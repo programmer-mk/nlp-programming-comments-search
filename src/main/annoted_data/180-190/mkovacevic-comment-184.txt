@@ -1,0 +1,18 @@
+//Ruta za pribavljanje FlySafe procjene metodom i u formatu prikladan Alexi
+
+[HttpPost]
+[AllowAnonymous]
+[Route("get-current-rating")]
+public object GetRatingForAlexa(JObject json)
+{
+    string postalCode = (string)json["postalCode"];
+    string state = (string)json["countryCode"];
+
+    WeatherRating rating = Weatherer.Instance.GetConditionsRatingByPostalCode(postalCode, state);
+    string response = Alexa.AlexsizeRating(rating);
+
+    return new { WeatherRatingString = response };
+}
+
+
+https://github.com/RokoRad/LiftOff/blob/3237771050570292827c35ac6f50719945d689e1/LiftOff.API/Controllers/AlexaController.cs

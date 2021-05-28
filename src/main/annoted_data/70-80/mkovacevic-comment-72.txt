@@ -1,0 +1,16 @@
+// Ova klasa nam služi da imamo neki objekat koji možemo slati preko eventa
+
+public class Video
+{
+    private string _title;
+    public Video(string title)
+    {
+        _title = title;
+    }
+    public string GetTitle()
+    {
+        return _title;
+    }
+}
+
+StefanBalaban DotNet

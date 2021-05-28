@@ -1,0 +1,41 @@
+/// <summary>
+/// Metoda koja služi za učitavanje podataka iz datoteke osoba
+/// </summary>
+/// <param name="args"></param>
+
+
+public static void UcitajPodatkeDatotekeOsoba(string[] args)
+{
+    string putanja = SaznajPutanjuDatOsoba(args);
+    TvrtkaSingleton Tvrtka = TvrtkaSingleton.GetTvrtkaInstance();
+    Console.WriteLine("\nZapočinjem čitanje datoteke osoba.");
+    string osobeDatotekaText = "";
+    try
+    {
+        osobeDatotekaText = File.ReadAllText(putanja);
+    }
+    catch
+    {
+        Console.WriteLine("Pogreška kod čitanja datoteke osoba.\nProvjerite da li se " +
+            "datoteka nalazi na navedenoj putanji (" + putanja + ").\nIzlazak iz programa.");
+        Console.ReadLine();
+        Environment.Exit(0);
+    }
+    Console.WriteLine("Završeno čitanje datoteke osoba." +
+        "\nZapočinjem učitavanje podataka datoteke osoba.");
+    string[] nizRedakaOsobe = Datoteka.PrepoznajRetkeIzDatoteke(osobeDatotekaText, Datoteka.LINE_SPLIT);
+    Tvrtka.ListaOsoba = DohvatiIspravneOsobe(nizRedakaOsobe, Datoteka.ATTR_SPLIT);
+    if (Tvrtka.ListaOsoba.Count > 0)
+        Console.WriteLine("Završeno učitavanje podataka datoteke osoba. " +
+            "(Ispravnih zapisa: " + Tvrtka.ListaOsoba.Count + ")");
+    else
+    {
+        Console.WriteLine("Datoteka osoba ne sadrži niti jedan ispravan zapis za osobu." +
+            "\nGasim program.");
+        Console.ReadLine();
+        Environment.Exit(0);
+    }
+}
+
+
+https://github.com/mmacinkov/Design-patterns/blob/d33b2791054ce02d97ee63c685a9d662c603e209/mmacinkov_zadaca_3/UcitavanjeDatoteka/OsobeTXT.cs

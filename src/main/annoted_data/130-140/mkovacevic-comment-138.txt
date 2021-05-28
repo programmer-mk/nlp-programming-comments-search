@@ -1,0 +1,33 @@
+// Vraca sve cvorove izmedju cvorova poc i kraj (ukljucujuci poc i kraj)
+
+private List<Cvor> dajCvorove(Cvor poc, Cvor kraj)
+{
+    List<Cvor> result = new List<Cvor>();
+    Pravac pravac = Prostor.getPravac(poc.dajPocetak(), kraj.dajPocetak());
+    if (pravac == Pravac.None)
+        throw new Exception("Cvorovi nisu na ortogonalnom pravcu.");
+    Pravac suprPravac = Prostor.suprotanPravac(pravac);
+
+    bool reverse = false;
+    if (poc.dajKoordinatu(pravac) > kraj.dajKoordinatu(pravac))
+    {
+        reverse = true;
+        Cvor tmp = poc;
+        poc = kraj;
+        kraj = tmp;
+    }
+
+    foreach (Cvor c in cvorovi)
+    {
+        if (c.dajKoordinatu(suprPravac) == poc.dajKoordinatu(suprPravac)
+        && c.dajKoordinatu(pravac) >= poc.dajKoordinatu(pravac)
+        && c.dajKoordinatu(pravac) <= kraj.dajKoordinatu(pravac))
+            result.Add(c);
+    }
+    result.Sort(new CvorComparer(pravac));
+    if (reverse)
+        result.Reverse();
+    return result;
+}
+
+https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/Sema.cs

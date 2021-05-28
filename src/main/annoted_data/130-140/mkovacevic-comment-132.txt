@@ -1,0 +1,24 @@
+// spaja veze koje se nadovezuju jedna na drugu, i vraca novostvorenu vezu
+
+public Veza spojiVeze(Veza veza1, Veza veza2)
+{
+    Cvor pocetak = veza1.dajPrviCvor();
+    Cvor kraj = veza2.dajDrugiCvor();
+    Cvor sredina = veza1.dajDrugiCvor();
+    if (pocetak == kraj)
+    {
+        // Veza2 je ispred Veze1
+        pocetak = veza2.dajPrviCvor();
+        kraj = veza1.dajDrugiCvor();
+        sredina = veza2.dajDrugiCvor();
+    }
+    ukloniVezu(veza1);
+    ukloniVezu(veza2);
+
+    // kreiraj novu vezu
+    Veza result = new Veza(pocetak, kraj, dajNoviID());
+    veze.Add(result);
+    return result;
+}
+
+https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/Sema.cs

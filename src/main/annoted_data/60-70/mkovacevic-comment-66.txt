@@ -1,0 +1,9 @@
+// Ova metoda vraća html element stranice čiju adresu proslijedimo u contructor-u
+
+public string GetHtml()
+{
+    var webClient = new WebClient();
+    return webClient.DownloadString(_url);
+}
+
+StefanBalaban DotNet

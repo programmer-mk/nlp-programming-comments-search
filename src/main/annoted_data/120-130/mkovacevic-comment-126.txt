@@ -1,0 +1,62 @@
+// ako postoji jedna selektovana veza, vraca tu vezu; inace vraca vezu
+// koja je najbliza tacki (x, y).
+
+
+public Veza dajVezu(int x, int y)
+{
+Smer horSmer, vertSmer;
+Smer smerVeze = new Smer();
+if (dajBrojVeza() == 0)
+    return null;
+int brojSelVeza = 0;
+int index = -1;
+// trazi selektovane veze
+List<Veza> veze = dajVeze();
+for (int i = 0; i < veze.Count; i++)
+{
+    if (veze[i].selektovan())
+    {
+        brojSelVeza = brojSelVeza + 1;
+        index = i;
+    }
+}
+if (brojSelVeza == 1)
+    return veze[index];
+else
+{
+    // HorSmer i VertSmer definisu kvadrant u kome se nalazi tacka (x, y)
+    // (u odnosu na polozaj cvora); ako postoje veze(veza) koje dodiruju dati
+    // kvadrant, vraca se najbliza od njih(nje); inace,(ako postoje samo veze
+    // koje dodiruju suprotni kvadrant), vraca se prva od njih na koju se
+    // naidje(sto nije sasvim korektno)
+    horSmer = Smer.Ist;
+    if (x < dajKoordinatu(Pravac.Hor))
+        horSmer = Smer.Zap;
+    vertSmer = Smer.Jug;
+    if (y < dajKoordinatu(Pravac.Vert))
+        vertSmer = Smer.Sev;
+    if (dajVezu(horSmer) != null && dajVezu(vertSmer) != null)
+    {
+        // daj najblizu vezu
+        smerVeze = horSmer;
+        if (Math.Abs(x - dajKoordinatu(Pravac.Hor)) < Math.Abs(y - dajKoordinatu(Pravac.Vert)))
+            smerVeze = vertSmer;
+        return dajVezu(smerVeze);
+    }
+    else if (dajVezu(horSmer) != null)
+        return dajVezu(horSmer);
+    else if (dajVezu(vertSmer) != null)
+        return dajVezu(vertSmer);
+    else
+    {
+        // daj prvu na koju naidjes
+        if (veze.Count > 0)
+            return veze[0];
+        else
+            return null;
+    }
+}
+}
+
+
+https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/Sema.cs

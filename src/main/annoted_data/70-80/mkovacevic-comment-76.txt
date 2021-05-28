@@ -1,0 +1,15 @@
+ // Ovo je klasa koja ima subscriber metodu
+// Inicijaliziramo jedan objekat klase MailService i onda dodijelimo metodu MailService.OnVideoEncoded, objektu VideoEncoder property-u VideoEncoded
+// videoEncoderObjekat.VideoEncoded += mailServiceObjekat.OnVideoEncoded;
+// Kada publisher (VideoEncoder) objekat pozove svoju OnVideoEncoded metodu pozvat će se OnVideoEncoded metoda subscribera (MailService)
+
+public class MailService
+{
+    public void OnVideoEncoded(object soure, VideoEventArgs e)
+    {
+        Console.WriteLine($"Mail has been sent {e.Video.GetTitle()}");
+        Console.WriteLine($"e: {e.ToString()}");
+    }
+}
+
+StefanBalaban DotNet

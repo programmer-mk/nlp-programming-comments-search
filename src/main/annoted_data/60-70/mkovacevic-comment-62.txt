@@ -1,0 +1,9 @@
+// korisnik se ulogovao kao gost
+
+private void btnGuest_Click(object sender, EventArgs e)
+{
+    Form1 f = new Form1(true, null, null);
+    f.Show();
+}
+
+hamzamuric Sortiranje

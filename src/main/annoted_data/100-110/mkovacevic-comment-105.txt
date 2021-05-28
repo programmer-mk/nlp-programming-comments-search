@@ -1,0 +1,14 @@
+// Trajanje superKolaća, 7 sekundi na levelu 1, 0 sekundi na levelu 21 i dalje.
+
+public static int SuperCookieDuration
+{
+    get
+    {
+        int value = Math.Max(7000 - 350 * (Form1.pacman.Level - 1), 0);
+        if (chosenGameMode == GameMode.Turbo) return value / 2;
+        else return Math.Max(7000 - 350 * (Form1.pacman.Level - 1), 0);
+    }
+}
+
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Form1.cs

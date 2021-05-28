@@ -1,0 +1,9 @@
+//Opcioni parametar mora na kraju
+
+static void promeni3(out int y1, out int y2, int x = 200)
+{
+    y1 = x + 1;
+    y2 = x - 1;
+}
+
+https://github.com/MatfRS2/Vezbe-2020-2021/blob/079e250405a72de1ed6a0df765a3d524922e3c67/vezbe.2020.2021./01_cas/Nutshell/Nutshell_uvod/Program.cs

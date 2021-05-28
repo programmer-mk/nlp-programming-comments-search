@@ -1,0 +1,20 @@
+// Ova metoda treba da iščita datoteku iz adrese koja se nalazi u string-u _adress, u slučaju da to nije moguće ispiše exception Message i throw-a ga
+
+public dynamic ReadFileFromAdress()
+{
+    try
+    {
+        using (var datoteka = new StreamReader(@$"{_adress}"))
+        {
+            return datoteka;
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Žao nam je, desila se neočekivana greška");
+        Console.WriteLine($"Podaci o greški: {ex.Message}");
+        throw;
+    }
+}
+
+StefanBalaban DotNet

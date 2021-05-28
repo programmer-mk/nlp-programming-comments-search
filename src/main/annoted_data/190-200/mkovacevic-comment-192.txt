@@ -1,0 +1,26 @@
+/// <summary>
+/// Metoda kojom se vrsi postavljanje resursa i potrebnih parametara za izvrsavanje zadatka na nekoj niti.
+/// </summary>
+/// <param name="thread"></param>
+/// <param name="resursStatus"></param>
+/// <param name="taskStatus"></param>
+/// <param name="task"></param>
+
+
+private void doContextSwitching(MyThreadForPreemptiveScheduler thread, ObjectSatus resursStatus, ObjectSatus taskStatus,TaskToDo task)
+{
+    Console.WriteLine("Promjena na tredu: " + thread.id + " stavlja se task: " + task.id);
+
+    if (resursStatus != null)
+    {
+        resursStatus.inUse = true;
+        task.ILockedResurs = true;
+    }
+    thread.resursStatus = resursStatus;
+    thread.taskStatus = taskStatus;
+
+    taskStatus.inUse = true;
+    thread.taskToDo = task;
+}
+
+https://github.com/DjordjeCvijic/OposZadaci2020/blob/b2b9eda3f715be8b7ceea9dd0ecc6113c40b2f2e/Zadatak%201-Rasporedjivac/ClassLibrary1/SchedulersAPI.cs

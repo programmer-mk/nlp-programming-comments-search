@@ -1,0 +1,25 @@
+// Voće se smije pojaviti na kvadratima na kojima nije
+// zid i neko drugo voće.
+
+public bool viableLocation(int i, int j)
+{
+    bool noWall = Form1.grid.getSquareValue(i, j) != '#';
+    bool noStrawberry = Form1.strawberry.i != i || Form1.strawberry.j != j;
+    bool noRottenStrawberry = Form1.rottenStrawberry.i != i || Form1.rottenStrawberry.j != j;
+    bool noPear = Form1.pear.i != i || Form1.pear.j != j;
+    bool noRottenPear = Form1.rottenPear.i != i || Form1.rottenPear.j != j;
+    bool noCherry = Form1.cherry.i != i || Form1.cherry.j != j;
+    bool noRottenCherry = Form1.rottenCherry.i != i || Form1.rottenCherry.j != j;
+    bool noGoldenApple = Form1.goldenApple.i != i || Form1.goldenApple.j != j;
+    // Pacman mora biti udaljen od voća.
+    bool pacmanFarAway = Form1.manhattanDistance(Form1.pacman.I, Form1.pacman.J, i, j) > 8;
+
+    return noWall && noGoldenApple
+        && noStrawberry && noRottenStrawberry
+        && noPear && noRottenPear
+        && noCherry && noRottenCherry
+        && pacmanFarAway;
+}
+
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Fruits.cs

@@ -1,0 +1,9 @@
+// zaustavlja niti koje rade kada se forma gasi
+
+private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+{
+    if (sorting)
+        cancelThreads();
+}
+
+hamzamuric Sortiranje
