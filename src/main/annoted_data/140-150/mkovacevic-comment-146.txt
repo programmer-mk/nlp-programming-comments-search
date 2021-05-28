@@ -1,0 +1,18 @@
+/* ----------- KONSTRUKTOR KOJI SE KORISTI KAD SE KREIRA TIP MANIFESTACIJE IZ GLAVNOG PROZORA ----------- */
+
+public UnosTipa()
+{
+    WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen; //centriranje prozora
+
+    noviTip = new TipManifestacije();
+
+    InitializeComponent();
+
+    this.DataContext = noviTip;
+
+    //fokus je na prvom polju za popunjavanje
+    oznTxtBox.Focus();
+    Keyboard.Focus(oznTxtBox);
+}
+
+https://github.com/majak96/hci-mapa-manifestacija/blob/4e4a142ebde3be371ec9d3913842f4f3d6a3cb11/MapaManifestacija/UnosTipa.xaml.cs

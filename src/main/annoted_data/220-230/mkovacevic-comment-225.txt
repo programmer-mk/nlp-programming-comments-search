@@ -1,0 +1,30 @@
+ /// <summary>
+/// Metoda koja dekriptira sadržaj na temelju ključa i inicijalizacijskoga vekrota
+/// </summary>
+/// <param name="data"></param>
+/// <returns></returns>
+
+public override string DecryptData(string data)
+{
+    string result;
+    byte[] dataToDecrypt = Convert.FromBase64String(data);
+    using (var aes = new AesCryptoServiceProvider())
+    {
+        aes.Mode = CipherMode.CBC;
+        aes.Padding = PaddingMode.PKCS7;
+        aes.Key = key;
+        aes.IV = IV;
+        using (var memoryStream = new MemoryStream())
+        {
+            var cryptoStream = new CryptoStream(memoryStream,
+            aes.CreateDecryptor(), CryptoStreamMode.Write);
+            cryptoStream.Write(dataToDecrypt, 0, dataToDecrypt.Length);
+            cryptoStream.FlushFinalBlock();
+            var decryptBytes = memoryStream.ToArray();
+            result = Encoding.UTF8.GetString(decryptBytes);
+            return result;
+        }
+    }
+}
+
+https://github.com/foivz/r16003/blob/a772a8a7ee0a5da227257216ecc675c48e3699c1/CryptoNew/CryptoNew/AesEnkripcija.cs

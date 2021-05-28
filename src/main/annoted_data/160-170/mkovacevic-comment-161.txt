@@ -1,0 +1,13 @@
+ //======================================================================================================
+//          Funkcija incVrednost:
+//  Ako atribut vrednost ima vrednost manju od 40 povecavamo ga za 4.
+//======================================================================================================
+
+public void incVrednost()
+{
+    if (vrednost < 40)
+        vrednost += 4;
+}
+
+
+https://github.com/ljsimin/gimii/blob/b35fa84673cdd9cdcabbbf9f0079d8533c40f2b7/VRWiiPaint/VRWiiPaint/PaletColor.cs

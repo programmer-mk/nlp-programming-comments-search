@@ -1,0 +1,20 @@
+  // Ovaj duh se pokušava pozicionirati tako da je
+// pacman od prilike između njega i crvenog duha.
+
+public override int getTargetI()
+{
+    int ti = Form1.pacman.I;
+    switch(Form1.pacman.CurrentDirection)
+    {
+        case Direction.Up:
+            ti -= 2;
+            break;
+        case Direction.Down:
+            ti += 2;
+            break;
+    }
+    return Form1.redGhost.I + 2 * (ti - Form1.redGhost.I);
+}
+
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Ghosts.cs

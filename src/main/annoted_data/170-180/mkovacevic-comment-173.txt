@@ -1,0 +1,8 @@
+//Metoda koja dohvaca podatke o dronu na temelju imena drona
+
+public Drone GetDroneByName(string droneName)
+{
+    return _liftOffContext.Drones.FirstOrDefault(d => d.Name == droneName);
+}
+
+https://github.com/RokoRad/LiftOff/blob/3237771050570292827c35ac6f50719945d689e1/LiftOff.API/Data/Repos/LiftOffRepo.cs

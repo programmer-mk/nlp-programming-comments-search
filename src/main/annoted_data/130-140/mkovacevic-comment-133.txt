@@ -1,0 +1,27 @@
+// kreira cvor na mestu Polozaj i vraca ga kao rezultat; podrazumeva se
+// da je prethodno provereno da na mestu Polozaj ne postoji cvor, a u
+// funkciji se dodatno proverava da li se Polozaj nalazi unutar neke veze
+
+public Cvor noviCvor(Point polozaj)
+{
+    Cvor result;
+    Veza horVeza = dajVezu(polozaj, Pravac.Hor);
+    Veza vertVeza = dajVezu(polozaj, Pravac.Vert);
+    if (horVeza == null && vertVeza == null)
+    {
+        result = new Cvor(polozaj, this, dajNoviID());
+        cvorovi.Add(result);
+    }
+    else if (horVeza == null && vertVeza != null)
+        // Polozaj se nalazi na vertikalnoj vezi
+        result = podeliVezu(vertVeza, polozaj);
+    else if (horVeza != null && vertVeza == null)
+        // Polozaj se nalazi na horizontalnoj vezi
+        result = podeliVezu(horVeza, polozaj);
+    else
+        // Polozaj se nalazi na ukrstanju horizontalne i vertikalne veze
+        result = napraviCvoriste(horVeza, vertVeza, polozaj);
+    return result;
+}
+
+https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/Sema.cs

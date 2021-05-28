@@ -1,0 +1,16 @@
+// Ovaj duh pokušava doći do pozicije 4 mjesta ispred pacmana.
+
+public override int getTargetI()
+{
+    switch(Form1.pacman.CurrentDirection)
+    {
+        case Direction.Up:
+            return Form1.pacman.I - 4;
+        case Direction.Down:
+            return Form1.pacman.I + 4;
+        default:
+            return Form1.pacman.I;
+    }
+
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Ghosts.cs

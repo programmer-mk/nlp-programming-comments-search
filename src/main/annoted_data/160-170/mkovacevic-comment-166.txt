@@ -1,0 +1,11 @@
+/// <summary>
+/// Metoda koja traži dohvaćanje podataka od metode upisiNovogKorisnika iz DAL sloja
+/// </summary>
+
+public void upisiNovogKorisnika()
+{
+    KorisnikDal korisnikDal = new KorisnikDal();
+    korisnikDal.upisiNovogKorisnika(this.Ime, this.Prezime, this.Email, this.Korime, this.Lozinka, this.Telefon, this.Adresa);
+}
+
+https://github.com/ffaletar/RentACar/blob/05efca3cb4da5c71ff12dec275d020c31f185cad/Projekt/Projekt%20RentACar%20v2/RentACar.BL/Korisnik.cs

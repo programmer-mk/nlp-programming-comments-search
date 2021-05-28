@@ -1,0 +1,15 @@
+//Ruta koja korisniku vraća njegove trenutne statistike
+
+[HttpGet]
+[Authorize]
+[Route("get-user-data")]
+public IHttpActionResult GetUserData()
+{
+    string userId = User.Identity.GetUserId();
+    StatisticsUser user = _liftOffRepo.GetUserData(userId);
+
+    if (user == null) return BadRequest();
+    return Ok();
+}
+
+https://github.com/RokoRad/LiftOff/blob/3237771050570292827c35ac6f50719945d689e1/LiftOff.API/Controllers/AccountController.cs

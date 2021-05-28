@@ -1,0 +1,40 @@
+// pravi cvor na mestu ukrstanja dve veze, i vraca ga kao rezultat;
+// (od dve veze pravi cetiri)
+
+protected Cvor napraviCvoriste(Veza horVeza, Veza vertVeza, Point polozaj)
+{
+    Cvor cvor = new Cvor(polozaj, horVeza.dajSemu(), dajNoviID());
+    cvorovi.Add(cvor);
+
+    Cvor pocHor = horVeza.dajPrviCvor();
+    Cvor krajHor = horVeza.dajDrugiCvor();
+    bool selektovana = horVeza.selektovan();
+    // kreiraj dve nove veze
+    Veza novaVeza = new Veza(pocHor, cvor, dajNoviID());
+    veze.Add(novaVeza);
+    if (selektovana)
+        novaVeza.selektuj();
+    novaVeza = new Veza(cvor, krajHor, dajNoviID());
+    veze.Add(novaVeza);
+    if (selektovana)
+        novaVeza.selektuj();
+    ukloniVezu(horVeza);
+
+    Cvor pocVert = vertVeza.dajPrviCvor();
+    Cvor krajVert = vertVeza.dajDrugiCvor();
+    selektovana = vertVeza.selektovan();
+    // isto i sa vertikalnom
+    novaVeza = new Veza(pocVert, cvor, dajNoviID());
+    veze.Add(novaVeza);
+    if (selektovana)
+        novaVeza.selektuj();
+    novaVeza = new Veza(cvor, krajVert, dajNoviID());
+    veze.Add(novaVeza);
+    if (selektovana)
+        novaVeza.selektuj();
+    ukloniVezu(vertVeza);
+
+    return cvor;
+}
+
+https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/Sema.cs

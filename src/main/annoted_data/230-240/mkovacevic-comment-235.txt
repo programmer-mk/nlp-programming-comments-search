@@ -1,0 +1,16 @@
+/// <summary>
+/// Metoda koja provjerava je li unešen string
+/// </summary>
+/// <param name="podatak"></param>
+/// <returns>Vraća false ako podatak nije unešen, inače vraća true.</returns>
+
+public static bool IspravanString(string podatak)
+{
+    if (podatak.Trim().Length == 0)
+        return false;
+    else
+        return true;
+}
+
+
+https://github.com/mmacinkov/Design-patterns/blob/d33b2791054ce02d97ee63c685a9d662c603e209/mmacinkov_zadaca_3/Helperi/Datoteka.cs

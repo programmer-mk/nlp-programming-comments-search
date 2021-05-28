@@ -1,0 +1,49 @@
+/// <summary>
+/// Metoda koja služi za brisanje osobe iz baze podataka
+/// </summary>
+/// <param name="id">IIdentifikacijski broj osobe koju brišemo iz baze podataka</param>
+/// <param name="page"></param>
+/// <param name="sort"></param>
+/// <param name="ascending"></param>
+/// <returns></returns>
+
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public IActionResult Delete(string id, int page = 1, int sort = 1, bool ascending = true)
+{
+    var osoba = ctx.Osoba.AsNoTracking().Where(o => o.IdentifikacijskiBroj == id).SingleOrDefault();
+    logger.LogTrace(JsonSerializer.Serialize(osoba));
+    if (osoba == null)
+    {
+        return NotFound($"Osoba s identifikacijski brojem {id} ne postoji.");
+    }
+    else
+    {
+        try
+        {
+            string punoime = osoba.Ime + " " + osoba.Prezime;
+            ctx.Remove(osoba);
+            ctx.SaveChanges();
+            var result = new
+            {
+                message = $"Osoba {punoime} obrisana.",
+                successful = true
+            };
+            logger.LogInformation($"Osoba {osoba.Ime} {osoba.Prezime} obrisana");
+            return Json(result);
+        }
+        catch (Exception exc)
+        {
+            var result = new
+            {
+                message = $"Pogreška prilikom brisanja osobe. {exc.CompleteExceptionMessage()}",
+                successful = false
+            };
+            logger.LogError($"Pogreška prilikom brisanja osobe {exc.CompleteExceptionMessage()}");
+            return Json(result);
+        }
+    }
+}
+
+https://github.com/limpskinz/RPPP/blob/e63f1cabb8b99646b69c45dedb10be911e50f4fe/KoronavirusMvc/Controllers/OsobaController.cs

@@ -1,0 +1,39 @@
+// Resetiranje Pacmana.
+
+public void reset()
+{
+    currentImage = characterImages.Count - 1;
+    i = startI;
+    j = startJ;
+    currentDirection = newDirection = Direction.None;
+    timerInterval = Form1.PacmanDefaultSpeed;
+
+    // Resetiraj efekte svih voća ako je način Fruit.
+    if (Form1.chosenGameMode == Form1.GameMode.Fruit)
+    {
+        // Resetiraj efekte kruške (ako su bili aktivni).
+        if (isRottenPearActive || rottenPearDuration > 0)
+            doubleSpeed();
+
+        if (isPearActive || pearDuration > 0)
+            undoIncreaseSpeedBy33Percent();
+
+        rottenCherryDuration = 0;
+        isRottenCherryActive = false;
+        Form1.rottenCherry.removeFromMap();
+        cherryDuration = 0;
+        isCherryActive = false;
+        Form1.cherry.removeFromMap();
+        rottenPearDuration = 0;
+        isRottenPearActive = false;
+        Form1.rottenPear.removeFromMap();
+        pearDuration = 0;
+        isPearActive = false;
+        Form1.pear.removeFromMap();
+
+        Form1.goldenApple.removeFromMap();
+    }
+}
+
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Pacman.cs

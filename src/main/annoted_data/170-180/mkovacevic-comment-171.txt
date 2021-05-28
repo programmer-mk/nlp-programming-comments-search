@@ -1,0 +1,12 @@
+//Metoda koja vraća korisnikove spremljene letove
+
+public List<Flight> GetLogs(string userId)
+{
+    var statsUserId = _liftOffContext.StatisticsUsers.FirstOrDefault(usr => usr.IdentityUserId == userId).Id;
+
+    var flights = _liftOffContext.Flights.Where(fl => fl.UserId == statsUserId).ToList();
+
+    return flights;
+}
+
+https://github.com/RokoRad/LiftOff/blob/3237771050570292827c35ac6f50719945d689e1/LiftOff.API/Data/Repos/LiftOffRepo.cs

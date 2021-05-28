@@ -1,0 +1,60 @@
+/// <summary>
+/// Metoda koja ispisuje odgovarajuću poruku kada se datoteka preuzima ili briše sa dropbox servera
+/// </summary>
+/// <param name="status"></param>
+
+private void IspisLogaZaPregled(int status)
+{
+    string lastLine = "";
+    string lastword = "";
+    if (logPregledDatoteka.Lines.Length > 0)
+    {
+        lastLine = logPregledDatoteka.Lines[logPregledDatoteka.Lines.Length - 2];
+        lastword = lastLine.Split(' ').Last();
+    }
+    string vrijeme = DateTime.Now.ToString();
+
+    if (status == 1)
+    {
+        if (lastword == "skida...")
+        {
+            logPregledDatoteka.Text = IzbrisiRedLoga(logPregledDatoteka.Text);
+            logPregledDatoteka.Text += $"- Vrijeme: {vrijeme} - Datoteka se skida." + Environment.NewLine;
+        }
+        else if (lastword == "skida..")
+        {
+            logPregledDatoteka.Text = IzbrisiRedLoga(logPregledDatoteka.Text);
+            logPregledDatoteka.Text += $"- Vrijeme: {vrijeme} - Datoteka se skida..." + Environment.NewLine;
+        }
+        else if (lastword == "skida.")
+        {
+            logPregledDatoteka.Text = IzbrisiRedLoga(logPregledDatoteka.Text);
+            logPregledDatoteka.Text += $"- Vrijeme: {vrijeme} - Datoteka se skida.." + Environment.NewLine;
+        }
+        else
+        {
+            logPregledDatoteka.Text += $"- Vrijeme: {vrijeme} - Datoteka se skida..." + Environment.NewLine;
+        }
+    }
+
+    else if (status == 2)
+    {
+        logPregledDatoteka.Text += $"- Vrijeme: {vrijeme} - Datoteka je skinuta!" + Environment.NewLine;
+    }
+
+    else if (status == 3)
+    {
+        logPregledDatoteka.Text += $"- Vrijeme: {vrijeme} - Datoteka je obrisana!" + Environment.NewLine;
+    }
+    else if (status == 4)
+    {
+        logPregledDatoteka.Text = $"- Vrijeme: {vrijeme} - Početak preuzimanja!" + Environment.NewLine;
+    }
+
+    else
+    {
+        logPregledDatoteka.Text += $"- Vrijeme: {vrijeme} - Neuspješno skidanje!" + Environment.NewLine;
+    }
+}
+
+https://github.com/foivz/r16003/blob/a772a8a7ee0a5da227257216ecc675c48e3699c1/CryptoNew/CryptoNew/FormaRazmjenaDatoteka.cs

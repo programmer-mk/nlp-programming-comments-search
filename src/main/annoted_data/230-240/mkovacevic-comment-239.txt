@@ -1,0 +1,52 @@
+ /// <summary>
+/// Metoda za trazenje indeksa i takvog da {min(i), a(i) > value} pod
+/// pretpostavkom da je niz uredjen po rastucem poretku.
+/// </summary>
+/// <param name="a">Niz koji pretrazujemo</param>
+/// <param name="value">Element ciju granicu trazimo</param>
+/// <param name="pos">Indeks granice zadatog elementa</param>
+/// <returns>Da li sup postoji</returns>
+
+public static bool StrictUpperBound<T>(this IList<T> a, T value, out int pos, Comparison<T> customComparer = null)
+{
+    pos = 0;
+
+    if (a == null)
+        throw new ArgumentException("Value can not be null", "a");
+
+    if (a.Count == 0)
+        return false;
+
+    //Preuzimanje comparer metode
+    Comparison<T> comparer = FetchComparer(customComparer);
+    int left = 0;
+    int right = a.Count - 1;
+
+    while (left < right)
+    {
+        //Pristupamo srednjem
+        pos = (right + left) / 2;
+
+        if (comparer(value, a[pos]) < 0)
+        {
+            //Uzimamo LEVI podniz, ali ukljucujemo srednji element
+            //koji moze da se ispostavi kao gornje ogranicenje
+            right = pos;
+        }
+        else
+        {
+            //Uzimamo DESNI podniz
+            left = pos + 1;
+        }
+    }
+
+    //Element kome poslednjem pristupamo moze da se ispostavi kao gornje ogranicenje
+    if (comparer(value, a[left]) < 0)
+    {
+        pos = left;
+        return true;
+    }
+    return false;
+}
+
+https://github.com/jasaleja/SDD_projekat/blob/5dbfa6e73fd177e1e59790d950cf8761a5fc0fae/SDDLibrary/Utils/BinarySearch.cs

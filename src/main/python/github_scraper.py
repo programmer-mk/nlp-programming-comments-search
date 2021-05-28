@@ -34,7 +34,7 @@ def remove_dir_from_name(path):
 
 
 def search_github(phrase, prog_language):
-    query_url = f"https://api.github.com/repos/stankela/bilten/git/trees/master?recursive=1"
+    query_url = f"https://api.github.com/repos/0shade0/RP3/git/trees/master?recursive=1"
     params = {
         "state": "open",
     }
