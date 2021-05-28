@@ -6,12 +6,12 @@ import csv
 from collections import namedtuple
 
 MAIN_RESOURCE_DIR = '../resources'
-JAVA_FILE_EXTENSION = '.cs'
+JAVA_FILE_EXTENSION = '.java'
 PYTHON_FILE_EXTENSION = '.py'
 
 # TODO: add C# here
 extension_mapping = {
-    'c#': JAVA_FILE_EXTENSION,
+    'java': JAVA_FILE_EXTENSION,
     'python': PYTHON_FILE_EXTENSION
 }
 
