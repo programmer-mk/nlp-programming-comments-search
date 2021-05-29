@@ -27,7 +27,7 @@ def build_model(data_set):
 
 def build_random_data_set(target_index, target_query_id,  data_set, test_data_size):
     test_data_set = data_set.drop([data_set.index[target_index]])
-    cleaned_test_data =  test_data_set[(test_data_set['SimilarityScore'] == 0) & (test_data_set['QueryID'] == target_query_id)]
+    cleaned_test_data = test_data_set[(test_data_set['SimilarityScore'] == 0) & (test_data_set['QueryID'] == target_query_id)]
     if test_data_size > cleaned_test_data.shape[0]:
         return cleaned_test_data.sample(cleaned_test_data.shape[0])
     else:
@@ -40,13 +40,18 @@ def found_index_in_data(data, query_id, comment_text):
 
 def evaluate_model(data, model):
     non_zero_sim_data = data[data['SimilarityScore'] != 0]
-    for index, row in non_zero_sim_data.iterrows():
+    scores = 0.0
+    for _, row in non_zero_sim_data.iterrows():
         target_index = found_index_in_data(data,row[1], row[4])
         cos_similarity_list = model.get(row[3])
         test_data_set = build_random_data_set(target_index, row[1], data, 2)
         # these indexes are for random test data in original data set
         test_data_indexes = list(map(lambda test_row: found_index_in_data(data, test_row[1]['QueryID'], test_row[1]['CommentText']), test_data_set.iterrows()))
-        print(test_data_set)
+        test_data_similarity_vals = list(map(lambda index: cos_similarity_list[index][0][0], test_data_indexes)).sort(reverse=True)
+        index_place = np.searchsorted(test_data_similarity_vals, cos_similarity_list[target_index][0][0])
+        scores = 1 / (index_place + 1)
+
+    return scores/ non_zero_sim_data.shape[0]
 
 
 if __name__ == '__main__':
