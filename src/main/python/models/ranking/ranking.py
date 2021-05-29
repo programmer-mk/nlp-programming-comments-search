@@ -25,24 +25,27 @@ def build_model(data_set):
     return query_similarity_list
 
 
-def build_random_data_set(target_entry, data_set, test_data_size):
-    test_data_set = data_set[(data_set['SimilarityScore']) == 0 & (data_set['QueryText'] == target_entry[3])].sample(test_data_size) # should be 99 or 74
-    #test_data_set= pd.concat([filter_data_set, target_entry], ignore_index=True, sort=False)
-    return test_data_set
+def build_random_data_set(target_index, target_query_id,  data_set, test_data_size):
+    test_data_set = data_set.drop([data_set.index[target_index]])
+    cleaned_test_data =  test_data_set[(test_data_set['SimilarityScore'] == 0) & (test_data_set['QueryID'] == target_query_id)]
+    if test_data_size > cleaned_test_data.shape[0]:
+        return cleaned_test_data.sample(cleaned_test_data.shape[0])
+    else:
+        return cleaned_test_data.sample(test_data_size)
 
 
-def found_index_in_data(data, coulmn_name, query_id):
-    return np.where(data[coulmn_name] == query_id)[0][0]
+def found_index_in_data(data, query_id, comment_text):
+    return np.where((data['QueryID'] == query_id) & (data['CommentText'] == comment_text))[0][0]
 
 
 def evaluate_model(data, model):
     non_zero_sim_data = data[data['SimilarityScore'] != 0]
     for index, row in non_zero_sim_data.iterrows():
-        target_index = found_index_in_data(data,'QueryID',row[1])
+        target_index = found_index_in_data(data,row[1], row[4])
         cos_similarity_list = model.get(row[3])
-        test_data_set = build_random_data_set(row, data, 2)
+        test_data_set = build_random_data_set(target_index, row[1], data, 2)
         # these indexes are for random test data in original data set
-        test_data_indexes = list(map(lambda test_row: found_index_in_data(data,'QueryID', test_row[1]), test_data_set))
+        test_data_indexes = list(map(lambda test_row: found_index_in_data(data, test_row[1]['QueryID'], test_row[1]['CommentText']), test_data_set.iterrows()))
         print(test_data_set)
 
 
