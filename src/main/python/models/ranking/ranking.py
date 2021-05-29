@@ -47,7 +47,7 @@ def evaluate_model(data, model):
         test_data_set = build_random_data_set(target_index, row[1], data, 2)
         # these indexes are for random test data in original data set
         test_data_indexes = list(map(lambda test_row: found_index_in_data(data, test_row[1]['QueryID'], test_row[1]['CommentText']), test_data_set.iterrows()))
-        test_data_similarity_vals = list(map(lambda index: cos_similarity_list[index][0][0], test_data_indexes)).sort(reverse=True)
+        test_data_similarity_vals = sorted([cos_similarity_list[index][0][0] for index in test_data_indexes], reverse=True)
         index_place = np.searchsorted(test_data_similarity_vals, cos_similarity_list[target_index][0][0])
         scores = 1 / (index_place + 1)
 
