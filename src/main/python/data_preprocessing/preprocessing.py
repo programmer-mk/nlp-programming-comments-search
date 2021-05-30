@@ -125,7 +125,7 @@ def idf(data_set):
 
 
 def tf(data_set):
-    tf_vectorizer = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False)
+    tf_vectorizer = TfidfVectorizer(use_idf=False, lowercase=False, analyzer='word') # this guy removes words with  only one character
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     tfs = pd.DataFrame(tf_vectorizer.fit_transform(data_set["Merged Text"]).todense())
     return tfs
