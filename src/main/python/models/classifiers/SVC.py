@@ -14,12 +14,12 @@ def train_test_init(train, test):
 
 def train_model(train, test, fold_no, rf, c=1):
     y = ['SimilarityScore']
-    y_train = train[y]
+    y_train = train[y].values.ravel()
     X_train = train.drop(y, axis = 1)
     y_test = test[y]
     X_test = test.drop(y, axis = 1)
 
-    svc = LinearSVC(penalty=rf, C=c, dual=rf == 'l2')
+    svc = LinearSVC(penalty=rf, C=c, dual=rf == 'l2', max_iter=25000)
     svc.fit(X_train,y_train)
     predictions = svc.predict(X_test)
     print('Fold',str(fold_no),'Accuracy:', accuracy_score(y_test,predictions))
@@ -44,10 +44,10 @@ def optimize_c_parameter(train, test):
     param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]}
 
     # Refit an estimator using the best found parameters on the whole dataset.
-    grid = GridSearchCV(LinearSVC(), param_grid, refit=True, verbose=3, n_jobs=-1)
+    grid = GridSearchCV(LinearSVC(max_iter=25000), param_grid, refit=True, verbose=3)
 
     # fitting the model for grid search
-    grid.fit(X_train, y_train)
+    grid.fit(X_train, y_train.values.ravel())
 
     # print best parameter after tuning
     print(grid.best_params_)
