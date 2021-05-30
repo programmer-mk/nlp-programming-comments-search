@@ -34,15 +34,15 @@ def load_data():
     global without_preprocessing_data, lowercasing_data, tf_data, tf_idf_data, stemm_stopwords_data,\
         frequency_filtering_data, bigrams_data, trigrams_data, binary_bow_data
 
-    without_preprocessing_data = np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/without_preprocessing.txt')
-    lowercasing_data = np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/lowercasing.txt')
-    tf_data = np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/tf.txt')
-    tf_idf_data = np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/tf_idf.txt')
-    stemm_stopwords_data = np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/stemming_and_remove_stopwords.txt')
-    frequency_filtering_data = np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/bigrams.txt')
-    bigrams_data = np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/bigrams.txt')
-    trigrams_data = np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/trigrams.txt')
-    binary_bow_data = np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/binary_bow.txt')
+    without_preprocessing_data = pd.DataFrame(np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/without_preprocessing.txt'))
+    lowercasing_data = pd.DataFrame(np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/lowercasing.txt'))
+    tf_data = pd.DataFrame(np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/tf.txt'))
+    tf_idf_data = pd.DataFrame(np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/tf_idf.txt'))
+    stemm_stopwords_data = pd.DataFrame(np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/stemming_and_remove_stopwords.txt'))
+    frequency_filtering_data = pd.DataFrame(np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/frequency_filtering.txt'))
+    bigrams_data = pd.DataFrame(np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/bigrams.txt'))
+    trigrams_data = pd.DataFrame(np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/trigrams.txt'))
+    binary_bow_data = pd.DataFrame(np.loadtxt(f'{RESOURCES_DIR}{PROCESSED_DATA_DIR}/binary_bow.txt'))
 
 
 def load_target_column():
@@ -53,9 +53,11 @@ def load_target_column():
 
 def classifying():
     print("----------  No preprocessing(BOW) ----------")
+    without_preprocessing_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(without_preprocessing_data)
 
     print("----------  Lower casing ----------")
+    lowercasing_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(lowercasing_data)
 
     print("----------  Term Frequency ----------")
@@ -66,21 +68,27 @@ def classifying():
     #apply_all_classifiers("idf.txt")
 
     print("----------  Term Frequency–Inverse Document Frequency ----------")
+    tf_idf_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(tf_idf_data)
 
     print("----------  Stemming and stopwords ----------")
+    stemm_stopwords_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(stemm_stopwords_data)
 
     print("----------  Frequency word filtering ----------")
+    frequency_filtering_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(frequency_filtering_data)
 
     print("----------  Bigram preprocessing ----------")
+    bigrams_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(bigrams_data)
 
     print("----------  Trigram preprocessing ----------")
+    trigrams_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(trigrams_data)
 
     print("----------  Binary Bag of Words ----------")
+    binary_bow_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(binary_bow_data)
 
 
