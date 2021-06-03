@@ -1,100 +1,99 @@
-upit
-pretvoriti int u string
+konverzija int u string
 prioritetni red
-string u datum
-sortirajte listu niza
-sačuvaj listu u fajl
-postgresql veza
-konfuzija matrica
-set radni direktorijum
-grupa po brojanju
-binomna distribucija
-AES šifrovanje
+konverzija string u datum
+sortiranje liste stringova
+cuvanje liste u fajl
+postgresql konekcija
+matrica konfuzije
+podesavanje radnog direktorijuma
+grupisanje po broju
+binomijalna raspodela
+aes enkripcija
 linearna regresija
-utičnica recv tajmeout
-pisati CSV
-pretvoriti u decimalni da hek
-izvoz u ekcel
-rasejanje parcela
-pretvoriti u json csv
-prilično štampanje JSON
-zamenite u fajlu
-k znači grupisanje
-povezati sa SKL
-html kodiranje string
-pronalaženje vremena proteklo pomoću tajmera
-analizirati binarni fajl na prilagođenu klasu
-dobiti trenutnu IP adresu
-pretvoriti u int da bool
-čitati tekst fajl liniju po liniji
-dobiti izvršnu putanju
-httpclient poruka JSON
-dobiti unutrašnji HTML
-pretvoriti niz za broj
-format datum
+socket recv timeout
+upis u csv
+konverzija decimal u hex
+eksport u excel
+tackasto iscrtavanje
+konverzija json u csv
+lep ispis json
+zamene u fajlu
+k means klasterovanje
+sql konekcija
+html encode string
+racunanje proteklog vremena koristeci tajmer
+parsiranje binarnog fajla u custom klasu
+dohvati trenutnu ip adresu
+konverzija int u bool
+citanje tekstualnog fajla red po red
+dohvati putanju izvrsnog fajla
+httpclient post json
+dohvati sadrzaj unutar html komponente
+konverzija string u broj
+formatiranje datuma
 readonly niz
-filter niz
-karta za json
-analizirati json fajl
-dobiti trenutnu posmatrati vrednost
-dobiti ime nabrajane vrednosti
-kodiranje url
-kreirajte kolačić
-kako da isprazni niz
-kako da dobijete trenutni datum
-kako napraviti potvrdni okvir proverio
-inicijalizaciju niz
-kako da preokrenete niz
-pročitao svojstva fajl
-kopirajte u klipbord
-pretvoriti html da pdf
-json u xml konverzija
-kako nasumično izabrati broj
-normalna distribucija
-nelder medovina optimizovati
-heš set za brojanje različitih elemenata
-kako dobiti ime tabele baze podataka
-deserializuje JSON
-naći int u nizu
-dobiti trenutni ID procesa
-regek slučaj neosetljiv
-prilagođeni odgovor na grešku http
-kak da se opredeli niz e validna duma
-html entiteta zameniti
-set fajl atrib skrivene
-sortiranje više nizova na osnovu drugog nizova sortirani red
-niz sličnost levenshtein
-kak da se HTML na veb
-buferovani čitač datoteka čita tekst
-šifrovanje AES ctr režim
-matrica umnožiti
-rezime modela štampanja
-jedinstvene elemente
-ekstrakt podataka iz HTML sadržaja
+filtriranje niza
+mapiranje u json
+parsiranje json fajla
+dohvatanje trenutne posmatrane vrednosti
+dohvatanje imena enum vrednosti
+kodovanje url adrese
+kreiranje kolacica
+kako isprazniti niz
+kako dohvatiti trenutni datum
+kako cekirati checkbox
+inicijalizacija niza
+kako obrnuti string
+citanje informacija o fajlu
+kopiranje na tastaturu
+konverzija html u pdf
+konverzija json u xml
+kako slucajno izabrati broj
+normalna raspodela
+nelder mead optimizacija
+hash set za brojanje jedinstvenih elemenata
+kako dohvatiti ime tabele u bazi
+json deserijalizacija
+nalazenje int u string
+dohvatanje id-ija trenutne niti
+case insensitive regularni izraz
+custom http odgovor greska
+kako odrediti da li je string validna rec
+zamena html entiteta
+postavljanje atributa fajla na sakriven
+sortiranje vise nizova po principu sortiranja drugog niza
+slicnost stringova levenshtein
+kako dohvatiti html web stranice
+buffered file reader citanje teksta
+enkripcija aes ctr mod
+mnozenje matrica
+ispisivanje informacija o modelu
+jedinstveni elementi
+dobijanje podataka iz html sadrzaja
 heatmap iz 3d koordinata
-dobiti sve roditelje kml čvora
-kako izvući zip fajl rekurzivno
-podvlači tekst u vidžetu etikete
-raspakiranje velikih datoteka
-kopiranje fajla na putanju
-dobiti opis koda statusa http
-nasumično izdvojiti k stavke sa liste
-pretvoriti datumski niz u yyyymmdd
-pretvoriti utc vreme za da epoha
+dohvatanje svih roditelja xml cvora
+kako dobiti zip fajl rekurzijom
+podvlacenje teksta u label widget
+otpakivanje velikih fajlova
+kopiranje fajla u putanju
+dohvatanje opisa http statusnog koda
+nasumicno dohvatanje x clanova iz liste
+konverzija string datuma u format yyyymmdd
+konverzija utc vremena u epoch
 sve permutacije liste
-izdvojiti geografsku širinu i dužinu iz datog ulaza
-kako proveriti da li je potvrđeno polje
-pretvaranje uint8 niza u sliku
-memoize na disk - uporna memoizacija
-analizirati argument komandne linije
-kako čitati sadržaj komprimovane datoteke .gz?
-slanje binarnih podataka preko serijske veze
-vađenje podataka iz tekstualnog fajla
-pozicije podnizova u nizu
-čitanje element iz html - <td>
-oduzimajući medijan iz svake kolone
-Concatenate nekoliko datoteka uklonite linije zaglavlja
-analizirati niz upita u url
-fuzzi meč rangiranje
-izlaz na html fajl
-kako čitati .csv fajl na efikasan način?
+dobijanje geografske sirine i duzine za zadati ulaz
+kako proveriti da li je checkbox selektovan
+konverzija uint8 niza u sliku
+memoizacija na disk - konstantna memoizacija
+parsiranje argumenta komandne linije
+kako procitati sadrzaj iz .gz fajla
+slanje binarnih podataka serijskom konekcijom
+dobijanje podataka iz tekstualnog fajla
+pozicija substringa u stringu
+citanje elementa iz html <td>
+oduzimanje medijane svakoj koloni
+konkatenacija sadrzaja vise fajlova uz brisanje njihovih zaglavlja
+dohvatanje string upita iz url
+fuzzy match ranking
+ispis u html fajl
+kako citati csv fajl na efikasan nacin?
