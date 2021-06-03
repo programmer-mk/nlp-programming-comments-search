@@ -1,7 +1,6 @@
 from numpy.lib.utils import source
 import pandas as pd
 import numpy as np
-import validators as validator
 import re
 
 all_queries = []
@@ -24,25 +23,28 @@ def remove_special_characters(text):
         return cleaned
 
 data_frame_global = pd.read_excel('resources/programming_comments_annotation.xlsx')
+# for testing purposes(do not go over whole dataframe, can be tunned)
+data_frame_global = data_frame_global[0:50]
 
+
+data_frame_global['CommentText'] = data_frame_global.apply(lambda row : remove_special_characters(row['CommentText']), axis=1)
 data_frame = data_frame_global.drop(columns=['QueryText','SimilarityScore','Annotated_By'])
 data_frame.insert(0, 'ProgrammingLanguageName', 'C#')
 data_frame['CommentText'] = data_frame.apply(lambda row : remove_special_characters(row['CommentText']), axis=1)
 data_frame.to_csv('resources/pregled_svih_parova_novi.txt', sep = '\t', index = False)
 
-data_frame_similarity_score = pd.DataFrame(columns=['QueryText','CommentText','PairID','RepoDescription', 'SourceDescription', 'SimilarityScore', 'Annotated_By'])
+data_frame_similarity_score = pd.DataFrame(columns=['QueryText','QueryId', 'ProgrammingLanguage','CommentText','PairID','RepoDescription', 'SourceDescription', 'SimilarityScore', 'Annotated_By'])
 
 dict_query_line = {}
 
 with open ('src\main/config/queries_serbian.txt', 'r') as read_file_queries:
-    all_queries = read_file_queries.readlines()
-    for index, query in enumerate(all_queries):
+    for index, query in enumerate(read_file_queries.readlines()):
         query = query.replace('\n', '')
+        all_queries.append(query)
         dict_query_line[query] = index
 
 for row in data_frame_global.index:
     queries = str(data_frame_global['QueryText'][row])
-    rest_queries = filter(lambda query: str(query) not in all_queries, all_queries)
     similarity_scores = str(data_frame_global['SimilarityScore'][row])
     
     if '#' in queries:
@@ -66,7 +68,9 @@ for row in data_frame_global.index:
         similarity_score_list = [similarity_score_list]
 
     if(type(query_list) == str):
-        query_list = [query_list]         
+        query_list = [query_list]
+
+    rest_queries = list(filter(lambda query: str(query) not in query_list, all_queries))
 
     for index, query in enumerate(query_list):
         query_id = dict_query_line.get(query)
@@ -80,9 +84,12 @@ for row in data_frame_global.index:
                 'PairID' :  data_frame_global['PairID'][row],
                 'QueryText' :  query,
                 'CommentText' : data_frame_global['CommentText'][row],
-                'SimilarityScore': similarity_score_list[index]
+                'SimilarityScore': similarity_score_list[index],
+                'RepoDescription':  data_frame_global['RepoDescription'][row],
+                'SourceDescription':  data_frame_global['SourceDescription'][row],
+                'Annotated_By':  data_frame_global['Annotated_By'][row],
             }
-            data_frame_similarity_score.append(DataFrame=pd.DataFrame(dict_similarity_score), index = [index])
+            data_frame_similarity_score = data_frame_similarity_score.append(pd.DataFrame([dict_similarity_score]), ignore_index=True)
 
     for index, rest_query in enumerate(rest_queries):
         rest_query_id = dict_query_line.get(rest_query)
@@ -97,7 +104,7 @@ for row in data_frame_global.index:
                 'CommentText' : data_frame_global['CommentText'][row],
                 'SimilarityScore': 0
             }
-            data_frame_similarity_score.append(DataFrame=pd.DataFrame(dict_similarity_score), index = [index])    
+            data_frame_similarity_score = data_frame_similarity_score.append(pd.DataFrame([dict_similarity_score]), ignore_index=True)
 
 data_frame_similarity_score.to_csv('resources/pregled_svih_similarity_score.txt', sep = '\t', index = False)
 
