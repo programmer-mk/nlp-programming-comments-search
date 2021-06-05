@@ -5,7 +5,7 @@ import tokenize
 import csv
 from collections import namedtuple
 
-MAIN_RESOURCE_DIR = '../resources'
+MAIN_RESOURCE_DIR = '../../resources'
 JAVA_FILE_EXTENSION = '.java'
 PYTHON_FILE_EXTENSION = '.py'
 

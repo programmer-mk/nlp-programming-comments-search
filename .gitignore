@@ -1,3 +1,6 @@
 nlp-programming-comments-relevance.iml
 .idea/
 src/main/resources/
+src/main/config/SCStemmers.jar
+src/main/config/input-stemming.csv
+src/main/config/output-stemming.csv
