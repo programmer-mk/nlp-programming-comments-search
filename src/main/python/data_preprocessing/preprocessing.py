@@ -2,14 +2,23 @@ import os
 import pandas as pd
 import numpy as np
 import re
+import sys
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize.toktok import ToktokTokenizer
 
+
 MAIN_CONFIG_DIR = '../../config'
 PROCESSED_DATA_DIR = '../../resources/processed_data'
+RESOURCES_DIR = '../../resources'
 tokenizer = ToktokTokenizer()
+
+operating_system = sys.platform
+if operating_system == 'win32':
+    MAIN_CONFIG_DIR = 'src\main/config'
+    PROCESSED_DATA_DIR = 'src\main/resources/processed_data'
+    RESOURCES_DIR = 'src\main/resources'
 
 
 def remove_files(files):
@@ -24,7 +33,7 @@ def remove_stop_words_and_tokenize_word(text, stopwords):
 
 def read_stop_words():
     stopwords = []
-    with open(f'{MAIN_CONFIG_DIR}/stopwords.txt', 'r') as file:
+    with open(f'{MAIN_CONFIG_DIR}/stopwords.txt', 'r', encoding='utf8') as file:
         lines = file.readlines()
         for line in lines:
             # remove linebreak
@@ -128,8 +137,10 @@ def idf(data_set):
 def tf(data_set):
     tf_vectorizer = TfidfVectorizer(use_idf=False, lowercase=False, analyzer='word') # this guy removes words with  only one character
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
-    tfs = pd.DataFrame(tf_vectorizer.fit_transform(data_set["Merged Text"]).todense())
-    return tfs
+    # tfs = pd.DataFrame(tf_vectorizer.fit_transform(data_set["Merged Text"]).todense())
+    tfs = tf_vectorizer.fit_transform(data_set["Merged Text"])
+    pda = pd.DataFrame(tfs.toarray())
+    return pda
 
 
 def tf_idf(data_set):
@@ -139,7 +150,8 @@ def tf_idf(data_set):
     print(tf_idf_vectorizer.get_feature_names())
     #df_tf_idf = pd.DataFrame(tf_idfs, index=tf_idf_vectorizer.get_feature_names(),columns=["tf_idf_weights"])
     pda = pd.DataFrame(tf_idfs.toarray())
-    return pd.DataFrame(pda)
+    # return pd.DataFrame(pda)
+    return pda
 
 
 def bigrams(data_set):
@@ -187,7 +199,7 @@ processing_steps = {
 
 def read_raw_data():
     columns = ['ProgrammingLanguage', 'QueryId','PairID', 'QueryText', 'CommentText','SimilarityScore']
-    comments = pd.read_csv("../../resources/pregled_svih_similarity_score.csv", sep = "\t", names=columns)
+    comments = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score.csv", sep = "\t", names=columns)
     return comments[['QueryText', 'CommentText']]
 
 
