@@ -85,6 +85,7 @@ def do_file_stemming(data, input_file_name, output_file_name):
 def stemming_and_remove_stopwords(data_set):
     stopwords = read_stop_words()
     data_set['CommentText'] = data_set['CommentText'].apply(lambda text: remove_stop_words_and_tokenize_word(text, stopwords))
+    data_set['QueryText'] = data_set['QueryText'].apply(lambda text: remove_stop_words_and_tokenize_word(text, stopwords))
     return create_bag_of_words(do_file_stemming(data_set, 'input-stemming.csv', 'output-stemming.csv'))
 
 
@@ -185,9 +186,8 @@ processing_steps = {
 
 
 def read_raw_data():
-    comments = pd.read_csv("../../resources/raw_data/comments.csv", names=['ProgrammingLanguageName', 'QueryID',
-                                                                         'PairID', 'QueryText', 'CommentText',
-                                                                         'SimilarityScore'])
+    columns = ['ProgrammingLanguage', 'QueryId','PairID', 'QueryText', 'CommentText','SimilarityScore']
+    comments = pd.read_csv("../../resources/pregled_svih_similarity_score.csv", sep = "\t", names=columns)
     return comments[['QueryText', 'CommentText']]
 
 
@@ -206,28 +206,9 @@ def start_processing(step, data_set):
         write_bow_data_frame_to_file(processed_data, f'{PROCESSED_DATA_DIR}/{processing_technique.__name__}.txt')
 
 
-def remove_special_characters(text):
-    # removes special characters with ' '
-    cleaned = re.sub('[^a-zA-z\s]', ' ', text)
-    cleaned = re.sub('_', ' ', cleaned)
-
-    # Change any white space and new line to one space
-    cleaned = cleaned.replace('\\n', ' ')
-    cleaned = re.sub('\s+', ' ', cleaned)
-
-    # Remove start and end white spaces
-    cleaned = cleaned.strip()
-    if cleaned != '':
-        return cleaned
-
-
 def init_preprocessing(data):
     # Remove special characters, outliers, duplicates, null values, html tags
-    data = data.dropna()
-    data['CommentText'] = data['CommentText'].apply(remove_special_characters)
-    data['QueryText'] = data['QueryText'].apply(remove_special_characters)
-    data = remove_outliers(data)
-    # labels are already encoded(assume SimilarityScore is integer)
+    data.dropna(how='any', inplace=True)
     return data
 
 
