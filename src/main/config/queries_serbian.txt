@@ -1,4 +1,3 @@
-upit
 pretvoriti int u string
 prioritetni red
 string u datum
