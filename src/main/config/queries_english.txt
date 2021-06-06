@@ -1,9 +1,8 @@
-query
-convert int to string *
-priority queue *
-string to date *
-sort string list *
-save list to file *
+convert int to string
+priority queue
+string to date
+sort string list
+save list to file
 postgresql connection
 confusion matrix
 set working directory
@@ -13,11 +12,11 @@ aes encryption
 linear regression
 socket recv timeout
 write csv
-convert decimal to hex *
+convert decimal to hex
 export to excel
 scatter plot
 convert json to csv
-pretty print json *
+pretty print json
 replace in file
 k means clustering
 connect to sql
@@ -25,37 +24,37 @@ html encode string
 finding time elapsed using a timer
 parse binary file to custom class
 get current ip address
-convert int to bool *
+convert int to bool
 read text file line by line
 get executable path
 httpclient post json
 get inner html
-convert string to number *
+convert string to number
 format date
 readonly array
-filter array *
+filter array
 map to json
 parse json file
 get current observable value
 get name of enumerated value
 encode url
 create cookie
-how to empty array *
-how to get current date *
+how to empty array
+how to get current date
 how to make the checkbox checked
-initializing array *
-how to reverse a string *
+initializing array
+how to reverse a string
 read properties file
-copy to clipboard *
+copy to clipboard
 convert html to pdf
-json to xml conversion *
-how to randomly pick a number *
+json to xml conversion
+how to randomly pick a number
 normal distribution
 nelder mead optimize
 hash set for counting distinct elements
 how to get database table name
 deserialize json
-find int in string *
+find int in string
 get current process id
 regex case insensitive
 custom http error response
@@ -90,7 +89,7 @@ parse command line argument
 how to read the contents of a .gz compressed file?
 sending binary data over a serial connection
 extracting data from a text file
-positions of substrings in string *
+positions of substrings in string
 reading element from html - <td>
 deducting the median from each column
 concatenate several file remove header lines
