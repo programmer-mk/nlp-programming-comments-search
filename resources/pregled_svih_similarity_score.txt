@@ -1,0 +1,1 @@
+QueryText	CommentText	PairID	RepoDescription	SourceDescription	SimilarityScore	Annotated_By
