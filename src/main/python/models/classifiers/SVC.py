@@ -1,16 +1,7 @@
 from sklearn.model_selection import StratifiedKFold, GridSearchCV, train_test_split
 from sklearn.svm import LinearSVC
 from sklearn.metrics import f1_score, classification_report, accuracy_score
-
-
-def train_test_init(train, test):
-    y = ['SimilarityScore']
-    y_train = train[y]
-    X_train = train.drop(y, axis = 1)
-    y_test = test[y]
-    X_test = test.drop(y, axis = 1)
-    return X_train, y_train, X_test, y_test
-
+from .train_helper import train_test_init
 
 def train_model(train, test, fold_no, rf, c=1):
     y = ['SimilarityScore']
