@@ -45,7 +45,7 @@ data_frame = data_frame_global.drop(columns=['QueryText','SimilarityScore','Anno
 data_frame.insert(0, 'ProgrammingLanguageName', 'C#')
 data_frame['CommentText'] = data_frame.apply(lambda row : remove_special_characters(row['CommentText']), axis=1)
 data_frame.columns = ['ProgrammingLanguage', 'RepoDescription', 'SourceDescription', 'PairID', 'CommentText']
-data_frame.to_csv(f'{resources_directory}/pregled_svih_parova_novi.txt', sep = '\t', index = False)
+data_frame.to_csv(f'{resources_directory}/output_no_similarity_score.txt', sep = '\t', index = False)
 
 data_frame_similarity_score = pd.DataFrame(columns=['ProgrammingLanguage', 'QueryId', 'PairID', 'QueryText', 'CommentText','SimilarityScore'])
 dict_query_line = {}
@@ -116,8 +116,8 @@ for row in data_frame_global.index:
             }
             data_frame_similarity_score = data_frame_similarity_score.append(pd.DataFrame([dict_similarity_score]), ignore_index=True)
 
-data_frame_similarity_score.to_csv(f'{resources_directory}/pregled_svih_similarity_score.txt', sep = '\t', index = False)
-data_frame_similarity_score.to_csv(f'{resources_directory}/pregled_svih_similarity_score.csv', sep = '\t', index = False)
+data_frame_similarity_score.to_csv(f'{resources_directory}/output_similarity_score.txt', sep = '\t', index = False)
+data_frame_similarity_score.to_csv(f'{resources_directory}/output_similarity_score.csv', sep = '\t', index = False)
 
 
 
