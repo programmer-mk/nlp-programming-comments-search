@@ -22,10 +22,15 @@ def remove_special_characters(text):
     if cleaned != '':
         return cleaned
 
+
+def trim_pair_id(pair_id):
+    return pair_id[0:len(pair_id)-4]
+
+
 data_frame_global = pd.read_excel('../resources/programming_comments_annotation.xlsx')
-data_frame_global.dropna(how='all', inplace=True)
+data_frame_global.dropna(how='any', inplace=True)
 data_frame_global['CommentText'] = data_frame_global.apply(lambda row : remove_special_characters(row['CommentText']), axis=1)
-data_frame_global['PairID'] = data_frame_global.apply(lambda row : row[0: len(row)-4], axis=1)
+data_frame_global['PairID'] = data_frame_global.apply(lambda row : trim_pair_id(row['PairID']), axis=1)
 
 data_frame = data_frame_global.drop(columns=['QueryText','SimilarityScore','Annotated_By'])
 data_frame.insert(0, 'ProgrammingLanguageName', 'C#')
@@ -83,9 +88,7 @@ for row in data_frame_global.index:
                 'PairID' :  data_frame_global['PairID'][row],
                 'QueryText' :  query,
                 'CommentText' : data_frame_global['CommentText'][row],
-                'SimilarityScore': similarity_score_list[index],
-                'RepoDescription':  data_frame_global['RepoDescription'][row],
-                'SourceDescription':  data_frame_global['SourceDescription'][row]
+                'SimilarityScore': similarity_score_list[index]
             }
             data_frame_similarity_score = data_frame_similarity_score.append(pd.DataFrame([dict_similarity_score]), ignore_index=True)
 
@@ -105,6 +108,7 @@ for row in data_frame_global.index:
             data_frame_similarity_score = data_frame_similarity_score.append(pd.DataFrame([dict_similarity_score]), ignore_index=True)
 
 data_frame_similarity_score.to_csv('../resources/pregled_svih_similarity_score.txt', sep = '\t', index = False)
+data_frame_similarity_score.to_csv('../resources/pregled_svih_similarity_score.csv', sep = '\t', index = False)
 
 
 
