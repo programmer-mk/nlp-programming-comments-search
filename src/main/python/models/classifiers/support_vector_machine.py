@@ -15,26 +15,31 @@ def train_model(train, test, fold_no, rf, c=1):
     svc = LinearSVC(penalty=rf, C=c, dual=rf == 'l2', max_iter=25000)
     svc.fit(X_train,y_train)
     predictions = svc.predict(X_test)
-    print('Fold',str(fold_no),'Accuracy:', accuracy_score(y_test,predictions))
+    score = accuracy_score(y_test,predictions)
+    print('Fold',str(fold_no),'Accuracy:', score)
+    return score
+
 
 
 def compare_regularisation_functions(data_frame, rf):
     skf = StratifiedKFold(n_splits=10)
     target = data_frame.loc[:,'SimilarityScore']
-
     fold_no = 1
+    average = 0
     for train_index, test_index in skf.split(data_frame, target):
         train = data_frame.iloc[train_index,:]
         test = data_frame.iloc[test_index,:]
-        train_model(train,test,fold_no, rf)
+        score = train_model(train,test,fold_no, rf)
+        average += score
         fold_no += 1
+    print("Average score of Support Vector Machine  is {:.2f}%".format(average / 10))
 
 
 def optimize_c_parameter(train, test):
     X_train, y_train, X_test, y_test = train_test_init(train, test)
 
     # defining parameter range
-    param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1, 10]}
+    param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1]}
 
     # Refit an estimator using the best found parameters on the whole dataset.
     grid = GridSearchCV(LinearSVC(max_iter=25000), param_grid, refit=True, verbose=3)

@@ -37,6 +37,6 @@ def train_naive_bayes(data_frame):
     print("Average score of Naive Bayes is {:.2f}%".format(average / 10))
 
 
-def naive_bayes_classifier(comments_data):
-    print("Naive bayes classifier")
+def naive_bayes_classifier(comments_data, processing_technique):
+    print(f"Naive bayes classifier {processing_technique} data")
     train_naive_bayes(comments_data)

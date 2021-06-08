@@ -45,7 +45,7 @@ def optimize_c_parameter(train, test):
 
     # defining parameter range
     # values above 10 like [100, 1000] takes a lot of time, won't be considered
-    param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1, 10]}
+    param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1]}
 
     # Refit an estimator using the best found parameters on the whole dataset.
     grid = GridSearchCV(LogisticRegression(max_iter=25000, multi_class='ovr',  n_jobs=-1), param_grid, refit=True, verbose=3)

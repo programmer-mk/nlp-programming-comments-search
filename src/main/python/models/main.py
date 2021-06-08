@@ -6,6 +6,7 @@ from classifiers import naive_bayes
 from classifiers import logistic_regression
 import sys
 
+
 RESOURCES_DIR = '../../resources'
 PROCESSED_DATA_DIR = 'processed_data'
 
@@ -39,15 +40,31 @@ def load_data():
     global without_preprocessing_data, lowercasing_data, tf_data, tf_idf_data, stemm_stopwords_data,\
         frequency_filtering_data, bigrams_data, trigrams_data, binary_bow_data
 
+    print('start reading without processing data....')
     without_preprocessing_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/without_preprocessing.csv', sep='\t')
+
+    print('start reading lowercasing data....')
     lowercasing_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/lowercasing.csv', sep='\t')
+
+    print('start reading tf data....')
     tf_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/tf.csv', sep='\t')
+
+    print('start reading tfidf data....')
     tf_idf_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/tf_idf.csv', sep='\t')
+
+    print('start reading stem + stopwords data....')
     stemm_stopwords_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/stemming_and_remove_stopwords.csv', sep='\t')
+
+    print('start reading frequency filter data ....')
     frequency_filtering_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/frequency_filtering.csv', sep='\t')
-    bigrams_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/bigrams.csv', sep='\t')
+
     # #trigrams_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/trigrams.csv', sep='\t')
+
+    print('start reading binary bow data....')
     binary_bow_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/binary_bow.csv', sep='\t')
+
+    print('start reading bigrams data ...')
+    bigrams_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/bigrams.csv', sep='\t')
 
 
 def load_target_column():
