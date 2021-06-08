@@ -1,7 +1,7 @@
 # imports
 import numpy as np
 import pandas as pd
-from classifiers import SVC
+from classifiers import support_vector_machine
 from classifiers import naive_bayes
 from classifiers import logistic_regression
 import sys
@@ -29,11 +29,10 @@ binary_bow_data = None
 data_target_column = None
 
 
-def apply_all_classifiers(data):
-    #SVC.support_vector_classifier(data)
-    naive_bayes.naive_bayes_classifier(data)
-    logistic_regression.logistic_regression(data)
-
+def apply_all_classifiers(data, processing_technique_applied):
+    naive_bayes.naive_bayes_classifier(data, processing_technique_applied)
+    logistic_regression.logistic_regression_classifier(data, processing_technique_applied)
+    support_vector_machine.support_vector_classifier(data, processing_technique_applied)
 
 
 def load_data():
@@ -41,7 +40,6 @@ def load_data():
         frequency_filtering_data, bigrams_data, trigrams_data, binary_bow_data
 
     without_preprocessing_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/without_preprocessing.csv', sep='\t')
-
     lowercasing_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/lowercasing.csv', sep='\t')
     tf_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/tf.csv', sep='\t')
     tf_idf_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/tf_idf.csv', sep='\t')
@@ -50,18 +48,6 @@ def load_data():
     bigrams_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/bigrams.csv', sep='\t')
     # #trigrams_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/trigrams.csv', sep='\t')
     binary_bow_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/binary_bow.csv', sep='\t')
-    #
-    # print('Delete NaN values...')
-    without_preprocessing_data.dropna(how='any', inplace=True)
-    print('hehe')
-    lowercasing_data.dropna(how='any', inplace=True)
-    tf_data.dropna(how='any', inplace=True)
-    tf_idf_data.dropna(how='any', inplace=True)
-    stemm_stopwords_data.dropna(how='any', inplace=True)
-    frequency_filtering_data.dropna(how='any', inplace=True)
-    bigrams_data.dropna(how='any', inplace=True)
-    #trigrams_data.dropna(how='any', inplace=True)
-    binary_bow_data.dropna(how='any', inplace=True)
 
 
 def load_target_column():
@@ -69,7 +55,6 @@ def load_target_column():
     columns = ['ProgrammingLanguageName', 'QueryID', 'PairID', 'QueryText', 'CommentText', 'SimilarityScore']
     data_columns = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score.csv", names=columns, sep='\t')
     data_target_column = data_columns[['SimilarityScore']]
-    #l = data_target_column.value_counts()
     list = ['0','1','2','3']
     data_target_column = data_target_column[data_target_column.SimilarityScore.isin(list)]
     print('end loading labels..')
@@ -78,15 +63,15 @@ def load_target_column():
 def classifying():
     print("----------  No preprocessing(BOW) ----------")
     without_preprocessing_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(without_preprocessing_data)
+    apply_all_classifiers(without_preprocessing_data, 'without processing')
 
     print("----------  Lower casing ----------")
     lowercasing_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(lowercasing_data)
+    apply_all_classifiers(lowercasing_data, 'lowercasing')
 
     print("----------  Term Frequency ----------")
     tf_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(tf_data)
+    apply_all_classifiers(tf_data, 'term frequency')
 
     #double check this
     #print("----------  Inverse Document Frequency ----------")
@@ -94,34 +79,34 @@ def classifying():
 
     print("----------  Term Frequency–Inverse Document Frequency ----------")
     tf_idf_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(tf_idf_data)
+    apply_all_classifiers(tf_idf_data, 'TFIDF')
 
     print("----------  Stemming and stopwords ----------")
     stemm_stopwords_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(stemm_stopwords_data)
+    apply_all_classifiers(stemm_stopwords_data, 'stemming+stopwords')
 
     print("----------  Frequency word filtering ----------")
     frequency_filtering_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(frequency_filtering_data)
+    apply_all_classifiers(frequency_filtering_data, 'frequency filtering')
 
     print("----------  Bigram preprocessing ----------")
     bigrams_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(bigrams_data)
+    apply_all_classifiers(bigrams_data, 'bigrams')
 
     # print("----------  Trigram preprocessing ----------")
     # trigrams_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(trigrams_data)
+    # apply_all_classifiers(trigrams_data, 'trigrams')
 
     print("----------  Binary Bag of Words ----------")
     binary_bow_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(binary_bow_data)
+    apply_all_classifiers(binary_bow_data, 'binary bow')
 
 
 if __name__ == "__main__":
 
     correct_input = False
 
-    while correct_input == False:
+    while not correct_input:
         menu_message = "Choose option? \n"\
                         "0 - classifying \n"\
                         "1 - calculate comment annotation similarity \n"\
@@ -140,5 +125,4 @@ if __name__ == "__main__":
                 #percentage_calc.percentage_calculator()
             correct_input = True
         else:
-            print()
-            print('Incorrect input')        
+            print('Incorrect input')

@@ -1,7 +1,7 @@
 from sklearn.model_selection import StratifiedKFold
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import f1_score, accuracy_score
-from .train_helper import train_test_init
+
 
 def train_model(train, test, fold_no):
     y = ['SimilarityScore']

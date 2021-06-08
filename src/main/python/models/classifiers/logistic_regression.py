@@ -61,8 +61,8 @@ def optimize_c_parameter(train, test):
     print(classification_report(y_test, grid_predictions))
 
 
-def logistic_regression(comments_data):
-    print("Logistic regression classifier")
+def logistic_regression_classifier(comments_data, processing_technique):
+    print(f"Logistic regression classifier, {processing_technique} data")
 
     # Testing differences between regularisation functions
     print("> L1/L2 comparing")
@@ -70,7 +70,7 @@ def logistic_regression(comments_data):
     compare_regularisation_functions(comments_data, 'l2')
 
     # Optimizing C parameter
-    print("> Results with optimized C parameter")
+    print(f"> Results with optimized C parameter, {processing_technique} data")
     train, test = train_test_split(comments_data, test_size=0.2, random_state=42, shuffle=True)
     optimize_c_parameter(train, test)
 
