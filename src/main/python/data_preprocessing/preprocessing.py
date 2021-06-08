@@ -77,7 +77,8 @@ def write_data_frame_to_file(data_frame, file_path, file_name):
 
 
 def write_bow_data_frame_to_file(data_frame, file_path):
-    np.savetxt(f'{file_path}', data_frame.to_numpy(), fmt="%f")
+    data_frame.to_csv(f'{file_path}', sep = '\t', index = False)
+    #np.savetxt(f'{file_path}', data_frame.to_numpy(), fmt="%f")
 
 
 def prepare_files_for_stemming(data_frame, input_file_name):
@@ -135,7 +136,7 @@ def idf(data_set):
 
 
 def tf(data_set):
-    tf_vectorizer = TfidfVectorizer(use_idf=False, lowercase=False, analyzer='word') # this guy removes words with  only one character
+    tf_vectorizer = TfidfVectorizer(ngram_range=(1, 1), use_idf=False, lowercase=False, analyzer='word') # this guy removes words with  only one character
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     # tfs = pd.DataFrame(tf_vectorizer.fit_transform(data_set["Merged Text"]).todense())
     tfs = tf_vectorizer.fit_transform(data_set["Merged Text"])
@@ -144,7 +145,7 @@ def tf(data_set):
 
 
 def tf_idf(data_set):
-    tf_idf_vectorizer = TfidfVectorizer(use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
+    tf_idf_vectorizer = TfidfVectorizer(ngram_range=(1, 1), use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     tf_idfs = tf_idf_vectorizer.fit_transform(data_set["Merged Text"])
     print(tf_idf_vectorizer.get_feature_names())
@@ -187,7 +188,7 @@ processing_steps = {
     1: lowercasing,
     2: stemming_and_remove_stopwords,
     3: bigrams,
-    4: trigrams,
+    #4: trigrams,
     5: tf,
     #6: idf, skipping for now, not sure that make sense doing it
     6: tf_idf,
@@ -215,7 +216,7 @@ def start_processing(step, data_set):
     else:
         processed_data = processing_technique(data_set)
         print(processed_data)
-        write_bow_data_frame_to_file(processed_data, f'{PROCESSED_DATA_DIR}/{processing_technique.__name__}.txt')
+        write_bow_data_frame_to_file(processed_data, f'{PROCESSED_DATA_DIR}/{processing_technique.__name__}.csv')
 
 
 def init_preprocessing(data):
