@@ -79,16 +79,16 @@ def load_target_column():
 
 def classifying():
     print("----------  No preprocessing(BOW) ----------")
-    # without_preprocessing_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(without_preprocessing_data, 'without processing')
-    #
-    # print("----------  Lower casing ----------")
-    # lowercasing_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(lowercasing_data, 'lowercasing')
-    #
-    # print("----------  Term Frequency ----------")
-    # tf_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(tf_data, 'term frequency')
+    without_preprocessing_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(without_preprocessing_data, 'without processing')
+
+    print("----------  Lower casing ----------")
+    lowercasing_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(lowercasing_data, 'lowercasing')
+
+    print("----------  Term Frequency ----------")
+    tf_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(tf_data, 'term frequency')
 
     #double check this
     #print("----------  Inverse Document Frequency ----------")
