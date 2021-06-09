@@ -4,7 +4,7 @@ from sklearn.metrics import f1_score, classification_report, accuracy_score
 from .train_helper import train_test_init
 
 
-def train_model(train, test, fold_no, rf, c=1):
+def train_model(train, test, fold_no, rf, c=0.3):
     y = ['SimilarityScore']
     y_train = train[y].values.ravel()
     X_train = train.drop(y, axis = 1)
@@ -15,8 +15,8 @@ def train_model(train, test, fold_no, rf, c=1):
         solver = 'liblinear'
         svc = LogisticRegression(penalty=rf, C=c, solver=solver, multi_class='ovr', max_iter=15000)
     else:
-        solver = 'lbfgs'
-        svc = LogisticRegression(penalty=rf, C=c, solver=solver, multi_class='ovr', max_iter=15000, n_jobs=-1)
+        solver = 'sag'
+        svc = LogisticRegression(penalty='l2', random_state=42, C=c, n_jobs=-1, solver='sag', multi_class='ovr', max_iter=200,verbose=10)
 
     svc.fit(X_train,y_train)
     predictions = svc.predict(X_test)
@@ -48,7 +48,7 @@ def optimize_c_parameter(train, test):
     param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1]}
 
     # Refit an estimator using the best found parameters on the whole dataset.
-    grid = GridSearchCV(LogisticRegression(max_iter=25000, multi_class='ovr',  n_jobs=-1), param_grid, refit=True, verbose=3)
+    grid = GridSearchCV(LogisticRegression(penalty='l1', max_iter=25000, multi_class='ovr',  n_jobs=-1), param_grid, refit=True, verbose=3)
 
     # fitting the model for grid search
     grid.fit(X_train, y_train.values.ravel())
