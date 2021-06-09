@@ -5,5 +5,3 @@ def train_test_init(train, test):
     y_test = test[y]
     X_test = test.drop(y, axis = 1)
     return X_train, y_train, X_test, y_test
-
-    
