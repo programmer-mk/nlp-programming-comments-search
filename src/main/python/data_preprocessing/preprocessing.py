@@ -1,3 +1,7 @@
+#from timeit import default_timer as timer
+import threading
+import time
+from joblib import Parallel, delayed
 import os
 import pandas as pd
 import numpy as np
@@ -6,8 +10,9 @@ import sys
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.corpus import stopwords
 from nltk.tokenize.toktok import ToktokTokenizer
-
+from bs4 import BeautifulSoup
 
 MAIN_CONFIG_DIR = '../../config'
 PROCESSED_DATA_DIR = '../../resources/processed_data'
@@ -25,11 +30,9 @@ def remove_files(files):
     for file in files:
         os.remove(file)
 
-
 def remove_stop_words_and_tokenize_word(text, stopwords):
     words = tokenizer.tokenize(text)
     return "".join([word + " " for word in words if word not in stopwords])
-
 
 def read_stop_words():
     stopwords = []
@@ -47,13 +50,13 @@ def create_bag_of_words(data_set):
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     cv_unigram.fit(data_set["Merged Text"])
     print(cv_unigram.get_feature_names())
+    np.savetxt(f'{RESOURCES_DIR}/bag_of_words_test.txt', cv_unigram.get_feature_names(), fmt="%s")
     bow = pd.DataFrame(cv_unigram.fit_transform(data_set["Merged Text"]).todense())
     return bow
 
 
 def get_stemming_result(file_name):
     return pd.read_csv(f"{MAIN_CONFIG_DIR}/{file_name}", names = ['QueryText', 'CommentText'], sep='\t', encoding='utf-8')
-
 
 def execute_stemming_command(input_file_name, output_file_name):
     """
@@ -70,15 +73,14 @@ def execute_stemming_command(input_file_name, output_file_name):
     stem_command = f'java -jar {stemmer_implementation} {stemmer_id} {MAIN_CONFIG_DIR}/{input_file_name} {MAIN_CONFIG_DIR}/{output_file_name}'
     os.system(stem_command)
 
-
 def write_data_frame_to_file(data_frame, file_path, file_name):
     file_location = f'{file_path}/{file_name}'
     data_frame.to_csv(file_location , index=False, header=False, sep='\t', encoding='utf-8')
 
 
 def write_bow_data_frame_to_file(data_frame, file_path):
-    np.savetxt(f'{file_path}', data_frame.to_numpy(), fmt="%f")
-
+    #np.savetxt(f'{file_path}', data_frame.to_numpy(), fmt="%f")
+    data_frame.to_csv(file_path , index=False, header=False, sep='\t', encoding='utf-8')
 
 def prepare_files_for_stemming(data_frame, input_file_name):
     write_data_frame_to_file(data_frame, MAIN_CONFIG_DIR, input_file_name)
@@ -139,6 +141,7 @@ def tf(data_set):
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     # tfs = pd.DataFrame(tf_vectorizer.fit_transform(data_set["Merged Text"]).todense())
     tfs = tf_vectorizer.fit_transform(data_set["Merged Text"])
+    np.savetxt(f'{RESOURCES_DIR}/tf_test.txt', tfs.get_feature_names(), fmt="%s")
     pda = pd.DataFrame(tfs.toarray())
     return pda
 
@@ -153,7 +156,6 @@ def tf_idf(data_set):
     # return pd.DataFrame(pda)
     return pda
 
-
 def bigrams(data_set):
     cv_bigram = CountVectorizer(ngram_range=(2, 2), lowercase=False)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
@@ -161,7 +163,6 @@ def bigrams(data_set):
     print(cv_bigram.get_feature_names())
     bow = pd.DataFrame(cv_bigram.fit_transform(data_set["Merged Text"]).todense())
     return bow
-
 
 def trigrams(data_set):
     cv_trigram = CountVectorizer(ngram_range=(3, 3), lowercase=False)
@@ -171,10 +172,8 @@ def trigrams(data_set):
     bow = pd.DataFrame(cv_trigram.fit_transform(data_set["Merged Text"]).todense())
     return bow
 
-
 def without_preprocessing(data_set):
     return create_bag_of_words(data_set)
-
 
 def lowercasing(data_set):
     data_set['CommentText'] = data_set['CommentText'].apply(lambda comment: comment.lower())
@@ -193,7 +192,6 @@ processing_steps = {
     6: tf_idf,
     7: frequency_filtering,
     8: binary_bow
-
 }
 
 
@@ -207,6 +205,15 @@ def remove_outliers(data):
     # TODO: implement outliers removal logic
     return data
 
+def remove_special_characters(text, remove_digits=False):
+    pattern = r'[^a-zA-z0-9\s]' if not remove_digits else r'[^a-zA-z\s]'
+    text = re.sub(pattern, '', text)
+    return text
+
+def strip_html_tags(text):
+    soup = BeautifulSoup(text, "html.parser")
+    stripped_text = soup.get_text()
+    return stripped_text
 
 def start_processing(step, data_set):
     processing_technique = processing_steps.get(step)
@@ -215,17 +222,43 @@ def start_processing(step, data_set):
     else:
         processed_data = processing_technique(data_set)
         print(processed_data)
-        write_bow_data_frame_to_file(processed_data, f'{PROCESSED_DATA_DIR}/{processing_technique.__name__}.txt')
+        write_bow_data_frame_to_file(processed_data, f'{PROCESSED_DATA_DIR}/{processing_technique.__name__}.csv')
 
 
-def init_preprocessing(data):
+def init_preprocessing(data, lower_case = False, drop_na = True, remove_html_tags = True, remove_special_chars = True, remove_extra_whitespace = True):
+    
+    output_data = data.copy()
+
     # Remove special characters, outliers, duplicates, null values, html tags
-    data.dropna(how='any', inplace=True)
-    return data
 
+    # Remove null values
+    if drop_na:
+        output_data.dropna(how='any', inplace=True)
+
+    # Remove html tags
+    if remove_html_tags:
+        output_data['CommentText'] = output_data['CommentText'].apply(lambda text: strip_html_tags(text))
+        output_data['QueryText'] = output_data['QueryText'].apply(lambda text: strip_html_tags(text))
+
+    # Lowercase
+    if lower_case:
+        output_data['CommentText'] = output_data['CommentText'].apply(lambda text: text.lower())
+        output_data['QueryText'] = output_data['QueryText'].apply(lambda text: text.lower())
+
+    # Remove special characters
+    if remove_special_chars:
+        output_data['CommentText'] = output_data['CommentText'].apply(lambda text: remove_special_characters(text, remove_digits=True))
+        output_data['QueryText'] = output_data['QueryText'].apply(lambda text: remove_special_characters(text, remove_digits=True))
+
+    # Remove extra whitespace
+    if remove_extra_whitespace:
+        output_data['CommentText'] = output_data['CommentText'].apply(lambda text: re.sub(' +',' ', text))
+        output_data['QueryText'] = output_data['QueryText'].apply(lambda text:re.sub(' +',' ', text))
+
+    return output_data
 
 if __name__ == '__main__':
+    raw_data = read_raw_data()
+    preprocessed_data = init_preprocessing(raw_data.copy())
     for step in list(range(9)):
-        raw_data = read_raw_data()
-        preprocessed_data = init_preprocessing(raw_data)
-        start_processing(step, preprocessed_data)
+        start_processing(step, preprocessed_data.copy())
