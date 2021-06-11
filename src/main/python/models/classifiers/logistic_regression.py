@@ -48,7 +48,7 @@ def optimize_c_parameter(train, test):
     param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1]}
 
     # Refit an estimator using the best found parameters on the whole dataset.
-    grid = GridSearchCV(LogisticRegression(penalty='l1', max_iter=25000, multi_class='ovr',  n_jobs=-1), param_grid, refit=True, verbose=3)
+    grid = GridSearchCV(LogisticRegression(penalty='l1', max_iter=25000, multi_class='ovr', solver = 'liblinear', n_jobs=-1), param_grid, refit=True, verbose=3)
 
     # fitting the model for grid search
     grid.fit(X_train, y_train.values.ravel())

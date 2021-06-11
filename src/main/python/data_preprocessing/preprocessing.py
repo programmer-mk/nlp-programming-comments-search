@@ -188,7 +188,7 @@ processing_steps = {
     1: lowercasing,
     2: stemming_and_remove_stopwords,
     3: bigrams,
-    #4: trigrams,
+    4: trigrams,
     5: tf,
     #6: idf, skipping for now, not sure that make sense doing it
     6: tf_idf,
@@ -209,14 +209,18 @@ def remove_outliers(data):
     return data
 
 
-def start_processing(step, data_set):
+def start_processing(step, data_set, save_to_disk):
     processing_technique = processing_steps.get(step)
     if processing_technique is None:
         print('Unrecognized processing type. Please specify number between 1 - x')
     else:
         processed_data = processing_technique(data_set)
         print(processed_data)
-        write_bow_data_frame_to_file(processed_data, f'{PROCESSED_DATA_DIR}/{processing_technique.__name__}.csv')
+        if save_to_disk:
+            write_bow_data_frame_to_file(processed_data, f'{PROCESSED_DATA_DIR}/{processing_technique.__name__}.csv')
+            return None
+        else:
+            return processed_data
 
 
 def init_preprocessing(data):
@@ -225,8 +229,18 @@ def init_preprocessing(data):
     return data
 
 
+def preprocessing_data():
+    all_preprocessed_data = []
+    for step in list(range(9)):
+        raw_data = read_raw_data()
+        cleaned_data = init_preprocessing(raw_data)
+        preprocessed_data = start_processing(step, cleaned_data, False)
+        all_preprocessed_data.append(preprocessed_data)
+    return  all_preprocessed_data
+
+
 if __name__ == '__main__':
     for step in list(range(9)):
         raw_data = read_raw_data()
         preprocessed_data = init_preprocessing(raw_data)
-        start_processing(step, preprocessed_data)
+        start_processing(step, preprocessed_data, True)
