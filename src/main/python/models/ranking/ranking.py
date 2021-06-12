@@ -2,6 +2,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 import pandas as pd
 import numpy as np
+import sys
+
+
+RESOURCES_DIR = '../../../resources'
+operating_system = sys.platform
+
+if operating_system == 'win32':
+    RESOURCES_DIR = 'src\main/resources'
 
 
 def read_raw_data():
@@ -11,12 +19,25 @@ def read_raw_data():
     return comments
 
 
-def build_model(data_set):
+def load_query_data():
+    columns = ['ProgrammingLanguageName', 'QueryID', 'PairID', 'QueryText', 'CommentText', 'SimilarityScore']
+    data_columns = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score.csv", names=columns, sep='\t')[['QueryID', 'QueryText']]
+    data_columns.drop_duplicates(keep='last', inplace=True)
+
+    dddata = data_columns.value_counts()
+    dddata.to_csv(f'tttest', sep = '\t', index = True)
+    # DO NOT RESET INDEX!!!
+    #data_columns.reset_index(drop=True, inplace=True)
+    print('end loading query data..')
+    return data_columns
+
+
+def build_model(data_set_comments, data_set_queries):
+    query_metadata = load_query_data()
     query_similarity_list = {}
     count_vectorizer = CountVectorizer(analyzer='word', lowercase=False)
     bow_comments = count_vectorizer.fit_transform((data_set['CommentText']))
-    queries = data_set['QueryText'].drop_duplicates(keep='last')
-    for query in queries:
+    for query in query_metadata:
         query_frame = pd.DataFrame([query], columns=['QueryText'])
         query_vectorized = count_vectorizer.transform(query_frame['QueryText'])
         cos_similarity_list = list(map(lambda comment: cosine_similarity(query_vectorized, comment), bow_comments))
@@ -49,13 +70,15 @@ def evaluate_model(data, model):
         test_data_indexes = list(map(lambda test_row: found_index_in_data(data, test_row[1]['QueryID'], test_row[1]['CommentText']), test_data_set.iterrows()))
         test_data_similarity_vals = sorted([cos_similarity_list[index][0][0] for index in test_data_indexes], reverse=True)
         index_place = np.searchsorted(test_data_similarity_vals, cos_similarity_list[target_index][0][0])
-        scores = 1 / (index_place + 1)
+        scores += 1 / (index_place + 1)
 
-    return scores/ non_zero_sim_data.shape[0]
+    return scores / non_zero_sim_data.shape[0]
 
 
 if __name__ == '__main__':
-    data_set = read_raw_data()
-    model = build_model(data_set[['QueryText', 'CommentText']])
-    mrr = evaluate_model(data_set, model)
-    print(f'mean reciprocal rank of model is : {mrr}')
+    dataset = load_query_data()
+    print(dataset)
+    #data_set = read_raw_data()
+    #model = build_model(data_set[['QueryText', 'CommentText']])
+    #mrr = evaluate_model(data_set, model)
+    #print(f'mean reciprocal rank of model is : {mrr}')

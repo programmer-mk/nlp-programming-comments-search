@@ -142,7 +142,7 @@ if __name__ == "__main__":
     while not correct_input:
         menu_message = "Choose option? \n"\
                         "0 - classifying \n"\
-                        "1 - calculate comment annotation similarity \n"\
+                        "1 - ranking \n"\
                         "2 - exit \n"
 
         option = int(input(menu_message))
@@ -151,18 +151,21 @@ if __name__ == "__main__":
         load_from_disk = False
 
         if option >= 0 or option <= 2:
-            # TODO: add comment annotation similarity @djojdanic @bselic
+            load_target_column()
             if option == 0:
-                load_target_column()
+                print('Classifying started!')
                 if load_from_disk:
+                    # TODO: fix this if someone wants to read data from disk
                     preprocessed_data = load_preprocessed_data_from_disk()
                 else:
-                    preprocessed_data = preprocessing_data(False) # return one bag of words
+                    preprocessed_data, _ = preprocessing_data(False) # return one bag of words
                 initialize_data(preprocessed_data)
                 classifying()
             elif option == 1:
-                print('percentage annotation calculation!')
-                #percentage_calc.percentage_calculator()
+                print('Ranking started!')
+                preprocessed_comments, preprocessed_queries = preprocessing_data(False) # return two bag of words
+
+
             correct_input = True
         else:
             print('Incorrect input')

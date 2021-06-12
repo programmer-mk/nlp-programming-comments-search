@@ -119,7 +119,7 @@ def stemming_and_remove_stopwords(data_set, separate_query_and_comment_text):
         bow_query = create_bag_of_words(do_file_stemming(data_set[['QueryText']], 'input-stemming-queries.csv', 'output-stemming-queries.csv'))
         return bow_comment, bow_query
     else:
-        return create_bag_of_words(do_file_stemming(data_set, 'input-stemming.csv', 'output-stemming.csv'))
+        return create_bag_of_words(do_file_stemming(data_set, 'input-stemming.csv', 'output-stemming.csv')), None
 
 
 """
@@ -141,7 +141,7 @@ def binary_bow(data_set, separate_query_and_comment_text):
         binary_tf.fit(data_set["Merged Text"])
         print(binary_tf.get_feature_names())
         bow = pd.DataFrame(binary_tf.fit_transform(data_set["Merged Text"]).todense())
-        return bow
+        return bow, None
 
 
 """
@@ -163,7 +163,7 @@ def frequency_filtering(data_set, separate_query_and_comment_text):
         freq_filter.fit(data_set["Merged Text"])
         print(freq_filter.get_feature_names())
         bow = pd.DataFrame(freq_filter.fit_transform(data_set["Merged Text"]).todense())
-        return bow
+        return bow, None
 
 
 # not used, consider this for deletion
@@ -190,7 +190,7 @@ def tf(data_set, separate_query_and_comment_text):
         # tfs = pd.DataFrame(tf_vectorizer.fit_transform(data_set["Merged Text"]).todense())
         tfs = tf_vectorizer.fit_transform(data_set["Merged Text"])
         pda = pd.DataFrame(tfs.toarray())
-        return pda
+        return pda, None
 
 
 def tf_idf(data_set, separate_query_and_comment_text):
@@ -210,7 +210,7 @@ def tf_idf(data_set, separate_query_and_comment_text):
         #df_tf_idf = pd.DataFrame(tf_idfs, index=tf_idf_vectorizer.get_feature_names(),columns=["tf_idf_weights"])
         pda = pd.DataFrame(tf_idfs.toarray())
         # return pd.DataFrame(pda)
-        return pda
+        return pda, None
 
 
 def bigrams(data_set, separate_query_and_comment_text):
@@ -228,7 +228,7 @@ def bigrams(data_set, separate_query_and_comment_text):
         data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
         bow = pd.DataFrame(cv_bigram.fit_transform(data_set["Merged Text"]).todense())
         print(cv_bigram.get_feature_names())
-        return bow
+        return bow, None
 
 
 def trigrams(data_set, separate_query_and_comment_text):
@@ -247,14 +247,14 @@ def trigrams(data_set, separate_query_and_comment_text):
         cv_trigram.fit(data_set["Merged Text"])
         print(cv_trigram.get_feature_names())
         bow = pd.DataFrame(cv_trigram.fit_transform(data_set["Merged Text"]).todense())
-        return bow
+        return bow, None
 
 
 def without_preprocessing(data_set, separate_query_and_comment_text):
     if separate_query_and_comment_text:
         return create_bag_of_words(data_set['CommentText']), create_bag_of_words(data_set['QueryText'])
     else:
-        return create_bag_of_words(data_set)
+        return create_bag_of_words(data_set), None
 
 
 def lowercasing(data_set, separate_query_and_comment_text):
@@ -263,7 +263,7 @@ def lowercasing(data_set, separate_query_and_comment_text):
     if separate_query_and_comment_text:
         return create_bag_of_words(data_set['CommentText']), create_bag_of_words(data_set['QueryText'])
     else:
-        return create_bag_of_words(data_set)
+        return create_bag_of_words(data_set), None
 
 
 processing_steps = {
@@ -360,8 +360,12 @@ def preprocessing_data(separate_query_and_comment_text):
     raw_data = read_raw_data()
     cleaned_data = init_preprocessing(raw_data)
     for step in list(range(9)):
-        preprocessed_data = start_processing(step, cleaned_data.copy(), False, separate_query_and_comment_text)
-        all_preprocessed_data.append(preprocessed_data)
+        if separate_query_and_comment_text:
+            preprocessed_data_comments, preprocessed_data_queries = start_processing(step, cleaned_data.copy(), False, separate_query_and_comment_text)
+            all_preprocessed_data.append((preprocessed_data_comments, preprocessed_data_queries))
+        else:
+            preprocessed_data, _ = start_processing(step, cleaned_data.copy(), False, separate_query_and_comment_text)
+            all_preprocessed_data.append((preprocessed_data, None))
     return all_preprocessed_data
 
 
