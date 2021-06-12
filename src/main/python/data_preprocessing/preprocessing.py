@@ -259,14 +259,15 @@ def init_preprocessing(data, lower_case = False, drop_na = True, remove_html_tag
 
     return output_data
 
+
 def preprocessing_data():
     all_preprocessed_data = []
+    raw_data = read_raw_data()
+    cleaned_data = init_preprocessing(raw_data)
     for step in list(range(9)):
-        raw_data = read_raw_data()
-        cleaned_data = init_preprocessing(raw_data)
-        preprocessed_data = start_processing(step, cleaned_data, False)
+        preprocessed_data = start_processing(step, cleaned_data.copy(), False)
         all_preprocessed_data.append(preprocessed_data)
-    return  all_preprocessed_data
+    return all_preprocessed_data
 
 
 if __name__ == '__main__':
