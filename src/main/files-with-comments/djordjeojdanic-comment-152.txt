@@ -1,0 +1,24 @@
+Kodovanje stringa u specificirani format (32, 64, itd.). Stringovi se prvo konvertuju u bom-free utf8 niz bajtova, a potom u odgovarajuci format.
+
+ public static string EncodeString(EncodingType type, string input)
+        {
+            var enc = new UTF8Encoding(false, true);
+
+            switch (type)
+            {
+                case EncodingType.Base64:
+                    return Convert.ToBase64String(enc.GetBytes(input), Base64FormattingOptions.None);
+                case EncodingType.Base64Url:
+                    return Base64Url.ToBase64ForUrlString(enc.GetBytes(input));
+                case EncodingType.Base32Url:
+                    return Base32Url.ToBase32String(enc.GetBytes(input));
+                case EncodingType.ZBase32:
+                    return new Base32Url(false, false, true, Base32Url.ZBase32Alphabet).Encode(enc.GetBytes(input));
+                case EncodingType.Base32LowProfanity:
+                    return new Base32Url(false, true, true, Base32Url.Base32LowProfanityAlphabet).Encode(enc.GetBytes(input));
+                case EncodingType.Base32Crockford:
+                    return new Base32Url(false, true, true, Base32Url.Base32CrockfordHumanFriendlyAlphabet).Encode(enc.GetBytes(input));
+                default:
+                    throw new NotImplementedException("Encoding type not implemented: " + type);
+            }
+        }

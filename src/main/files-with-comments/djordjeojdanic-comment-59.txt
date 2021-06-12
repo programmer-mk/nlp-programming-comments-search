@@ -1,0 +1,21 @@
+//deljena funkcija, svi mogu da je koriste da ucitaju trazenu bazu
+
+public bool loadDb(string fileName)
+{
+            this.fileName = fileName;
+            CitiesDB = new Dictionary<int, City>();
+
+            if (File.Exists(fileName))
+            {
+                CitiesDB = serializer.DeserializeFromTxt(fileName);
+                if (CitiesDB == null)
+                {
+                    CitiesDB = new Dictionary<int, City>();
+                }
+                return true;
+            }
+            else
+            {
+                throw new FaultException<DatabaseException>(new DatabaseException("Ne posoji ta baza"));
+            }
+}

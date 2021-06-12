@@ -1,0 +1,17 @@
+/// Ova metoda konvertuje string vrednost u broj.
+
+public int? StringToNumber(string val)
+        {
+            int intVal;
+
+            bool success = int.TryParse(val, out intVal);
+
+            if (success)
+            {
+                return intVal;
+            }
+            else 
+            {
+                return null;
+            }
+        }

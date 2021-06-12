@@ -1,0 +1,9 @@
+Kreiranje sfernog koordinantnog sistema
+
+public Cartesian(double xc, double yc, double zc)
+        {
+            //formulas:
+            x = xc;
+            y = yc;
+            z = zc;
+        }

@@ -1,0 +1,15 @@
+/// Kreira novi niz za zadatu duzinu i popunjava ga random, nenegativnim vrednostima.
+
+public int[] InitializeArrayRandom(int length)
+        {
+            var random = new Random();
+
+            var array = new int[length];
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = random.Next();
+            }
+
+            return array;
+        }

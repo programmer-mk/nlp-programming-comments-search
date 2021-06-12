@@ -1,0 +1,28 @@
+/// Ova klasa predstavlja prioritetni red gde se uklanja uvek onaj element koji ima najmanju vrednost bez obzira na redosled dodavanja.
+
+public class PriorityQueueSorting<T> where T : IComparable<T>
+    {
+        private readonly List<T> _priorityQueue = new List<T>();
+
+        /// <summary>
+        /// Ova metoda dodaje element na kraj prioritetnog reda, a zatim sortira elemente u rastuci redosled.
+        /// </summary>
+        /// <param name="item"></param>
+        public void Enqueue(T item)
+        {
+            _priorityQueue.Add(item);
+            _priorityQueue.Sort();
+        }
+
+        /// <summary>
+        /// Ova metoda dohvata prvi element iz prioritetnog reda, tj. onaj koji je najmanji.
+        /// </summary>
+        /// <returns></returns>
+        public T Dequeue()
+        {
+            var item = _priorityQueue[0];
+            _priorityQueue.RemoveAt(0);
+
+            return item;
+        }
+    }

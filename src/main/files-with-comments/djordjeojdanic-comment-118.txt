@@ -1,0 +1,12 @@
+Kreiranje instance Consent klase
+
+public static Consent Instance
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    return new Consent();
+                }
+            }
+        }

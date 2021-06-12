@@ -1,0 +1,7 @@
+/// Konverzija Decimal u Hex String.
+
+public string KonvertujDecimalniBrojUHeksaDecimalni(decimal decimalnaVrednost)
+        {
+            string heksaDecimalnaVrednost = decimalnaVrednost.ToString("X");
+            return heksaDecimalnaVrednost;
+        }

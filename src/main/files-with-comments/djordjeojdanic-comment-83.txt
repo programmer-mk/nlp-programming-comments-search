@@ -1,0 +1,7 @@
+/// Sortiranje string vrednosti rastuce.
+
+public IEnumerable<string> SortirajStringoveRastuce(IEnumerable<string> stringovi)
+        {
+            var stringoviRastuce = stringovi?.OrderBy(str => str);
+            return stringoviRastuce;
+        }

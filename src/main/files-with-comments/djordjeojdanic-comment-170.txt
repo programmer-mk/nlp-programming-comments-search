@@ -1,0 +1,8 @@
+Konverzija u niz bajtova iz zbase32 stringa (bez padinga, case insensitive) - koristi bom-free utf8 za konverziju stringa u niz bajtova
+
+public static byte[] FromZBase32(string input)
+        {
+            return Decode(EncodingType.ZBase32, input);
+        }
+		
+		

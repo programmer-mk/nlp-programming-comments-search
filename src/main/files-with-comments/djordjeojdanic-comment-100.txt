@@ -1,0 +1,6 @@
+/// Dodavanje elementa u prioritetni red na njegov kraj.
+
+public void Enqueue(T item)
+        {
+            _pq.Add(item);
+        }

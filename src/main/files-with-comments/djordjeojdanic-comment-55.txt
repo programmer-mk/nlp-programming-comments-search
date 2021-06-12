@@ -1,0 +1,38 @@
+//vraca ucitan dictionary (temp), parametar je samo ime fajla sa ekstenzijom
+
+public  Dictionary<int, City> DeserializeFromTxt(string fileName)
+{
+            Dictionary<int, City> temp = new Dictionary<int, City>();
+
+            //ako je ime fajla prazan string, baci skip i vrati prazan dictionary
+            if (string.IsNullOrEmpty(fileName)) { return temp; }
+
+            try
+            {
+                StreamReader sr = new StreamReader(fileName);
+                string line = sr.ReadLine();
+
+                //citaj red po red, dok ne dodjes do praznog
+                while (line != null)
+                {
+                    //parsiranje podataka: pocepaj red na svaki razmak, [0] (id) i [3] (godina) parsiraj kao int, [4] (energija) parsiraj kao double
+                    string[] tmp = line.Split(' ');
+                    int id = int.Parse(tmp[0]);
+                    int year = int.Parse(tmp[3]);
+                    double ee = double.Parse(tmp[4]);
+                   
+                    //napravi objekat i smesti ga u dictionary, objekat.Id == dictionary.Key
+                    temp.Add(id, new City(id, tmp[1], tmp[2], year, ee));
+
+                    //Predji na narednu liniju
+                    line = sr.ReadLine();
+                }
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return temp;
+}

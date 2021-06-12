@@ -1,0 +1,22 @@
+/// <summary>
+/// Provera kriticnih vednosti empirijske raspodele u odnosu na H0 hipotezu.
+/// </summary>
+
+public static double CriticalValue(uint numSamples, uint alphaZeroBasedIndex)
+{
+            if (numSamples < 1 || alphaZeroBasedIndex >= Alpha.Length)
+                throw new Exception("Input values are not valid.");
+
+            if (numSamples > range.Last())
+            {
+                return constant[alphaZeroBasedIndex] / Math.Sqrt(numSamples);
+            }
+            else
+            {
+                int row;
+                if (!BinarySearch.Infimum(range, numSamples, out row))
+                    throw new Exception("Error occured while extracting critical value from Kolmogorov-Smirnov table.");
+
+                return Table[row][alphaZeroBasedIndex];
+            }
+}

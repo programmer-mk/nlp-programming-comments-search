@@ -1,0 +1,6 @@
+/// Uklanja sve elemente iz liste.
+
+public void RemoveElements(List<int> list) 
+        {
+            list.RemoveRange(0, list.Count);
+        }

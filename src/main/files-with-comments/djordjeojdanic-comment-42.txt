@@ -1,0 +1,11 @@
+/// <summary>
+/// Ova metoda sluzi kako bi se postavili propertyji i prikazao progressbar.
+/// </summary>
+
+private void ShowAndSetPropertiesOfProgressBar()
+{
+            this.Height = 615;
+            maximumProgressBarValue = CountChecked();
+            progressBar1.Maximum = maximumProgressBarValue;
+            progressBar1.Value = 0;
+}

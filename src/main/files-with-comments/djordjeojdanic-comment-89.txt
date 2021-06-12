@@ -1,0 +1,6 @@
+/// Ova metoda prazni listu.
+
+public void EmptyList<T>(List<T> list)
+        {
+            list = new List<T>();
+        }
