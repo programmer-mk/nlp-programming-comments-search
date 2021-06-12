@@ -5,7 +5,8 @@ from classifiers import support_vector_machine
 from classifiers import naive_bayes
 from classifiers import logistic_regression
 import sys
-
+sys.path.append("../data_preprocessing")
+from preprocessing import preprocessing_data
 
 RESOURCES_DIR = '../../resources'
 PROCESSED_DATA_DIR = 'processed_data'
@@ -36,7 +37,22 @@ def apply_all_classifiers(data, processing_technique_applied):
     support_vector_machine.support_vector_classifier(data, processing_technique_applied)
 
 
-def load_data():
+def initialize_data(all_data):
+    global without_preprocessing_data, lowercasing_data, tf_data, tf_idf_data, stemm_stopwords_data, \
+        frequency_filtering_data, bigrams_data, trigrams_data, binary_bow_data
+
+    without_preprocessing_data = all_data[0]
+    lowercasing_data = all_data[1]
+    stemm_stopwords_data = all_data[2]
+    bigrams_data = all_data[3]
+    trigrams_data = all_data[4]
+    tf_data = all_data[5]
+    tf_idf_data = all_data[6]
+    frequency_filtering_data = all_data[7]
+    binary_bow_data = all_data[8]
+
+
+def load_preprocessed_data_from_disk():
     global without_preprocessing_data, lowercasing_data, tf_data, tf_idf_data, stemm_stopwords_data,\
         frequency_filtering_data, bigrams_data, trigrams_data, binary_bow_data
 
@@ -130,12 +146,19 @@ if __name__ == "__main__":
                         "2 - exit \n"
 
         option = int(input(menu_message))
+        # data should be preprocessed and saved to disk
+        # with this enabled, reading from disk will take time
+        load_from_disk = False
 
         if option >= 0 or option <= 2:
             # TODO: add comment annotation similarity @djojdanic @bselic
             if option == 0:
                 load_target_column()
-                load_data()
+                if load_from_disk:
+                    preprocessed_data = load_preprocessed_data_from_disk()
+                else:
+                    preprocessed_data = preprocessing_data()
+                initialize_data(preprocessed_data)
                 classifying()
             elif option == 1:
                 print('percentage annotation calculation!')
