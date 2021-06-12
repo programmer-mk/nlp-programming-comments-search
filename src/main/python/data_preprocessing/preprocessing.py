@@ -50,7 +50,6 @@ def create_bag_of_words(data_set):
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     cv_unigram.fit(data_set["Merged Text"])
     print(cv_unigram.get_feature_names())
-    np.savetxt(f'{RESOURCES_DIR}/bag_of_words_test.txt', cv_unigram.get_feature_names(), fmt="%s")
     bow = pd.DataFrame(cv_unigram.fit_transform(data_set["Merged Text"]).todense())
     return bow
 
@@ -142,7 +141,6 @@ def tf(data_set):
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     # tfs = pd.DataFrame(tf_vectorizer.fit_transform(data_set["Merged Text"]).todense())
     tfs = tf_vectorizer.fit_transform(data_set["Merged Text"])
-    np.savetxt(f'{RESOURCES_DIR}/tf_test.txt', tfs.get_feature_names(), fmt="%s")
     pda = pd.DataFrame(tfs.toarray())
     return pda
 
