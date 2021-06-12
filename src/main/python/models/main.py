@@ -43,12 +43,12 @@ def initialize_data(all_data):
 
     without_preprocessing_data = all_data[0]
     lowercasing_data = all_data[1]
-    tf_data = all_data[2]
-    tf_idf_data = all_data[3]
-    stemm_stopwords_data = all_data[4]
-    frequency_filtering_data = all_data[5]
-    bigrams_data = all_data[6]
-    trigrams_data = all_data[7]
+    stemm_stopwords_data = all_data[2]
+    bigrams_data = all_data[3]
+    trigrams_data = all_data[4]
+    tf_data = all_data[5]
+    tf_idf_data = all_data[6]
+    frequency_filtering_data = all_data[7]
     binary_bow_data = all_data[8]
 
 
