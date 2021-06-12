@@ -157,7 +157,7 @@ if __name__ == "__main__":
                 if load_from_disk:
                     preprocessed_data = load_preprocessed_data_from_disk()
                 else:
-                    preprocessed_data = preprocessing_data()
+                    preprocessed_data = preprocessing_data(False) # return one bag of words
                 initialize_data(preprocessed_data)
                 classifying()
             elif option == 1:

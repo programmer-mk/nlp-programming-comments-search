@@ -44,7 +44,7 @@ def evaluate_model(data, model):
     for _, row in non_zero_sim_data.iterrows():
         target_index = found_index_in_data(data,row[1], row[4])
         cos_similarity_list = model.get(row[3])
-        test_data_set = build_random_data_set(target_index, row[1], data, 2)
+        test_data_set = build_random_data_set(target_index, row[1], data, 99)
         # these indexes are for random test data in original data set
         test_data_indexes = list(map(lambda test_row: found_index_in_data(data, test_row[1]['QueryID'], test_row[1]['CommentText']), test_data_set.iterrows()))
         test_data_similarity_vals = sorted([cos_similarity_list[index][0][0] for index in test_data_indexes], reverse=True)
