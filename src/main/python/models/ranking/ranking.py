@@ -19,27 +19,29 @@ def read_raw_data():
     return comments
 
 
-def load_query_data():
+def found_index_in_data(data, query_id, comment_text):
+    return np.where((data['QueryID'] == query_id) & (data['CommentText'] == comment_text))[0][0]
+
+
+def load_all_data():
     columns = ['ProgrammingLanguageName', 'QueryID', 'PairID', 'QueryText', 'CommentText', 'SimilarityScore']
-    data_columns = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score.csv", names=columns, sep='\t')[['QueryID', 'QueryText']]
+    data_columns = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score.csv", names=columns, sep='\t')
     # drop header
     data_columns.drop(index=data_columns.index[0], axis=0, inplace=True)
-    data_columns.drop_duplicates(keep='last', inplace=True)
     print('end loading query data..')
     return data_columns
 
 
-def build_model(data_set_comments, data_set_queries):
-    query_metadata = load_query_data()
+def build_model(data_set_comments_bow, data_set_queries_bow):
+    all_data = load_all_data()
     query_similarity_list = {}
-    count_vectorizer = CountVectorizer(analyzer='word', lowercase=False)
-    #bow_comments = count_vectorizer.fit_transform((data_set['CommentText']))
-    for query in query_metadata:
-        query_frame = pd.DataFrame([query], columns=['QueryText'])
-        query_vectorized = count_vectorizer.transform(query_frame['QueryText'])
-        cos_similarity_list = list(map(lambda comment: cosine_similarity(query_vectorized, comment), bow_comments))
-        print(cos_similarity_list)
-        query_similarity_list[query] = cos_similarity_list
+    filtered_data = all_data[all_data['SimilarityScore'] != '0']
+
+    for idx, row in filtered_data.iterrows():
+        index = found_index_in_data(all_data,row[1], row[4])
+        query = data_set_queries_bow.iloc[index].to_frame().values.reshape(1,-1)
+        cos_similarity_list = list(map(lambda comment: cosine_similarity(query, comment.reshape(1,-1)), data_set_comments_bow.values))
+        query_similarity_list[row[1]] = cos_similarity_list
     return query_similarity_list
 
 
@@ -52,8 +54,6 @@ def build_random_data_set(target_index, target_query_id,  data_set, test_data_si
         return cleaned_test_data.sample(test_data_size)
 
 
-def found_index_in_data(data, query_id, comment_text):
-    return np.where((data['QueryID'] == query_id) & (data['CommentText'] == comment_text))[0][0]
 
 
 def evaluate_model(data, model):
@@ -74,13 +74,13 @@ def evaluate_model(data, model):
 
 
 def start_ranking(data_set_comments, data_set_queries):
-    dataset = load_query_data()
     model = build_model(data_set_comments, data_set_queries)
     print('Go to sleep please')
 
 
 if __name__ == '__main__':
-    dataset = load_query_data()
+    pass
+    #dataset = load_query_data()
     #model = build_model(data_set[['QueryText', 'CommentText']])
     #print(dataset)
     #data_set = read_raw_data()

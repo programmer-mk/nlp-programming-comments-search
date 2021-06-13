@@ -289,6 +289,7 @@ processing_steps = {
 def read_raw_data():
     columns = ['ProgrammingLanguage', 'QueryId','PairID', 'QueryText', 'CommentText','SimilarityScore']
     comments = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score.csv", sep = "\t", names=columns)
+    comments.drop(index=comments.index[0], axis=0, inplace=True)
     return comments[['QueryText', 'CommentText']]
 
 
