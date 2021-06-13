@@ -5,7 +5,7 @@ import numpy as np
 import sys
 
 
-RESOURCES_DIR = '../../../resources'
+RESOURCES_DIR = '../../resources'
 operating_system = sys.platform
 
 if operating_system == 'win32':
@@ -22,12 +22,9 @@ def read_raw_data():
 def load_query_data():
     columns = ['ProgrammingLanguageName', 'QueryID', 'PairID', 'QueryText', 'CommentText', 'SimilarityScore']
     data_columns = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score.csv", names=columns, sep='\t')[['QueryID', 'QueryText']]
+    # drop header
+    data_columns.drop(index=data_columns.index[0], axis=0, inplace=True)
     data_columns.drop_duplicates(keep='last', inplace=True)
-
-    dddata = data_columns.value_counts()
-    dddata.to_csv(f'tttest', sep = '\t', index = True)
-    # DO NOT RESET INDEX!!!
-    #data_columns.reset_index(drop=True, inplace=True)
     print('end loading query data..')
     return data_columns
 
@@ -36,7 +33,7 @@ def build_model(data_set_comments, data_set_queries):
     query_metadata = load_query_data()
     query_similarity_list = {}
     count_vectorizer = CountVectorizer(analyzer='word', lowercase=False)
-    bow_comments = count_vectorizer.fit_transform((data_set['CommentText']))
+    #bow_comments = count_vectorizer.fit_transform((data_set['CommentText']))
     for query in query_metadata:
         query_frame = pd.DataFrame([query], columns=['QueryText'])
         query_vectorized = count_vectorizer.transform(query_frame['QueryText'])
@@ -75,10 +72,18 @@ def evaluate_model(data, model):
     return scores / non_zero_sim_data.shape[0]
 
 
+
+def start_ranking(data_set_comments, data_set_queries):
+    dataset = load_query_data()
+    model = build_model(data_set_comments, data_set_queries)
+    print('Go to sleep please')
+
+
 if __name__ == '__main__':
     dataset = load_query_data()
-    print(dataset)
-    #data_set = read_raw_data()
     #model = build_model(data_set[['QueryText', 'CommentText']])
+    #print(dataset)
+    #data_set = read_raw_data()
+
     #mrr = evaluate_model(data_set, model)
     #print(f'mean reciprocal rank of model is : {mrr}')

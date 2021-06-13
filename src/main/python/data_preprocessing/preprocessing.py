@@ -68,8 +68,8 @@ def create_bag_of_words(data_set):
 
 
 
-def get_stemming_result(file_name):
-    return pd.read_csv(f"{MAIN_CONFIG_DIR}/{file_name}", names = ['QueryText', 'CommentText'], sep='\t', encoding='utf-8')
+def get_stemming_result(file_name, columns):
+    return pd.read_csv(f"{MAIN_CONFIG_DIR}/{file_name}", names = columns, sep='\t', encoding='utf-8')
 
 
 def execute_stemming_command(input_file_name, output_file_name):
@@ -102,10 +102,16 @@ def prepare_files_for_stemming(data_frame, input_file_name):
     write_data_frame_to_file(data_frame, MAIN_CONFIG_DIR, input_file_name)
 
 
-def do_file_stemming(data, input_file_name, output_file_name):
+def do_file_stemming(data, input_file_name, output_file_name, get_comments=True, get_queries=True):
     prepare_files_for_stemming(data, input_file_name)
     execute_stemming_command(input_file_name, output_file_name)
-    stemm_result = get_stemming_result(output_file_name)
+    if get_comments and get_queries:
+        stemm_result = get_stemming_result(output_file_name, ['QueryText', 'CommentText'])
+    elif get_comments:
+        stemm_result = get_stemming_result(output_file_name, ['CommentText'])
+    else:
+        #get queries
+        stemm_result = get_stemming_result(output_file_name, ['QueryText'])
     remove_files([f'{MAIN_CONFIG_DIR}/{input_file_name}', f'{MAIN_CONFIG_DIR}/{output_file_name}'])
     return stemm_result
 
@@ -115,8 +121,8 @@ def stemming_and_remove_stopwords(data_set, separate_query_and_comment_text):
     data_set['CommentText'] = data_set['CommentText'].apply(lambda text: remove_stop_words_and_tokenize_word(text, stopwords))
     data_set['QueryText'] = data_set['QueryText'].apply(lambda text: remove_stop_words_and_tokenize_word(text, stopwords))
     if separate_query_and_comment_text:
-        bow_comment = create_bag_of_words(do_file_stemming(data_set[['CommentText']], 'input-stemming-comments.csv', 'output-stemming-comments.csv'))
-        bow_query = create_bag_of_words(do_file_stemming(data_set[['QueryText']], 'input-stemming-queries.csv', 'output-stemming-queries.csv'))
+        bow_comment = create_bag_of_words(do_file_stemming(data_set[['CommentText']], 'input-stemming-comments.csv', 'output-stemming-comments.csv', True, False))
+        bow_query = create_bag_of_words(do_file_stemming(data_set[['QueryText']], 'input-stemming-queries.csv', 'output-stemming-queries.csv', False, True))
         return bow_comment, bow_query
     else:
         return create_bag_of_words(do_file_stemming(data_set, 'input-stemming.csv', 'output-stemming.csv')), None
@@ -134,7 +140,7 @@ def binary_bow(data_set, separate_query_and_comment_text):
         bow_query = pd.DataFrame(binary_tf_query.fit_transform(data_set["QueryText"]).todense())
         print(binary_tf_comment.get_feature_names())
         print(binary_tf_query.get_feature_names())
-        return pd.DataFrame(bow_comment.todense()), pd.DataFrame(bow_query.todense())
+        return bow_comment, bow_query
     else:
         binary_tf = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False, binary=True)
         data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
@@ -156,7 +162,7 @@ def frequency_filtering(data_set, separate_query_and_comment_text):
         bow_query = pd.DataFrame(freq_filter_query.fit_transform(data_set["QueryText"]).todense())
         print(freq_filter_comment.get_feature_names())
         print(freq_filter_query.get_feature_names())
-        return pd.DataFrame(bow_comment.todense()), pd.DataFrame(bow_query.todense()),
+        return bow_comment, bow_query
     else:
         freq_filter = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False,  min_df=0.1, max_df=0.9)
         data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
@@ -217,8 +223,8 @@ def bigrams(data_set, separate_query_and_comment_text):
     if separate_query_and_comment_text:
         cv_bigram_comment = CountVectorizer(ngram_range=(2, 2), lowercase=False)
         cv_bigram_query = CountVectorizer(ngram_range=(2, 2), lowercase=False)
-        bow_comment = pd.DataFrame(cv_bigram_comment.fit_transform(data_set["Merged Text"]).todense())
-        bow_query = pd.DataFrame(cv_bigram_query.fit_transform(data_set["Merged Text"]).todense())
+        bow_comment = pd.DataFrame(cv_bigram_comment.fit_transform(data_set["CommentText"]).todense())
+        bow_query = pd.DataFrame(cv_bigram_query.fit_transform(data_set["QueryText"]).todense())
         print(cv_bigram_comment.get_feature_names())
         print(cv_bigram_query.get_feature_names())
         return bow_comment, bow_query
@@ -252,7 +258,7 @@ def trigrams(data_set, separate_query_and_comment_text):
 
 def without_preprocessing(data_set, separate_query_and_comment_text):
     if separate_query_and_comment_text:
-        return create_bag_of_words(data_set['CommentText']), create_bag_of_words(data_set['QueryText'])
+        return create_bag_of_words(data_set[['CommentText']]), create_bag_of_words(data_set[['QueryText']])
     else:
         return create_bag_of_words(data_set), None
 
@@ -261,7 +267,7 @@ def lowercasing(data_set, separate_query_and_comment_text):
     data_set['CommentText'] = data_set['CommentText'].apply(lambda comment: comment.lower())
     data_set['QueryText'] = data_set['QueryText'].apply(lambda comment: comment.lower())
     if separate_query_and_comment_text:
-        return create_bag_of_words(data_set['CommentText']), create_bag_of_words(data_set['QueryText'])
+        return create_bag_of_words(data_set[['CommentText']]), create_bag_of_words(data_set[['QueryText']])
     else:
         return create_bag_of_words(data_set), None
 

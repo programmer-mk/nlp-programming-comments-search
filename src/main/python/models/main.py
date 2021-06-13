@@ -1,10 +1,13 @@
 # imports
-import numpy as np
-import pandas as pd
-from classifiers import support_vector_machine
-from classifiers import naive_bayes
-from classifiers import logistic_regression
 import sys
+
+import pandas as pd
+from classifiers import logistic_regression
+from classifiers import naive_bayes
+from classifiers import support_vector_machine
+
+from src.main.python.models.ranking.ranking import start_ranking
+
 sys.path.append("../data_preprocessing")
 from preprocessing import preprocessing_data
 
@@ -158,13 +161,13 @@ if __name__ == "__main__":
                     # TODO: fix this if someone wants to read data from disk
                     preprocessed_data = load_preprocessed_data_from_disk()
                 else:
-                    preprocessed_data, _ = preprocessing_data(False) # return one bag of words
+                    preprocessed_data = preprocessing_data(False) # return one bag of words
                 initialize_data(preprocessed_data)
                 classifying()
             elif option == 1:
                 print('Ranking started!')
-                preprocessed_comments, preprocessed_queries = preprocessing_data(False) # return two bag of words
-
+                preprocessed_data = preprocessing_data(True) # return two bag of words
+                start_ranking(preprocessed_data[0][0], preprocessed_data[0][1])
 
             correct_input = True
         else:

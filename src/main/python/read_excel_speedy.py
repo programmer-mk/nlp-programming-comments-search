@@ -87,13 +87,13 @@ for row in data_frame_global.index:
 
     for index, query in enumerate(query_list):
         query_id = dict_query_line.get(query)
-        if query_id == 0 or query_id == None:
+        if query_id == None:
             print(query)
         else:
             print(f'Processing row: {row}')
             dict_similarity_score = {
                 'ProgrammingLanguage' : 'C#',
-                'QueryId' : query_id,
+                'QueryId' : query_id + 1,
                 'PairID' :  data_frame_global['PairID'][row],
                 'QueryText' :  query,
                 'CommentText' : data_frame_global['CommentText'][row],
@@ -122,8 +122,7 @@ data_frame_similarity_score.to_csv(f'{resources_directory}/output_similarity_sco
 
 
 
-
-
-
+if __name__ == '__main__':
+    print(dict_query_line)
 
 
