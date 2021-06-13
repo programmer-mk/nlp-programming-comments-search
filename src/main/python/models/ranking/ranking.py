@@ -30,6 +30,7 @@ def load_all_data():
     data_columns = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score.csv", names=columns, sep='\t')
     # drop header
     data_columns.drop(index=data_columns.index[0], axis=0, inplace=True)
+    ss = data_columns['SimilarityScore'].value_counts()
     print('end loading query data..')
     return data_columns
 
@@ -78,6 +79,11 @@ def evaluate_model(model):
         test_data_set = build_random_data_set(target_index, row[1], all_data, 99)
         # these indexes are for random test data in original data set
         test_data_indexes = test_data_set.index.values.tolist()
+
+        # throwing index out of bound exception. Why?
+        test_data_indexes = list(filter(lambda x: (x >= 0) and (x < len(cos_similarity_list)), test_data_indexes))
+        print(f'lenght of test indexes: {len(test_data_indexes)}')
+
         test_data_similarity_vals = sorted([cos_similarity_list[index][0][0] for index in test_data_indexes], reverse=True)
 
         index_place = 0

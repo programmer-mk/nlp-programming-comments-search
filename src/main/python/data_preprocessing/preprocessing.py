@@ -150,7 +150,7 @@ def binary_bow(data_set, separate_query_and_comment_text):
     parameters could be tuned if it's needed
 """
 def frequency_filtering(data_set, separate_query_and_comment_text):
-    freq_filter = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False,  min_df=0.1, max_df=0.9)
+    freq_filter = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False,  min_df=0.03, max_df=0.97)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
         #freq_filter_comment = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False,  min_df=0.1, max_df=0.9)
@@ -270,16 +270,16 @@ def lowercasing(data_set, separate_query_and_comment_text):
 
 
 processing_steps = {
-    0: without_preprocessing,
+    #0: without_preprocessing,
     #1: lowercasing,
     #2: stemming_and_remove_stopwords,
     #3: bigrams,
     #4: trigrams,
-    #5: tf,
+    5: tf,
     #6: idf, skipping for now, not sure that make sense doing it
-    #6: tf_idf,
-    #7: frequency_filtering,
-    #8: binary_bow
+    6: tf_idf,
+    7: frequency_filtering,
+    8: binary_bow
 }
 
 
