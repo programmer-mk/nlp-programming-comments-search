@@ -57,6 +57,7 @@ with open (f'{config_directory}/queries_serbian.txt', 'r') as read_file_queries:
         dict_query_line[query] = index
 
 for row in data_frame_global.index:
+    sum_of_items = 0
     queries = str(data_frame_global['QueryText'][row])
     similarity_scores = str(data_frame_global['SimilarityScore'][row])
     
@@ -87,18 +88,19 @@ for row in data_frame_global.index:
 
     for index, query in enumerate(query_list):
         query_id = dict_query_line.get(query)
-        if query_id == 0 or query_id == None:
+        if query_id == None:
             print(query)
         else:
             print(f'Processing row: {row}')
             dict_similarity_score = {
                 'ProgrammingLanguage' : 'C#',
-                'QueryId' : query_id,
+                'QueryId' : query_id + 1,
                 'PairID' :  data_frame_global['PairID'][row],
                 'QueryText' :  query,
                 'CommentText' : data_frame_global['CommentText'][row],
                 'SimilarityScore': similarity_score_list[index]
             }
+            sum_of_items+= 1
             data_frame_similarity_score = data_frame_similarity_score.append(pd.DataFrame([dict_similarity_score]), ignore_index=True)
 
     for index, rest_query in enumerate(rest_queries):
@@ -114,16 +116,16 @@ for row in data_frame_global.index:
                 'CommentText' : data_frame_global['CommentText'][row],
                 'SimilarityScore': 0
             }
+            sum_of_items+= 1
             data_frame_similarity_score = data_frame_similarity_score.append(pd.DataFrame([dict_similarity_score]), ignore_index=True)
+
+    print(f'count of processed items on row {row} is : {sum_of_items}')
 
 data_frame_similarity_score.to_csv(f'{resources_directory}/output_similarity_score.txt', sep = '\t', index = False)
 data_frame_similarity_score.to_csv(f'{resources_directory}/output_similarity_score.csv', sep = '\t', index = False)
 
 
-
-
-
-
-
+if __name__ == '__main__':
+    print(dict_query_line)
 
 
