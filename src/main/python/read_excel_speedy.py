@@ -125,8 +125,6 @@ data_frame_similarity_score.to_csv(f'{resources_directory}/output_similarity_sco
 data_frame_similarity_score.to_csv(f'{resources_directory}/output_similarity_score.csv', sep = '\t', index = False)
 
 
-
-
 if __name__ == '__main__':
     print(dict_query_line)
 

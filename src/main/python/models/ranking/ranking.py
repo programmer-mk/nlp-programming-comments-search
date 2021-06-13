@@ -14,13 +14,6 @@ if operating_system == 'win32':
     RESOURCES_DIR = 'src\main/resources'
 
 
-def read_raw_data():
-    comments = pd.read_csv("../../../resources/raw_data/comments.csv", names=['ProgrammingLanguageName', 'QueryID',
-                                                                           'PairID', 'QueryText', 'CommentText',
-                                                                           'SimilarityScore'])
-    return comments
-
-
 def found_index_in_data(data, query_id, comment_text):
     return data[(data['QueryID'] == query_id) & (data['CommentText'] == comment_text)].index.values[0]
 
@@ -46,8 +39,6 @@ def process_ranking_query(query, all_data, data_set_queries_bow, data_set_commen
 
 
 def build_model(data_set_comments_bow, data_set_queries_bow):
-    #data_set_comments_bow_test = data_set_comments_bow.iloc[:3]
-    #data_set_queries_bow_test = data_set_queries_bow.iloc[:3]
     global all_data
     all_data = load_all_data()
     distinct_queries = all_data[['QueryText']].drop_duplicates(keep='first').values.tolist()
@@ -81,6 +72,7 @@ def evaluate_model(model):
         test_data_indexes = test_data_set.index.values.tolist()
 
         # throwing index out of bound exception. Why?
+        # TODO: next line should be removed and ranking to work without that, resolve this bug
         test_data_indexes = list(filter(lambda x: (x >= 0) and (x < len(cos_similarity_list)), test_data_indexes))
         print(f'lenght of test indexes: {len(test_data_indexes)}')
 
@@ -103,7 +95,9 @@ def start_ranking(data_set_comments, data_set_queries):
     print(f'Mean reciprocial rank is: {mrr}')
     print('Go to sleep please')
 
-
+"""
+    this main function is used just to validate cosinus similarity, functions are not called from here in original project flow
+"""
 if __name__ == '__main__':
     data_set = load_all_data()
     cv_unigram = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False)

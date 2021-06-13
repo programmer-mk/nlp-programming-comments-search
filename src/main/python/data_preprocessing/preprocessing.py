@@ -95,7 +95,6 @@ def write_data_frame_to_file(data_frame, file_path, file_name):
 
 def write_bow_data_frame_to_file(data_frame, file_path):
     data_frame.to_csv(f'{file_path}', sep = '\t', index = False)
-    #np.savetxt(f'{file_path}', data_frame.to_numpy(), fmt="%f")
 
 
 def prepare_files_for_stemming(data_frame, input_file_name):
@@ -131,8 +130,6 @@ def binary_bow(data_set, separate_query_and_comment_text):
     binary_tf = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False, binary=True)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
-        #binary_tf_comment = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False, binary=True)
-        #binary_tf_query = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False, binary=True)
         binary_tf.fit(data_set["Merged Text"])
         bow_comment = pd.DataFrame(binary_tf.fit_transform(data_set["CommentText"]).todense())
         bow_query = pd.DataFrame(binary_tf.fit_transform(data_set["QueryText"]).todense())
@@ -153,8 +150,6 @@ def frequency_filtering(data_set, separate_query_and_comment_text):
     freq_filter = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False,  min_df=0.03, max_df=0.97)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
-        #freq_filter_comment = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False,  min_df=0.1, max_df=0.9)
-        #freq_filter_query = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False,  min_df=0.1, max_df=0.9)
         freq_filter.fit(data_set["Merged Text"])
         bow_comment = pd.DataFrame(freq_filter.transform(data_set["CommentText"]).todense())
         bow_query = pd.DataFrame(freq_filter.transform(data_set["QueryText"]).todense())
@@ -167,29 +162,15 @@ def frequency_filtering(data_set, separate_query_and_comment_text):
         return bow, None
 
 
-# not used, consider this for deletion
-def idf(data_set):
-    data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
-    cv = CountVectorizer(lowercasing )
-    words = cv.fit_transform(data_set["Merged Text"])
-    tfidf_transformer = TfidfTransformer()
-    tfidf_transformer.fit_transform(words)
-    idf = pd.DataFrame({'feature_name':cv.get_feature_names(), 'idf_weights':tfidf_transformer.idf_})
-    return idf
-
-
 def tf(data_set, separate_query_and_comment_text):
     tf_vectorizer = TfidfVectorizer(ngram_range=(1, 1), use_idf=False, lowercase=False, analyzer='word') # this guy removes words with  only one character
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
-        #tf_vectorizer_comment = TfidfVectorizer(ngram_range=(1, 1), use_idf=False, lowercase=False, analyzer='word') # this guy removes words with  only one character
-        #tf_vectorizer_query = TfidfVectorizer(ngram_range=(1, 1), use_idf=False, lowercase=False, analyzer='word') # this guy removes words with  only one character
         tf_vectorizer.fit(data_set["Merged Text"])
         tfs_comment = tf_vectorizer.transform(data_set["CommentText"])
         tfs_query = tf_vectorizer.transform(data_set["QueryText"])
         return pd.DataFrame(tfs_comment.toarray()), pd.DataFrame(tfs_query.toarray())
     else:
-        # tfs = pd.DataFrame(tf_vectorizer.fit_transform(data_set["Merged Text"]).todense())
         tfs = tf_vectorizer.fit_transform(data_set["Merged Text"])
         pda = pd.DataFrame(tfs.toarray())
         return pda, None
@@ -200,8 +181,6 @@ def tf_idf(data_set, separate_query_and_comment_text):
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
 
     if separate_query_and_comment_text:
-        #tf_idf_vectorizer_comment = TfidfVectorizer(ngram_range=(1, 1), use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
-        #tf_idf_vectorizer_query = TfidfVectorizer(ngram_range=(1, 1), use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
         tf_idf_vectorizer.fit(data_set["Merged Text"])
         tf_idfs_comment = tf_idf_vectorizer.transform(data_set["CommentText"])
         tf_idfs_query = tf_idf_vectorizer.transform(data_set["QueryText"])
@@ -210,9 +189,7 @@ def tf_idf(data_set, separate_query_and_comment_text):
     else:
         tf_idfs = tf_idf_vectorizer.fit_transform(data_set["Merged Text"])
         print(tf_idf_vectorizer.get_feature_names())
-        #df_tf_idf = pd.DataFrame(tf_idfs, index=tf_idf_vectorizer.get_feature_names(),columns=["tf_idf_weights"])
         pda = pd.DataFrame(tf_idfs.toarray())
-        # return pd.DataFrame(pda)
         return pda, None
 
 
@@ -220,8 +197,6 @@ def bigrams(data_set, separate_query_and_comment_text):
     cv_bigram = CountVectorizer(ngram_range=(2, 2), lowercase=False)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
-        #cv_bigram_comment = CountVectorizer(ngram_range=(2, 2), lowercase=False)
-        #cv_bigram_query = CountVectorizer(ngram_range=(2, 2), lowercase=False)
         cv_bigram.fit(data_set["Merged Text"])
         bow_comment = pd.DataFrame(cv_bigram.transform(data_set["CommentText"]).todense())
         bow_query = pd.DataFrame(cv_bigram.transform(data_set["QueryText"]).todense())
@@ -238,8 +213,6 @@ def trigrams(data_set, separate_query_and_comment_text):
     cv_trigram = CountVectorizer(ngram_range=(3, 3), lowercase=False)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
-        #cv_trigram_comment = CountVectorizer(ngram_range=(3, 3), lowercase=False)
-        #cv_trigram_query = CountVectorizer(ngram_range=(3, 3), lowercase=False)
         cv_trigram.fit(data_set["Merged Text"])
         bow_comment = pd.DataFrame(cv_trigram.transform(data_set["CommentText"]).todense())
         bow_query = pd.DataFrame(cv_trigram.transform(data_set["QueryText"]).todense())
@@ -270,11 +243,11 @@ def lowercasing(data_set, separate_query_and_comment_text):
 
 
 processing_steps = {
-    #0: without_preprocessing,
-    #1: lowercasing,
-    #2: stemming_and_remove_stopwords,
-    #3: bigrams,
-    #4: trigrams,
+    0: without_preprocessing,
+    1: lowercasing,
+    2: stemming_and_remove_stopwords,
+    3: bigrams,
+    4: trigrams,
     5: tf,
     #6: idf, skipping for now, not sure that make sense doing it
     6: tf_idf,
