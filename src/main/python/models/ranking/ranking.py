@@ -70,13 +70,7 @@ def evaluate_model(model):
         test_data_set = build_random_data_set(target_index, row[1], all_data, 99)
         # these indexes are for random test data in original data set
         test_data_indexes = test_data_set.index.values.tolist()
-
-        # throwing index out of bound exception. Why?
-        # TODO: next line should be removed and ranking to work without that, resolve this bug
-        test_data_indexes = list(filter(lambda x: (x >= 0) and (x < len(cos_similarity_list)), test_data_indexes))
-        print(f'lenght of test indexes: {len(test_data_indexes)}')
-
-        test_data_similarity_vals = sorted([cos_similarity_list[index][0][0] for index in test_data_indexes], reverse=True)
+        test_data_similarity_vals = sorted([cos_similarity_list[index-1][0][0] for index in test_data_indexes], reverse=True)
 
         index_place = 0
         for comp_value in test_data_similarity_vals:
