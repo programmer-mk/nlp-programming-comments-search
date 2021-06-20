@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
 import operator
+from wordcloud import WordCloud
 
 operating_system = sys.platform
 resources_directory = '../resources'
@@ -22,7 +23,6 @@ Ranges:
     6) 20-25
     7) 25-30
     8) 30-35
-
 '''
 def comment_word_frequency_range(data):
     vectorizer = CountVectorizer()
@@ -34,9 +34,6 @@ def comment_word_frequency_range(data):
     for key in vectorizer.vocabulary_:
         value = vectorizer.vocabulary_[key]
         vectorizer.vocabulary_[key] = value / 99
-
-    #print("Vocabulary: ", vectorizer.vocabulary_)
-
 
     result_dict = {
         '30-35': 0,
@@ -69,24 +66,21 @@ def comment_word_frequency_range(data):
             result_dict['1-2'] = result_dict.get('1-2', 0) + 1
 
 
-
     plt.bar(*zip(*result_dict.items()))
     plt.xticks(rotation='vertical')
     plt.show()
 
 
 def comment_wordcloud(data):
-    # vectorizer = CountVectorizer()
-    # vectorizer.fit(data['CommentText'])
-    #
-    # print("Vocabulary: ", vectorizer.vocabulary_)
-    # top_10_words_vocabulary = dict(sorted(vectorizer.vocabulary_.items(), key=operator.itemgetter(1), reverse=True)[:10])
-    # print("Top N Vocabulary: ", top_10_words_vocabulary)
-    # plt.bar(*zip(*top_10_words_vocabulary.items()))
-    # plt.show()
-    pass
+    vectorizer = CountVectorizer()
+    vectorizer.fit(data['CommentText'])
+    print("Vocabulary: ", vectorizer.vocabulary_)
 
-    # implement here WordCloud logic
+    wordcloud = WordCloud(width=1000,height=1000).generate_from_frequencies(vectorizer.vocabulary_)
+    plt.figure(figsize=(9,6))
+    plt.imshow(wordcloud)
+    plt.axis('off')
+    plt.show()
 
 
 def comment_word_frequency(data):
@@ -94,9 +88,15 @@ def comment_word_frequency(data):
     vectorizer.fit(data['CommentText'])
 
     print("Vocabulary: ", vectorizer.vocabulary_)
-    top_10_words_vocabulary = dict(sorted(vectorizer.vocabulary_.items(), key=operator.itemgetter(1), reverse=True)[:10])
-    print("Top N Vocabulary: ", top_10_words_vocabulary)
-    plt.bar(*zip(*top_10_words_vocabulary.items()))
+    # look just for distinct comments
+    for key in vectorizer.vocabulary_:
+        value = vectorizer.vocabulary_[key]
+        vectorizer.vocabulary_[key] = value / 99
+
+    top_20_words_vocabulary = dict(sorted(vectorizer.vocabulary_.items(), key=operator.itemgetter(1), reverse=True)[:20])
+    print("Top N Vocabulary: ", top_20_words_vocabulary)
+    plt.bar(*zip(*top_20_words_vocabulary.items()))
+    plt.xticks(rotation='vertical')
     plt.show()
 
 
@@ -164,7 +164,9 @@ visualizations = {
     6: similarity_score_per_query,
     7: similarity_score_per_query,
     8: comment_word_frequency,
-    9: comment_word_frequency_range
+    9: comment_wordcloud,
+    10: comment_word_frequency_range,
+
 
 
 }
@@ -182,8 +184,9 @@ if __name__ == '__main__':
                        "5 - similarity score value 3 distribution per annotator \n" \
                        "6 -  similarity score per query top 10 largest \n" \
                        "7 - similarity score per query top 10 smallest \n" \
-                       "8 - most frequent words without preprocessing \n" \
-                       "9 -  most freqeunt words lowercasing \n"
+                       "8 - most frequent words \n" \
+                       "9 - most frequent words - wordcloud \n" \
+                       "10 -  most freqeunt words in ranges \n"
 
         option = int(input(menu_message))
         if option >= 1 or option <= 9:
