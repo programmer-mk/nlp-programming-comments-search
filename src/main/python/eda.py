@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
 import operator
 from wordcloud import WordCloud
+import numpy as np
 
 operating_system = sys.platform
 resources_directory = '../resources'
@@ -68,6 +69,44 @@ def comment_word_frequency_range(data):
 
     plt.bar(*zip(*result_dict.items()))
     plt.xticks(rotation='vertical')
+    plt.show()
+
+
+def count_avgerage_lengths_per_similarity_score(data):
+    data['comment_len'] = data['CommentText'].astype(str).apply(len)
+    data['word_count'] = data['CommentText'].apply(lambda x: len(str(x).split()))
+
+    zeroes_avg_comm_len = data[data['SimilarityScore'] == '0']['comment_len'].mean()
+    ones_avg_comm_len = data[data['SimilarityScore'] == '1']['comment_len'].mean()
+    twoes_avg_comm_len = data[data['SimilarityScore'] == '2']['comment_len'].mean()
+    threes_avg_comm_len = data[data['SimilarityScore'] == '3']['comment_len'].mean()
+
+    zeroes_avg_word_count = data[data['SimilarityScore'] == '0']['word_count'].mean()
+    ones_avg_word_count = data[data['SimilarityScore'] == '1']['word_count'].mean()
+    twoes_avg_word_count = data[data['SimilarityScore'] == '2']['word_count'].mean()
+    threes_avg_word_count = data[data['SimilarityScore'] == '3']['word_count'].mean()
+
+    labels = ['0', '1', '2', '3']
+    word_count_means = [zeroes_avg_word_count, ones_avg_word_count, twoes_avg_word_count, threes_avg_word_count]
+    comment_len_means = [zeroes_avg_comm_len, ones_avg_comm_len, twoes_avg_comm_len, threes_avg_comm_len]
+
+    x = np.arange(len(labels))  # the label locations
+    width = 0.35  # the width of the bars
+
+    fig, ax = plt.subplots()
+    rects1 = ax.bar(x - width/2, word_count_means, width, label='Word Count')
+    rects2 = ax.bar(x + width/2, comment_len_means, width, label='Sentence Lenght')
+
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    ax.set_ylabel('Count')
+    ax.set_xlabel('SimilarityScore')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.legend()
+
+    ax.bar_label(rects1, padding=3)
+    ax.bar_label(rects2, padding=3)
+    fig.tight_layout()
     plt.show()
 
 
@@ -166,7 +205,7 @@ visualizations = {
     8: comment_word_frequency,
     9: comment_wordcloud,
     10: comment_word_frequency_range,
-
+    11: count_avgerage_lengths_per_similarity_score,
 
 
 }
@@ -186,7 +225,8 @@ if __name__ == '__main__':
                        "7 - similarity score per query top 10 smallest \n" \
                        "8 - most frequent words \n" \
                        "9 - most frequent words - wordcloud \n" \
-                       "10 -  most freqeunt words in ranges \n"
+                       "10 -  most freqeunt words in ranges \n" \
+                       "11 - average comment lengths per similarity score \n"
 
         option = int(input(menu_message))
         if option >= 1 or option <= 9:
