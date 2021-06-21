@@ -131,8 +131,8 @@ def binary_bow(data_set, separate_query_and_comment_text):
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
         binary_tf.fit(data_set["Merged Text"])
-        bow_comment = pd.DataFrame(binary_tf.fit_transform(data_set["CommentText"]).todense())
-        bow_query = pd.DataFrame(binary_tf.fit_transform(data_set["QueryText"]).todense())
+        bow_comment = pd.DataFrame(binary_tf.transform(data_set["CommentText"]).todense())
+        bow_query = pd.DataFrame(binary_tf.transform(data_set["QueryText"]).todense())
         print(binary_tf.get_feature_names())
         return bow_comment, bow_query
     else:

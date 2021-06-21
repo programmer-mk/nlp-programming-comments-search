@@ -167,6 +167,11 @@ if __name__ == "__main__":
             elif option == 1:
                 print('Ranking started!')
                 preprocessed_data = preprocessing_data(True) # return two bag of words
+
+                '''
+                    set index 0, for testing purposing of each method increase this index and comment other preprocessing methods
+                    because of we don't want to load all data in RAM
+                '''
                 start_ranking(preprocessed_data[0][0], preprocessed_data[0][1])
 
             correct_input = True
