@@ -15,8 +15,8 @@ def train_model(train, test, fold_no):
     predictions = mnb.predict(X_test)
 
     #score = f1_score(y_test, predictions, average='weighted')
-    score = accuracy_score(y_test,predictions)
-    print('Fold',str(fold_no),'Accuracy:', accuracy_score(y_test,predictions))
+    score = f1_score(y_test, predictions, average='weighted')
+    print('Fold',str(fold_no),'F1 SCORE:', score)
     #print(f'Fold {fold_no}, f1_score: {score}')
     return score
 
@@ -34,7 +34,7 @@ def train_naive_bayes(data_frame):
         score = train_model(train,test,fold_no)
         average += score
         fold_no += 1
-    print("Average score of Naive Bayes is {:.2f}%".format(average / 10))
+    print("Average F1 SCORE: of Naive Bayes is {:.2f}%".format(average / 10))
 
 
 def naive_bayes_classifier(comments_data, processing_technique):

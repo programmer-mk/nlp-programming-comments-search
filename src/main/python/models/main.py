@@ -44,15 +44,15 @@ def initialize_data(all_data):
     global without_preprocessing_data, lowercasing_data, tf_data, tf_idf_data, stemm_stopwords_data, \
         frequency_filtering_data, bigrams_data, trigrams_data, binary_bow_data
 
-    without_preprocessing_data = all_data[0]
-    lowercasing_data = all_data[1]
-    stemm_stopwords_data = all_data[2]
-    bigrams_data = all_data[3]
-    trigrams_data = all_data[4]
-    tf_data = all_data[5]
-    tf_idf_data = all_data[6]
-    frequency_filtering_data = all_data[7]
-    binary_bow_data = all_data[8]
+    without_preprocessing_data = all_data[0][0]
+    lowercasing_data = all_data[1][0]
+    stemm_stopwords_data = all_data[2][0]
+    bigrams_data = all_data[3][0]
+    trigrams_data = all_data[4][0]
+    tf_data = all_data[5][0]
+    tf_idf_data = all_data[6][0]
+    frequency_filtering_data = all_data[7][0]
+    binary_bow_data = all_data[8][0]
 
 
 def load_preprocessed_data_from_disk():

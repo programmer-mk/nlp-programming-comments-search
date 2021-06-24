@@ -15,8 +15,8 @@ def train_model(train, test, fold_no, rf, c=1):
     svc = LinearSVC(penalty=rf, C=c, dual=rf == 'l2', max_iter=25000)
     svc.fit(X_train,y_train)
     predictions = svc.predict(X_test)
-    score = accuracy_score(y_test,predictions)
-    print('Fold',str(fold_no),'Accuracy:', score)
+    score = f1_score(y_test, predictions, average='weighted')
+    print('Fold',str(fold_no),'F1 SCORE:', score)
     return score
 
 
@@ -32,7 +32,7 @@ def compare_regularisation_functions(data_frame, rf):
         score = train_model(train,test,fold_no, rf)
         average += score
         fold_no += 1
-    print("Average score of Support Vector Machine  is {:.2f}%".format(average / 10))
+    print("Average F1 SCORE of Support Vector Machine  is {:.2f}%".format(average / 10))
 
 
 def optimize_c_parameter(train, test):
