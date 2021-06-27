@@ -35,9 +35,11 @@ data_target_column = None
 
 
 def apply_all_classifiers(data, processing_technique_applied):
-    naive_bayes.naive_bayes_classifier(data, processing_technique_applied)
+
+    print(f'data {data}')
     logistic_regression.logistic_regression_classifier(data, processing_technique_applied)
-    support_vector_machine.support_vector_classifier(data, processing_technique_applied)
+    #naive_bayes.naive_bayes_classifier(data, processing_technique_applied)
+    #support_vector_machine.support_vector_classifier(data, processing_technique_applied)
 
 
 def initialize_data(all_data):
@@ -113,9 +115,9 @@ def classifying():
     #print("----------  Inverse Document Frequency ----------")
     #apply_all_classifiers("idf.txt")
 
-    print("----------  Term Frequency–Inverse Document Frequency ----------")
-    tf_idf_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(tf_idf_data, 'TFIDF')
+    # print("----------  Term Frequency–Inverse Document Frequency ----------")
+    # tf_idf_data['SimilarityScore'] = data_target_column
+    # apply_all_classifiers(tf_idf_data, 'TFIDF')
 
     print("----------  Stemming and stopwords ----------")
     stemm_stopwords_data['SimilarityScore'] = data_target_column

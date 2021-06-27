@@ -247,7 +247,7 @@ processing_steps = {
     1: lowercasing,
     2: stemming_and_remove_stopwords,
     3: bigrams,
-    4: trigrams,
+    #4: trigrams,
     5: tf,
     #6: idf, skipping for now, not sure that make sense doing it
     6: tf_idf,
