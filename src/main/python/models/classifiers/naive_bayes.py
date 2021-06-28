@@ -1,9 +1,10 @@
 from sklearn.model_selection import StratifiedKFold
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import f1_score, accuracy_score
+from sklearn.metrics import f1_score, confusion_matrix
 
+PROCESSED_DATA_DIR = '../../resources/classification-results'
 
-def train_model(train, test, fold_no):
+def train_model(train, test, fold_no, processing_technique):
     y = ['SimilarityScore']
     y_train = train[y].values.ravel()
     X_train = train.drop(y, axis = 1)
@@ -14,14 +15,18 @@ def train_model(train, test, fold_no):
     mnb.fit(X_train, y_train)
     predictions = mnb.predict(X_test)
 
-    #score = f1_score(y_test, predictions, average='weighted')
     score = f1_score(y_test, predictions, average='weighted')
     print('Fold',str(fold_no),'F1 SCORE:', score)
-    #print(f'Fold {fold_no}, f1_score: {score}')
+    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}-fold-{fold_no}.txt", "a")
+    f.write("\n")
+    f.write(f"'Fold',{str(fold_no)},'F1 SCORE:',{score}")
+    f.write("\n")
+    f.write(f"{confusion_matrix(y_test, predictions, labels=['0','1','2','3'])}")
+    f.close()
     return score
 
 
-def train_naive_bayes(data_frame):
+def train_naive_bayes(data_frame, processing_technique):
     skf = StratifiedKFold(n_splits=10)
     data_frame.dropna(how='any', inplace=True)
     target = data_frame.loc[:,'SimilarityScore']
@@ -31,12 +36,17 @@ def train_naive_bayes(data_frame):
     for train_index, test_index in skf.split(data_frame, target):
         train = data_frame.iloc[train_index,:]
         test = data_frame.iloc[test_index,:]
-        score = train_model(train,test,fold_no)
+        score = train_model(train,test,fold_no, processing_technique)
         average += score
         fold_no += 1
     print("Average F1 SCORE: of Naive Bayes is {:.2f}%".format(average / 10))
+    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}-fold-average.txt", "a")
+    f.write("\n")
+    f.write("Average F1 SCORE of Logistic Regression is {:.2f}%".format(average / 10))
+    f.write("\n")
+    f.close()
 
 
 def naive_bayes_classifier(comments_data, processing_technique):
     print(f"Naive bayes classifier {processing_technique} data")
-    train_naive_bayes(comments_data)
+    train_naive_bayes(comments_data, processing_technique)

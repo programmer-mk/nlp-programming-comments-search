@@ -35,11 +35,10 @@ data_target_column = None
 
 
 def apply_all_classifiers(data, processing_technique_applied):
-
-    print(f'data {data}')
-    logistic_regression.logistic_regression_classifier(data, processing_technique_applied)
-    #naive_bayes.naive_bayes_classifier(data, processing_technique_applied)
-    #support_vector_machine.support_vector_classifier(data, processing_technique_applied)
+    print(f'data is: {data}')
+    #logistic_regression.logistic_regression_classifier(data, processing_technique_applied)
+    naive_bayes.naive_bayes_classifier(data, processing_technique_applied)
+    support_vector_machine.support_vector_classifier(data, processing_technique_applied)
 
 
 def initialize_data(all_data):
@@ -79,7 +78,8 @@ def load_preprocessed_data_from_disk():
     print('start reading frequency filter data ....')
     frequency_filtering_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/frequency_filtering.csv', sep='\t')
 
-    # #trigrams_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/trigrams.csv', sep='\t')
+    print('start reading trigrams data ....')
+    trigrams_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/trigrams.csv', sep='\t')
 
     print('start reading binary bow data....')
     binary_bow_data = pd.read_csv(f'{RESOURCES_DIR}/{PROCESSED_DATA_DIR}/binary_bow.csv', sep='\t')
@@ -111,10 +111,6 @@ def classifying():
     tf_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(tf_data, 'term frequency')
 
-    #double check this
-    #print("----------  Inverse Document Frequency ----------")
-    #apply_all_classifiers("idf.txt")
-
     # print("----------  Term Frequency–Inverse Document Frequency ----------")
     # tf_idf_data['SimilarityScore'] = data_target_column
     # apply_all_classifiers(tf_idf_data, 'TFIDF')
@@ -131,13 +127,13 @@ def classifying():
     bigrams_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(bigrams_data, 'bigrams')
 
-    # print("----------  Trigram preprocessing ----------")
-    # trigrams_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(trigrams_data, 'trigrams')
-
     print("----------  Binary Bag of Words ----------")
     binary_bow_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(binary_bow_data, 'binary bow')
+
+    print("----------  Trigram preprocessing ----------")
+    trigrams_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(trigrams_data, 'trigrams')
 
 
 if __name__ == "__main__":
