@@ -2,15 +2,23 @@ from sklearn.model_selection import StratifiedKFold, GridSearchCV, train_test_sp
 from sklearn.svm import LinearSVC
 from sklearn.metrics import f1_score, classification_report, confusion_matrix
 from .train_helper import train_test_init
+import sys
+sys.path.append("../data_preprocessing")
+from preprocessing import tf_idf
 
 PROCESSED_DATA_DIR = '../../resources/classification-results'
 
 def train_model(train, test, fold_no, rf, processing_technique, c=0.001):
+    print(train)
+    print("\n")
+    print(test)
     y = ['SimilarityScore']
     y_train = train[y].values.ravel()
     X_train = train.drop(y, axis = 1)
     y_test = test[y]
     X_test = test.drop(y, axis = 1)
+
+
 
 
     """
@@ -54,7 +62,18 @@ def compare_regularisation_functions(data_frame, rf, processing_technique):
     for train_index, test_index in skf.split(data_frame, target):
         train = data_frame.iloc[train_index,:]
         test = data_frame.iloc[test_index,:]
-        score = train_model(train,test,fold_no, rf, processing_technique)
+
+        if processing_technique == 'TFIDF':
+            train_preprocessed, vectorzer = tf_idf(train.copy(), False)
+            test_preprocessed, _ = tf_idf(test.copy(), False, vectorzer)
+
+            train_preprocessed['SimilarityScore'] = train['SimilarityScore'].values
+            test_preprocessed['SimilarityScore'] = test['SimilarityScore'].values
+        else:
+            train_preprocessed = train
+            test_preprocessed = test
+
+        score = train_model(train_preprocessed,test_preprocessed, fold_no, rf, processing_technique)
         average += score
         fold_no += 1
     print("Average F1 SCORE of Support Vector Machine  is {:.2f}%".format(average / 10))
@@ -65,8 +84,15 @@ def compare_regularisation_functions(data_frame, rf, processing_technique):
     f.close()
 
 
-def optimize_c_parameter(train, test):
+def optimize_c_parameter(train, test, processing_technique):
     X_train, y_train, X_test, y_test = train_test_init(train, test)
+
+    if processing_technique == 'TFIDF':
+        X_train_preprocessed, vectorzer = tf_idf(X_train.copy(), False)
+        X_test_preprocessed, _ = tf_idf(X_test.copy(), False, vectorzer)
+    else:
+        X_train_preprocessed = X_train
+        X_test_preprocessed = X_test
 
     # defining parameter range
     param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1]}
@@ -75,11 +101,11 @@ def optimize_c_parameter(train, test):
     grid = GridSearchCV(LinearSVC(max_iter=25000), param_grid, refit=True, verbose=3)
 
     # fitting the model for grid search
-    grid.fit(X_train, y_train.values.ravel())
+    grid.fit(X_train_preprocessed, y_train.values.ravel())
 
     # print best parameter after tuning
     print(grid.best_params_)
-    grid_predictions = grid.predict(X_test)
+    grid_predictions = grid.predict(X_test_preprocessed)
 
     # print classification report
     print(classification_report(y_test, grid_predictions))
@@ -96,5 +122,5 @@ def support_vector_classifier(comments_data, processing_technique_applied):
     # Optimizing C parameter
     print("> Results with optimized C parameter")
     train, test = train_test_split(comments_data, test_size=0.2, random_state=42, shuffle=True)
-    optimize_c_parameter(train, test)
+    optimize_c_parameter(train, test, processing_technique_applied)
 

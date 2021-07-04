@@ -36,9 +36,9 @@ data_target_column = None
 
 def apply_all_classifiers(data, processing_technique_applied):
     print(f'data is: {data}')
-    #logistic_regression.logistic_regression_classifier(data, processing_technique_applied)
-    naive_bayes.naive_bayes_classifier(data, processing_technique_applied)
-    support_vector_machine.support_vector_classifier(data, processing_technique_applied)
+    logistic_regression.logistic_regression_classifier(data, processing_technique_applied)
+    #naive_bayes.naive_bayes_classifier(data, processing_technique_applied)
+    #support_vector_machine.support_vector_classifier(data, processing_technique_applied)
 
 
 def initialize_data(all_data):
@@ -99,41 +99,44 @@ def load_target_column():
 
 
 def classifying():
-    print("----------  No preprocessing(BOW) ----------")
-    without_preprocessing_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(without_preprocessing_data, 'without processing')
 
-    print("----------  Lower casing ----------")
-    lowercasing_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(lowercasing_data, 'lowercasing')
-
-    print("----------  Term Frequency ----------")
-    tf_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(tf_data, 'term frequency')
-
+    # print("----------  No preprocessing(BOW) ----------")
+    # without_preprocessing_data['SimilarityScore'] = data_target_column
+    # apply_all_classifiers(without_preprocessing_data, 'without processing')
+    #
+    # print("----------  Lower casing ----------")
+    # lowercasing_data['SimilarityScore'] = data_target_column
+    # apply_all_classifiers(lowercasing_data, 'lowercasing')
+    #
+    # print("----------  Term Frequency ----------")
+    # tf_data['SimilarityScore'] = data_target_column
+    # apply_all_classifiers(tf_data, 'term frequency')
+    #
     # print("----------  Term Frequency–Inverse Document Frequency ----------")
     # tf_idf_data['SimilarityScore'] = data_target_column
     # apply_all_classifiers(tf_idf_data, 'TFIDF')
 
-    print("----------  Stemming and stopwords ----------")
-    stemm_stopwords_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(stemm_stopwords_data, 'stemming+stopwords')
 
-    print("----------  Frequency word filtering ----------")
-    frequency_filtering_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(frequency_filtering_data, 'frequency filtering')
-
-    print("----------  Bigram preprocessing ----------")
-    bigrams_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(bigrams_data, 'bigrams')
+    # print("----------  Stemming and stopwords ----------")
+    # stemm_stopwords_data['SimilarityScore'] = data_target_column
+    # apply_all_classifiers(stemm_stopwords_data, 'stemming+stopwords')
+    #
+    # print("----------  Frequency word filtering ----------")
+    # frequency_filtering_data['SimilarityScore'] = data_target_column
+    # apply_all_classifiers(frequency_filtering_data, 'frequency filtering')
 
     print("----------  Binary Bag of Words ----------")
     binary_bow_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(binary_bow_data, 'binary bow')
 
-    print("----------  Trigram preprocessing ----------")
-    trigrams_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(trigrams_data, 'trigrams')
+    print("----------  Bigram preprocessing ----------")
+    bigrams_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(bigrams_data, 'bigrams')
+
+
+    # print("----------  Trigram preprocessing ----------")
+    # trigrams_data['SimilarityScore'] = data_target_column
+    # apply_all_classifiers(trigrams_data, 'trigrams')
 
 
 if __name__ == "__main__":

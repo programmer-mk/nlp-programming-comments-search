@@ -18,6 +18,7 @@ MAIN_CONFIG_DIR = '../../config'
 PROCESSED_DATA_DIR = '../../resources/processed_data'
 RESOURCES_DIR = '../../resources'
 tokenizer = ToktokTokenizer()
+TF_IDF_VECTORIZER = None
 
 operating_system = sys.platform
 if operating_system == 'win32':
@@ -176,8 +177,12 @@ def tf(data_set, separate_query_and_comment_text):
         return pda, None
 
 
-def tf_idf(data_set, separate_query_and_comment_text):
-    tf_idf_vectorizer = TfidfVectorizer(ngram_range=(1, 1), use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
+def tf_idf(data_set, separate_query_and_comment_text, vectorizer = None):
+    if vectorizer is None:
+        tf_idf_vectorizer =  TfidfVectorizer(ngram_range=(1, 1), use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
+    else:
+        tf_idf_vectorizer = vectorizer
+
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
 
     if separate_query_and_comment_text:
@@ -187,10 +192,12 @@ def tf_idf(data_set, separate_query_and_comment_text):
         print(tf_idf_vectorizer.get_feature_names())
         return pd.DataFrame(tf_idfs_comment.toarray()) , pd.DataFrame(tf_idfs_query.toarray())
     else:
-        tf_idfs = tf_idf_vectorizer.fit_transform(data_set["Merged Text"])
+        if vectorizer is None:
+            tf_idf_vectorizer.fit(data_set["Merged Text"])
+        tf_idfs = tf_idf_vectorizer.transform(data_set["Merged Text"])
         print(tf_idf_vectorizer.get_feature_names())
         pda = pd.DataFrame(tf_idfs.toarray())
-        return pda, None
+        return pda, tf_idf_vectorizer
 
 
 def bigrams(data_set, separate_query_and_comment_text):
@@ -243,14 +250,14 @@ def lowercasing(data_set, separate_query_and_comment_text):
 
 
 processing_steps = {
-    0: without_preprocessing,
-    1: lowercasing,
+    #0: without_preprocessing,
+    #1: lowercasing,
     2: stemming_and_remove_stopwords,
     3: bigrams,
     #4: trigrams,
-    5: tf,
+    #5: tf,
     #6: idf, skipping for now, not sure that make sense doing it
-    6: tf_idf,
+    #6: tf_idf,
     7: frequency_filtering,
     8: binary_bow
 }
@@ -342,7 +349,10 @@ def preprocessing_data(separate_query_and_comment_text):
             preprocessed_data_comments, preprocessed_data_queries = start_processing(step, cleaned_data.copy(), False, separate_query_and_comment_text)
             all_preprocessed_data.append((preprocessed_data_comments, preprocessed_data_queries))
         else:
-            preprocessed_data, _ = start_processing(step, cleaned_data.copy(), False, separate_query_and_comment_text)
+            if step == 6:
+                preprocessed_data, _ = cleaned_data.copy(), None
+            else:
+                preprocessed_data, _ = start_processing(step, cleaned_data.copy(), False, separate_query_and_comment_text)
             all_preprocessed_data.append((preprocessed_data, None))
     return all_preprocessed_data
 

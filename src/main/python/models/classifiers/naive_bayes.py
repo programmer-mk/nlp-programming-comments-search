@@ -1,6 +1,9 @@
 from sklearn.model_selection import StratifiedKFold
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import f1_score, confusion_matrix
+import sys
+sys.path.append("../data_preprocessing")
+from preprocessing import tf_idf
 
 PROCESSED_DATA_DIR = '../../resources/classification-results'
 
@@ -36,7 +39,18 @@ def train_naive_bayes(data_frame, processing_technique):
     for train_index, test_index in skf.split(data_frame, target):
         train = data_frame.iloc[train_index,:]
         test = data_frame.iloc[test_index,:]
-        score = train_model(train,test,fold_no, processing_technique)
+
+        if processing_technique == 'TFIDF':
+            train_preprocessed, vectorzer = tf_idf(train.copy(), False)
+            test_preprocessed, _ = tf_idf(test.copy(), False, vectorzer)
+
+            train_preprocessed['SimilarityScore'] = train['SimilarityScore'].values
+            test_preprocessed['SimilarityScore'] = test['SimilarityScore'].values
+        else:
+            train_preprocessed = train
+            test_preprocessed = test
+
+        score = train_model(train_preprocessed,test_preprocessed,fold_no, processing_technique)
         average += score
         fold_no += 1
     print("Average F1 SCORE: of Naive Bayes is {:.2f}%".format(average / 10))
