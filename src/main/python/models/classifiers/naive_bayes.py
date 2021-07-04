@@ -20,7 +20,7 @@ def train_model(train, test, fold_no, processing_technique):
 
     score = f1_score(y_test, predictions, average='weighted')
     print('Fold',str(fold_no),'F1 SCORE:', score)
-    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}-fold-{fold_no}.txt", "a")
+    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}/{processing_technique}-fold-{fold_no}-nb.txt", "a")
     f.write("\n")
     f.write(f"'Fold',{str(fold_no)},'F1 SCORE:',{score}")
     f.write("\n")
@@ -54,7 +54,7 @@ def train_naive_bayes(data_frame, processing_technique):
         average += score
         fold_no += 1
     print("Average F1 SCORE: of Naive Bayes is {:.2f}%".format(average / 10))
-    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}-fold-average.txt", "a")
+    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}/{processing_technique}-fold-average-nb.txt", "a")
     f.write("\n")
     f.write("Average F1 SCORE of Logistic Regression is {:.2f}%".format(average / 10))
     f.write("\n")

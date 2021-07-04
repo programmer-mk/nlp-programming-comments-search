@@ -19,8 +19,6 @@ def train_model(train, test, fold_no, rf, processing_technique, c=0.001):
     X_test = test.drop(y, axis = 1)
 
 
-
-
     """
        update class weights to handle imbalanced data
    """
@@ -43,7 +41,7 @@ def train_model(train, test, fold_no, rf, processing_technique, c=0.001):
     score = f1_score(y_test, predictions, average='weighted')
     print('Fold',str(fold_no),'F1 SCORE:', score)
 
-    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}-{rf}-fold-{fold_no}.txt", "a")
+    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}/{processing_technique}-{rf}-fold-{fold_no}-svm.txt", "a")
     f.write("\n")
     f.write(f"'Fold',{str(fold_no)},'F1 SCORE:',{score}")
     f.write("\n")
@@ -77,7 +75,7 @@ def compare_regularisation_functions(data_frame, rf, processing_technique):
         average += score
         fold_no += 1
     print("Average F1 SCORE of Support Vector Machine  is {:.2f}%".format(average / 10))
-    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}-{rf}-fold-average.txt", "a")
+    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}/{processing_technique}-{rf}-fold-average-svm.txt", "a")
     f.write("\n")
     f.write("Average F1 SCORE of Logistic Regression is {:.2f}%".format(average / 10))
     f.write("\n")

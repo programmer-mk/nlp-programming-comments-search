@@ -8,6 +8,8 @@ import sys
 sys.path.append("../data_preprocessing")
 from preprocessing import tf_idf
 
+PROCESSED_DATA_DIR = '../../resources/classification-results'
+
 def train_model(train, test, fold_no, rf, processing_technique, c=0.01):
     y = ['SimilarityScore']
     y_train = train[y].values.ravel()
@@ -53,7 +55,7 @@ def train_model(train, test, fold_no, rf, processing_technique, c=0.01):
     print(confusion_matrix(y_test, predictions, labels=['0','1','2','3']))
     score = f1_score(y_test, predictions, average='weighted')
 
-    f = open(f"{processing_technique}-{rf}-fold-{fold_no}-lg.txt", "a")
+    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}/{processing_technique}-{rf}-fold-{fold_no}-lg.txt", "a")
     f.write("\n")
     f.write(f"'Fold',{str(fold_no)},'F1 SCORE:',{score}")
     f.write("\n")
@@ -88,7 +90,7 @@ def compare_regularisation_functions(data_frame, rf, processing_technique):
         score = train_model(train_preprocessed,test_preprocessed,fold_no, rf, processing_technique)
         average += score
         fold_no += 1
-    f = open(f"{processing_technique}-{rf}-fold-average-lg.txt", "a")
+    f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}/{processing_technique}-{rf}-fold-average-lg.txt", "a")
     f.write("\n")
     f.write("Average F1 SCORE of Logistic Regression is {:.2f}%".format(average / 10))
     f.write("\n")
