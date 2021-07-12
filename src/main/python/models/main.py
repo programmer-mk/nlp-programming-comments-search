@@ -5,6 +5,7 @@ import pandas as pd
 from classifiers import logistic_regression
 from classifiers import naive_bayes
 from classifiers import support_vector_machine
+import os
 
 from src.main.python.models.ranking.ranking import start_ranking
 
@@ -35,10 +36,9 @@ data_target_column = None
 
 
 def apply_all_classifiers(data, processing_technique_applied):
-    print(f'data is: {data}')
+    naive_bayes.naive_bayes_classifier(data, processing_technique_applied)
+    support_vector_machine.support_vector_classifier(data, processing_technique_applied)
     logistic_regression.logistic_regression_classifier(data, processing_technique_applied)
-    #naive_bayes.naive_bayes_classifier(data, processing_technique_applied)
-    #support_vector_machine.support_vector_classifier(data, processing_technique_applied)
 
 
 def initialize_data(all_data):
@@ -100,43 +100,61 @@ def load_target_column():
 
 def classifying():
 
-    # print("----------  No preprocessing(BOW) ----------")
-    # without_preprocessing_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(without_preprocessing_data, 'without processing')
-    #
-    # print("----------  Lower casing ----------")
-    # lowercasing_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(lowercasing_data, 'lowercasing')
-    #
-    # print("----------  Term Frequency ----------")
-    # tf_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(tf_data, 'term frequency')
-    #
-    # print("----------  Term Frequency–Inverse Document Frequency ----------")
-    # tf_idf_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(tf_idf_data, 'TFIDF')
+    print("----------  No preprocessing(BOW) ----------")
+    if not os.path.exists('../../resources/classification-results/without-processing'):
+        os.mkdir('../../resources/classification-results/without-processing')
+    without_preprocessing_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(without_preprocessing_data, 'without-processing')
+
+    print("----------  Lower casing ----------")
+    if not os.path.exists('../../resources/classification-results/lowercasing'):
+        os.mkdir('../../resources/classification-results/lowercasing')
+    lowercasing_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(lowercasing_data, 'lowercasing')
+
+    print("----------  Term Frequency ----------")
+    if not os.path.exists('../../resources/classification-results/term-frequency'):
+        os.mkdir('../../resources/classification-results/term-frequency')
+    tf_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(tf_data, 'term-frequency')
+
+    print("----------  Term Frequency–Inverse Document Frequency ----------")
+    if not os.path.exists('../../resources/classification-results/TF-IDF'):
+        os.mkdir('../../resources/classification-results/TF-IDF')
+    tf_idf_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(tf_idf_data, 'TF-IDF')
 
 
-    # print("----------  Stemming and stopwords ----------")
-    # stemm_stopwords_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(stemm_stopwords_data, 'stemming+stopwords')
-    #
-    # print("----------  Frequency word filtering ----------")
-    # frequency_filtering_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(frequency_filtering_data, 'frequency filtering')
+    print("----------  Stemming and stopwords ----------")
+    if not os.path.exists('../../resources/classification-results/stemming+stopwords'):
+        os.mkdir('../../resources/classification-results/stemming+stopwords')
+    stemm_stopwords_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(stemm_stopwords_data, 'stemming+stopwords')
+
+    print("----------  Frequency word filtering ----------")
+    if not os.path.exists('../../resources/classification-results/frequency-filtering'):
+        os.mkdir('../../resources/classification-results/frequency-filtering')
+    frequency_filtering_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(frequency_filtering_data, 'frequency-filtering')
 
     print("----------  Binary Bag of Words ----------")
+    if not os.path.exists('../../resources/classification-results/binary-bow'):
+        os.mkdir('../../resources/classification-results/binary-bow')
     binary_bow_data['SimilarityScore'] = data_target_column
-    apply_all_classifiers(binary_bow_data, 'binary bow')
+    apply_all_classifiers(binary_bow_data, 'binary-bow')
 
     print("----------  Bigram preprocessing ----------")
+    if not os.path.exists('../../resources/classification-results/bigrams'):
+        os.mkdir('../../resources/classification-results/bigrams')
     bigrams_data['SimilarityScore'] = data_target_column
     apply_all_classifiers(bigrams_data, 'bigrams')
 
 
-    # print("----------  Trigram preprocessing ----------")
-    # trigrams_data['SimilarityScore'] = data_target_column
-    # apply_all_classifiers(trigrams_data, 'trigrams')
+    print("----------  Trigram preprocessing ----------")
+    if not os.path.exists('../../resources/classification-results/trigrams'):
+        os.mkdir('../../resources/classification-results/trigrams')
+    trigrams_data['SimilarityScore'] = data_target_column
+    apply_all_classifiers(trigrams_data, 'trigrams')
 
 
 if __name__ == "__main__":

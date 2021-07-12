@@ -7,6 +7,7 @@ from preprocessing import tf_idf
 
 PROCESSED_DATA_DIR = '../../resources/classification-results'
 
+
 def train_model(train, test, fold_no, processing_technique):
     y = ['SimilarityScore']
     y_train = train[y].values.ravel()
@@ -40,7 +41,7 @@ def train_naive_bayes(data_frame, processing_technique):
         train = data_frame.iloc[train_index,:]
         test = data_frame.iloc[test_index,:]
 
-        if processing_technique == 'TFIDF':
+        if processing_technique == 'TF-IDF':
             train_preprocessed, vectorzer = tf_idf(train.copy(), False)
             test_preprocessed, _ = tf_idf(test.copy(), False, vectorzer)
 

@@ -18,20 +18,14 @@ def train_model(train, test, fold_no, rf, processing_technique, c=0.001):
     y_test = test[y]
     X_test = test.drop(y, axis = 1)
 
-
-    """
-       update class weights to handle imbalanced data
-   """
-    zero_wieight = float(train.shape[0] / train[train['SimilarityScore'] == '0'].shape[0] * 4)
-    ones_wieight = float(train.shape[0] / train[train['SimilarityScore'] == '1'].shape[0] * 4)
-    twoes_wieight = float(train.shape[0] / train[train['SimilarityScore'] == '2'].shape[0] * 4)
-    threes_wieight = float(train.shape[0] / train[train['SimilarityScore'] == '3'].shape[0] * 4)
+    from sklearn.utils.class_weight import compute_class_weight
+    weights = compute_class_weight('balanced', ['0','1','2','3'], y_train)
 
     class_weights = {
-        '0': zero_wieight,
-        '1': ones_wieight,
-        '2': twoes_wieight,
-        '3':threes_wieight
+        '0': weights[0],
+        '1': weights[1] * 12,
+        '2': weights[2] * 12,
+        '3':weights[3] * 12
     }
 
     # try this: OneVsRestClassifier(LinearSVC(penalty=rf, C=c, dual=rf == 'l2', max_iter=25000), n_jobs=-1)
@@ -61,7 +55,7 @@ def compare_regularisation_functions(data_frame, rf, processing_technique):
         train = data_frame.iloc[train_index,:]
         test = data_frame.iloc[test_index,:]
 
-        if processing_technique == 'TFIDF':
+        if processing_technique == 'TF-IDF':
             train_preprocessed, vectorzer = tf_idf(train.copy(), False)
             test_preprocessed, _ = tf_idf(test.copy(), False, vectorzer)
 
@@ -85,7 +79,7 @@ def compare_regularisation_functions(data_frame, rf, processing_technique):
 def optimize_c_parameter(train, test, processing_technique):
     X_train, y_train, X_test, y_test = train_test_init(train, test)
 
-    if processing_technique == 'TFIDF':
+    if processing_technique == 'TF-IDF':
         X_train_preprocessed, vectorzer = tf_idf(X_train.copy(), False)
         X_test_preprocessed, _ = tf_idf(X_test.copy(), False, vectorzer)
     else:

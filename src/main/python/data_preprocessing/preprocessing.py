@@ -18,7 +18,6 @@ MAIN_CONFIG_DIR = '../../config'
 PROCESSED_DATA_DIR = '../../resources/processed_data'
 RESOURCES_DIR = '../../resources'
 tokenizer = ToktokTokenizer()
-TF_IDF_VECTORIZER = None
 
 operating_system = sys.platform
 if operating_system == 'win32':
@@ -201,7 +200,7 @@ def tf_idf(data_set, separate_query_and_comment_text, vectorizer = None):
 
 
 def bigrams(data_set, separate_query_and_comment_text):
-    cv_bigram = CountVectorizer(ngram_range=(2, 2), lowercase=False)
+    cv_bigram = CountVectorizer(ngram_range=(2, 2), lowercase=False, max_features=5000)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
         cv_bigram.fit(data_set["Merged Text"])
@@ -217,7 +216,7 @@ def bigrams(data_set, separate_query_and_comment_text):
 
 
 def trigrams(data_set, separate_query_and_comment_text):
-    cv_trigram = CountVectorizer(ngram_range=(3, 3), lowercase=False)
+    cv_trigram = CountVectorizer(ngram_range=(3, 3), lowercase=False, max_features=5000)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
         cv_trigram.fit(data_set["Merged Text"])
@@ -250,14 +249,13 @@ def lowercasing(data_set, separate_query_and_comment_text):
 
 
 processing_steps = {
-    #0: without_preprocessing,
-    #1: lowercasing,
+    0: without_preprocessing,
+    1: lowercasing,
     2: stemming_and_remove_stopwords,
     3: bigrams,
-    #4: trigrams,
-    #5: tf,
-    #6: idf, skipping for now, not sure that make sense doing it
-    #6: tf_idf,
+    4: trigrams,
+    5: tf,
+    6: tf_idf,
     7: frequency_filtering,
     8: binary_bow
 }
