@@ -1,0 +1,7 @@
+/// Sortiranje string vrednost opadajuce.
+
+public IEnumerable<string> SortirajStringoveOpadajuce(IEnumerable<string> stringovi)
+        {
+            var stringoviOpadajuce = stringovi?.OrderByDescending(str => str);
+            return stringoviOpadajuce;  
+        }

@@ -1,0 +1,9 @@
+/// Ova metoda dohvata prvi element iz prioritetnog reda, tj. onaj koji je najmanji.
+
+public T Dequeue()
+        {
+            var item = _priorityQueue[0];
+            _priorityQueue.RemoveAt(0);
+
+            return item;
+        }

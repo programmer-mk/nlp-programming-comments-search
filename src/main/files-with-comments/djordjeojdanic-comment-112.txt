@@ -1,0 +1,46 @@
+Dohvati originalnu cenu akcije sa Yahoo Finance
+
+public static async Task<string> GetRawAsync(string symbol, DateTime start, DateTime end, string eventType = "history")
+        {
+            string csvData = null;
+
+            try
+            {
+                var url = "https://query1.finance.yahoo.com/v7/finance/download/{0}?period1={1}&period2={2}&interval=1d&events={3}&crumb={4}";
+
+                //if no token found, refresh it
+                if (string.IsNullOrEmpty(Token.Cookie) || string.IsNullOrEmpty(Token.Crumb))
+                {
+                    if (!await Token.RefreshAsync(symbol).ConfigureAwait(false))
+                        return await GetRawAsync(symbol, start, end).ConfigureAwait(false);
+                }
+
+                url = string.Format(url, symbol, Math.Round(DateTimeConverter.ToUnixTimestamp(start), 0),
+                    Math.Round(DateTimeConverter.ToUnixTimestamp(end), 0), eventType, Token.Crumb);
+
+                using (var wc = new WebClient())
+                {
+                    wc.Headers.Add(HttpRequestHeader.Cookie, Token.Cookie);
+                    csvData = await wc.DownloadStringTaskAsync(url).ConfigureAwait(false);
+                }
+            }
+            catch (WebException webEx)
+            {
+                var response = (HttpWebResponse)webEx.Response;
+
+                //Re-fetching token
+                if (response.StatusCode != HttpStatusCode.Unauthorized ||
+                    response.StatusCode != HttpStatusCode.NotFound) throw;
+                Debug.Print(webEx.Message);
+                Token.Cookie = "";
+                Token.Crumb = "";
+                Debug.Print("Re-fetch token");
+                return await GetRawAsync(symbol, start, end).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+            }
+
+            return csvData;
+        }

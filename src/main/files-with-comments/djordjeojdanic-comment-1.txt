@@ -1,0 +1,19 @@
+//Kontroler: Obrisi
+
+public IActionResult Obrisi(int id)
+{
+    var z = _context.Softver.Find(id);
+    if (z == null)
+    {
+        TempData["porukaError"] = "Greška pri brisanju zaposlenika!!!";
+    }
+    else
+    {
+        _context.Remove(z);
+        _context.SaveChanges();
+        TempData["porukaSuccess"] = "Uspjesno ste obrisali zaposlenika!";
+    }
+
+    _context.Dispose();
+    return RedirectToAction(nameof(Index));         
+}

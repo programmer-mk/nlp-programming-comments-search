@@ -1,0 +1,9 @@
+/// <summary>
+/// Povezivanje sa drugim event blokom. Poziv metode automatski popunjava
+/// graf event blokova.
+/// </summary>
+
+public virtual EventEdge<EventBlock> ConnectToBlock(EventBlock block)
+{
+            return Simulator.ConnectBlocks(this, block);
+}

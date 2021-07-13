@@ -1,0 +1,24 @@
+//metoda za računanje determinante matrice formirana rekurzivno
+
+static double CalcDet(Matrix input)
+{
+            int order = input.BrKolona ;
+            if (order > 2)
+            {
+                double value = 0;
+                for (int j = 0; j < order; j++)
+                {
+                    Matrix Temp = CreateSmallerMatrix(input, 0, j);
+                    value = value + input[0, j] * (SignOfElement(0, j) * CalcDet(Temp));
+                }
+                return value;
+            }
+            else if (order == 2)
+            {
+                return ((input[0, 0] * input[1, 1]) - (input[1, 0] * input[0, 1]));
+            }
+            else
+            {
+                return (input[0, 0]);
+            }
+}

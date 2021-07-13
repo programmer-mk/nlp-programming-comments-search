@@ -1,0 +1,14 @@
+/// <summary>
+/// Slucajna vrednost po Eksponencijalnoj raspodeli.
+/// </summary>
+
+public override double NextValue()
+{
+            double u = randObj.NextDouble();
+
+            //Vrsimo proveru posto log(0) nije definisano.
+            if (u == 0.0)
+                u = double.Epsilon;
+
+            return -1 / a * Math.Log(u);
+}

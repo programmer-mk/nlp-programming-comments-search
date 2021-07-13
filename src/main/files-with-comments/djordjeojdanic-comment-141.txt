@@ -1,0 +1,26 @@
+Konfigurise HTML tagove kao sto su podrazumevani za ASP.NET
+ 
+public static IServiceCollection AddHtmlTags(this IServiceCollection services, params HtmlConventionRegistry[] registries)
+        {
+            var library = new HtmlConventionLibrary();
+            var defaultRegistry = new HtmlConventionRegistry()
+                .DefaultModifiers()
+                .ModelMetadata();
+
+            var defaultBuilders = new HtmlConventionRegistry()
+                .DefaultBuilders()
+                .ModelStateBuilders()
+                .DefaultNamingConvention()
+                .ModelStateNamingConvention();
+
+            defaultRegistry.Apply(library);
+
+            foreach (var registry in registries)
+            {
+                registry.Apply(library);
+            }
+
+            defaultBuilders.Apply(library);
+
+            return services.AddHtmlTags(library);
+        } 

@@ -1,0 +1,6 @@
+//slobodna funkcija za apdejt fajla baze
+
+public void updateDatabase(string fileName)
+{
+            serializer.SerializeToTxt(CitiesDB, fileName);
+}

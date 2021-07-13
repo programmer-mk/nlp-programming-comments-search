@@ -1,0 +1,7 @@
+/// Ova metoda dodaje element na kraj prioritetnog reda, a zatim sortira elemente u rastuci redosled.
+
+public void Enqueue(T item)
+        {
+            _priorityQueue.Add(item);
+            _priorityQueue.Sort();
+        }

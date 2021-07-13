@@ -1,0 +1,10 @@
+/// Radi konverziju string-a u int.
+
+public int ConvertStringToInt(string strValue)
+        {
+            bool isConversionValid = int.TryParse(strValue, out int intValue);
+
+            return isConversionValid
+                ? intValue
+                : 0;
+        }

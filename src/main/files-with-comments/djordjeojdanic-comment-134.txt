@@ -1,0 +1,16 @@
+Ovo je u situaciji kada duzina liste nije jos jednaka maksimalnoj duzini liste. Radi, ali mozda nije najbolji kod.
+		
+public List<String> addToFirst(List<String> list, String text)
+        {
+            if (list.Count < 1) // this is for the state if the list is empty (maybe could be in some other place?)
+            {
+                list.Add(text);
+                return list;
+            }
+
+            String lastText = list[(list.Count - 1)]; // We need to add that last index later when list shifted right.
+            list = MoveTextToFirst(list, text); // shifts list to 1 right and puts the text in first index
+            list.Add(lastText); // Adds the last index to new last.
+            return list;
+
+        }		

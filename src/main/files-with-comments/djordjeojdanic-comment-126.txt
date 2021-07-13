@@ -1,0 +1,8 @@
+Azuriranje koordinantnih vrednosti kada se koristi eager-loading
+
+ internal void ToCartesian(Coordinate coordinate)
+        {
+            x = Math.Cos(coordinate.Latitude.ToRadians()) * Math.Cos(coordinate.Longitude.ToRadians());
+            y = Math.Cos(coordinate.Latitude.ToRadians()) * Math.Sin(coordinate.Longitude.ToRadians());
+            z = Math.Sin(coordinate.Latitude.ToRadians());
+        }

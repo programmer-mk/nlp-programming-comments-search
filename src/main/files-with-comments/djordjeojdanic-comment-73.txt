@@ -1,0 +1,13 @@
+/// Konvertuj broj u bool vrednost
+
+public bool Int2Bool(int val) 
+        {
+            if (val != 0)
+            {
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
+        }

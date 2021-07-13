@@ -1,0 +1,9 @@
+/// Inicijalizuje niz tako da svi elementi dobiju vrednost -1.
+
+public void InitIntArray(int[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = -1;
+            }
+        }

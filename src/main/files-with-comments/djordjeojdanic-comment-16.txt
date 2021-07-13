@@ -1,0 +1,25 @@
+/// <summary>
+/// Slucajna vrednost po Normalnoj raspodeli. Optimizovan algoritam.
+/// </summary>
+
+public override double NextValue()
+{
+            double fac, rsq, v1, v2;
+            if (iset != 0)
+            {
+                iset = 0;
+                return gset;
+            }
+
+            do
+            {
+                v1 = 2.0 * randObj.NextDouble() - 1.0;
+                v2 = 2.0 * randObj.NextDouble() - 1.0;
+                rsq = v1 * v1 + v2 * v2;
+            } while (rsq >= 1.0 || rsq == 0.0);
+
+            fac = Math.Sqrt(-2.0 * Math.Log(rsq) / rsq);
+            gset = psi * v1 * fac + m;
+            iset = 1;
+            return psi * v2 * fac + m;
+}

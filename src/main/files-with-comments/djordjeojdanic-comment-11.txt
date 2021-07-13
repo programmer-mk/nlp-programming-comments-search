@@ -1,0 +1,26 @@
+/// <summary>
+/// Abstraktna klasa koje je osnova za konkretne
+/// klase diskretnih i kontinualnih raspodela.
+/// </summary>
+
+public abstract class Distribution<T>
+{
+        protected DistributionType distributionType;
+        protected Random randObj;
+
+        public Distribution(int seed = -1)
+        {
+            randObj = new Random(seed == -1 ? DateTime.Now.Millisecond : seed);
+        }
+
+        public DistributionType DType
+        {
+            get { return distributionType; }
+        }
+
+        /// <summary>
+        /// Metoda koji implementiramo u izvedenim klasama.
+        /// </summary>
+        /// <returns></returns>
+        public abstract T NextValue();
+}

@@ -1,0 +1,15 @@
+Proverava da li postoje direktorijum i fajl za json fajl
+
+ public void CreateJsonFile()
+        {
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            string path = Path.Combine(directory, filename);
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close(); // need to remember to close
+            }
+        }

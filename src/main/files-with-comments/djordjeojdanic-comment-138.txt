@@ -1,0 +1,13 @@
+Proverava da li tekstualni fajl sadrzi tekst.
+
+public bool CheckIfHasAlready(List<string> list, String text)
+        {
+            foreach (string currentText in list)
+            {
+                if (currentText == text)
+                {
+                    return true;
+                }
+            }
+            return false;
+        } 

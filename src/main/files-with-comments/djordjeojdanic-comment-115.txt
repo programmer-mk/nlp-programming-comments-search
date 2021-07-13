@@ -1,0 +1,42 @@
+Dohvati vrednost mrvice iz HTML-a
+
+ private static async Task<string> GetCrumbAsync(string html)
+        {
+            return await Task.Run(() =>
+            {
+                string crumb = null;
+
+                try
+                {
+                    //initialize on first time use
+                    if (_regexCrumb == null)
+                        _regexCrumb = new Regex("CrumbStore\":{\"crumb\":\"(?<crumb>.+?)\"}",
+                            RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+                    var matches = _regexCrumb.Matches(html);
+
+                    if (matches.Count > 0)
+                    {
+                        crumb = matches[0].Groups["crumb"].Value;
+
+                        //fixed unicode character 'SOLIDUS'
+                        if (crumb.Length != 11)
+                            crumb = crumb.Replace("\\u002F", "/");
+                    }
+                    else
+                    {
+                        Debug.Print("Regex no match");
+                    }
+
+                    //prevent regex memory leak
+                    matches = null;
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print(ex.Message);
+                }
+
+                GC.Collect();
+                return crumb;
+            }).ConfigureAwait(false);
+        }

@@ -1,0 +1,22 @@
+Dekodovanje kodovanog stringa u niz bajtova.
+ 
+public static byte[] Decode(EncodingType type, string input)
+        {
+            switch (type)
+            {
+                case EncodingType.Base64:
+                    return Convert.FromBase64String(input);
+                case EncodingType.Base64Url:
+                    return Base64Url.FromBase64ForUrlString(input);
+                case EncodingType.Base32Url:
+                    return Base32Url.FromBase32String(input);
+                case EncodingType.ZBase32:
+                    return new Base32Url(false, false, true, Base32Url.ZBase32Alphabet).Decode(input);
+                case EncodingType.Base32LowProfanity:
+                    return new Base32Url(false, true, true, Base32Url.Base32LowProfanityAlphabet).Decode(input);
+                case EncodingType.Base32Crockford:
+                    return new Base32Url(false, true, true, Base32Url.Base32CrockfordHumanFriendlyAlphabet).Decode(input);
+                default:
+                    throw new NotImplementedException("Encoding type not implemented: " + type);
+            }
+        } 

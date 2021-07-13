@@ -1,0 +1,11 @@
+/// <summary>
+/// Sledeca zadata vrednost.
+/// </summary>
+
+public override double NextValue()
+{
+            if (enumerator.MoveNext())
+                return enumerator.Current;
+
+            throw new Exception("All values have been iterated.");
+}

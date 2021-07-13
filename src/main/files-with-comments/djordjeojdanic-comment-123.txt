@@ -1,0 +1,69 @@
+Dodaje novi kolacic u Set-Cookie zaglavlje. Ako je kolacic veci od zadate velicine, onda ce on biti podeljen u nekoliko kolacica po sledecem principu: Set-Cookie: CookieName=chunks-3; path=/, Set-Cookie: CookieNameC1=Segment1; path=/, Set-Cookie: CookieNameC2=Segment2; path=/, Set-Cookie: CookieNameC3=Segment3; path=/
+
+public void AppendResponseCookie(HttpContext context, string key, string value, CookieOptions options)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            var template = new SetCookieHeaderValue(key)
+            {
+                Domain = options.Domain,
+                Expires = options.Expires,
+                HttpOnly = options.HttpOnly,
+                Path = options.Path,
+                Secure = options.Secure,
+            };
+
+            var templateLength = template.ToString().Length;
+
+            value = value ?? string.Empty;
+
+            // Normal cookie
+            var responseCookies = context.Response.Cookies;
+            if (!_cookieManagerOptions.ChunkSize.HasValue || _cookieManagerOptions.ChunkSize.Value > templateLength + value.Length)
+            {
+                responseCookies.Append(key, value, options);
+            }
+            else if (_cookieManagerOptions.ChunkSize.Value < templateLength + 10)
+            {
+                // 10 is the minimum data we want to put in an individual cookie, including the cookie chunk identifier "CXX".
+                // No room for data, we can't chunk the options and name
+                throw new InvalidOperationException("The cookie key and options are larger than ChunksSize, leaving no room for data.");
+            }
+            else
+            {
+                // Break the cookie down into multiple cookies.
+                // Key = CookieName, value = "Segment1Segment2Segment2"
+                // Set-Cookie: CookieName=chunks-3; path=/
+                // Set-Cookie: CookieNameC1="Segment1"; path=/
+                // Set-Cookie: CookieNameC2="Segment2"; path=/
+                // Set-Cookie: CookieNameC3="Segment3"; path=/
+                var dataSizePerCookie = _cookieManagerOptions.ChunkSize.Value - templateLength - 3; // Budget 3 chars for the chunkid.
+                var cookieChunkCount = (int)Math.Ceiling(value.Length * 1.0 / dataSizePerCookie);
+
+                responseCookies.Append(key, ChunkCountPrefix + cookieChunkCount.ToString(CultureInfo.InvariantCulture), options);
+
+                var offset = 0;
+                for (var chunkId = 1; chunkId <= cookieChunkCount; chunkId++)
+                {
+                    var remainingLength = value.Length - offset;
+                    var length = Math.Min(dataSizePerCookie, remainingLength);
+                    var segment = value.Substring(offset, length);
+                    offset += length;
+
+                    responseCookies.Append(key + ChunkKeySuffix + chunkId.ToString(CultureInfo.InvariantCulture), segment, options);
+                }
+            }
+        }
