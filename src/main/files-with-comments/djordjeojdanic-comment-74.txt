@@ -1,0 +1,7 @@
+/// Ova metoda radi konverziju int vrednosti u bool vrednost
+
+public bool KonvertujIntUBool(int intVrednost) 
+        {
+            bool izlaz = bool.Parse(intVrednost.ToString());
+            return izlaz;
+        }

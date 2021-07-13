@@ -1,0 +1,11 @@
+Pomera elemente za jedan udesno i dodaje novi element na prvu poziciju. Poslednji element se brise.
+
+public List<String> MoveTextToFirst(List<String> list, String text)
+        {
+            for (int i = list.Count - 2; i >= 0; i--)
+            {
+                list[i + 1] = list[i];
+            }
+            list[0] = text;
+            return list;
+        }

@@ -1,0 +1,14 @@
+/// Konvertuje json string u xml string.
+
+public string ConvertJSONToXML(string json, string rootName = "Root")
+        {
+            try
+            {
+                XmlDocument node = JsonConvert.DeserializeXmlNode(json, rootName);
+                return node.OuterXml.ToString();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }

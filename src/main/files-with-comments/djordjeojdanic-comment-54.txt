@@ -1,0 +1,25 @@
+//prosledis dictionary i fileName(sa ekstenzijom za sad)
+
+public  void SerializeToTxt(Dictionary<int, City> dictionary, string fileName)
+{
+            //ako je dictionary prazan, baci skip
+            if (dictionary == null) { return; }
+
+            try
+            {
+                
+                StreamWriter sw = new StreamWriter(fileName);
+
+                //za svaki objekat u dictionary-u upisi u jednom redu sve propertije odvojene razmakom
+                foreach (City city in dictionary.Values)
+                {
+                    sw.WriteLine(String.Format("{0} {1} {2} {3} {4}", city.Id, city.Region, city.CityName, city.Year, city.ElectricalEnergy));
+                }
+
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+}

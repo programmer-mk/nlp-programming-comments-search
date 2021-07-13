@@ -1,0 +1,6 @@
+Niz bajtova u zbase32 (bez padinga, case insensitive)
+ 
+public static string ToZBase32(byte[] input)
+        {
+            return Encode(EncodingType.ZBase32, input);
+        }

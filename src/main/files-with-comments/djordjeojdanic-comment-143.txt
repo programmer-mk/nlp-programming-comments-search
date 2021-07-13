@@ -1,0 +1,6 @@
+Kreira standardan Markdown konvertor
+
+public Converter() 
+		{
+			_replacers = new Markdown().Replacers();
+		}

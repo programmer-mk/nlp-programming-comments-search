@@ -1,0 +1,9 @@
+/// <summary>
+/// Svaka konkretna klasa iz EventBlock skupa mora obavezno
+/// da implementira ovu metodu, koja odredjuje aktivnost event-a.
+/// </summary>
+
+public override void ActivateEvent(object eventPar)
+{
+            throw new NotImplementedException();
+}

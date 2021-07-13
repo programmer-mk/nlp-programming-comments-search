@@ -1,0 +1,6 @@
+/// Konverzija string-a u datum.
+
+public DateTime ConvertStringToDate(string value) 
+        {
+            return Convert.ToDateTime(value);
+        }

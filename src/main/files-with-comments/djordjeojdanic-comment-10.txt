@@ -1,0 +1,16 @@
+/// <summary>
+/// Slucajna vrednost po diskretnoj raspodeli.
+/// </summary>
+
+public override T NextValue()
+{
+            double u = randObj.NextDouble() * probabilitySum;
+            int i = 0;
+
+            if (!BinarySearch.Supremum(probabilityFun, u, out i))
+            {
+                throw new Exception("Error while generating next random discrete value.");
+            }
+
+            return values[i];
+}

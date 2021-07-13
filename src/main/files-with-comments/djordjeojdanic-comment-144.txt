@@ -1,0 +1,6 @@
+Kreira konvertor za zadatu semu
+
+public Converter(IScheme scheme)
+		{
+			_replacers = scheme.Replacers();
+		}

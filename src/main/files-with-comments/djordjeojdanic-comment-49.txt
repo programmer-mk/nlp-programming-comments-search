@@ -1,0 +1,17 @@
+/// <summary>
+/// Ova metoda provjerava ukoliko je email knjigovodstva koji je unesen u Postavke -> Postavke o tvrtki ispravan.
+/// </summary>
+
+private bool EmailOdRacunovodstvaUnesen(string email)
+{
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Neispravan E-Mail računovodstva. Idite u Postavke -> Podaci o tvrtki te upišite ispravan E-Mail knjigovodstva.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+}

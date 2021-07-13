@@ -2,7 +2,7 @@ import os
 import requests
 from collections import namedtuple
 
-GITHUB_AUTH_TOKEN = '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'
+GITHUB_AUTH_TOKEN = 'dummy'
 GithubItem = namedtuple('GithubItem', 'file_name file_url repository_name repository_owner')
 
 
@@ -28,7 +28,7 @@ def download_files(github_files, search_phrase):
 
 
 def search_github(phrase, prog_language):
-    query_url = f"https://api.github.com/search/code?q={phrase}+in:file+language:csharp"
+    query_url = f"https://api.github.com/search/code?q={phrase}+in:file+language:{prog_language}"
     params = {
         "state": "open",
     }

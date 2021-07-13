@@ -1,0 +1,7 @@
+/// Konverzija int vrednosti u string.
+
+public string ConvertIntToString(int number) 
+        {
+            string output = number.ToString();
+            return output;
+        }

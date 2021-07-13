@@ -1,0 +1,26 @@
+Dodaje novi tekst u listu, stavlja ga na pocetak liste, i radi neke druge provere.
+ 
+public void AddJson(String text)
+        {
+            List<string> list = new List<string>();
+            if (GetCopiedJsonTexts() != null) // If there is already text in the json file
+            {
+                list = GetCopiedJsonTexts(); // Gets those texts in list
+                if (!CheckIfHasAlready(list, text)) // Checks if the text user has in clipboard is already in file 
+                {
+                    if (list.Count == maxListLength) // If list's length is same as the maximum setting
+                    {
+                        MoveTextToFirst(list, text); // Moves the added text to first index, the last index one get deleted.
+                    }
+
+                    if (list.Count < maxListLength) // If list's length is lower than the max setting.
+                    {
+                        addToFirst(list, text); // Adds the text in the first index and also makes list 1 bigger
+                    }
+                }
+
+            }
+            else list.Add(text);
+            WriteToJson(list); // Overwrites the current json with the new one.
+            
+        }		

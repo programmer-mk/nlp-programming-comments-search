@@ -1,0 +1,7 @@
+/// Ova metoda vraca json string lepo prikazan.
+
+public string GetPrettyJSONDisplay(string jsonString) 
+        {
+            var prettyJson = JsonConvert.SerializeObject(jsonString, Formatting.Indented);
+            return prettyJson;
+        }

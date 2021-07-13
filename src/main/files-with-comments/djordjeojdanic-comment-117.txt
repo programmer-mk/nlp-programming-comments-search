@@ -1,0 +1,7 @@
+Zamena servisa za citanje/upis kolacica. Koristi se za testiranje kada HttpContext nije dostupan.
+
+public Consent SetCookieService(ICookieService service)
+        {
+            _cookieService = service;
+            return this;
+        }

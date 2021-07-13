@@ -1,0 +1,12 @@
+/// <summary>
+/// Ova funkcija služi za generiranje odabranih dokumenata
+/// </summary>
+
+private void BrisanjeGeneriranihDokumenata()
+{
+            DirectoryInfo di = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "Dokumenti");
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+}

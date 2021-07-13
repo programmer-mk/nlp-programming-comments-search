@@ -1,0 +1,20 @@
+//Ako fajl ne postoji kreiramo ga, u suprotnom no-no
+
+public void createDatabase(string fileName, string uloga)
+{
+            if (!uloga.Equals("admins"))
+            {
+                Console.WriteLine("Client tried operation he does not have permission for.");
+                throw new FaultException<DatabaseException>(new DatabaseException("No permission for that"));
+                
+            }
+
+            if (!File.Exists(fileName))
+            {
+                File.Create(fileName);
+            }
+            else
+            {
+                throw new FaultException<DatabaseException>(new DatabaseException(String.Format("Error: baza sa imenom \"{0}\" vec postoji", fileName)));
+            }
+}

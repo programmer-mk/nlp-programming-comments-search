@@ -1,0 +1,21 @@
+//obrisi podatak ako postoji i apdejtuj bazu
+
+public void removeData(int id, string uloga)
+{
+            if (!(uloga.Equals("writers") || uloga.Equals("admins")))
+            {
+                Console.WriteLine("Client tried operation he does not have permission for.");
+                throw new FaultException<DatabaseException>(new DatabaseException("No permission for that"));
+                
+            }
+
+            if (CitiesDB.ContainsKey(id))
+            {
+                CitiesDB.Remove(id);
+                updateDatabase(fileName);
+            }
+            else
+            {
+                throw new FaultException<DatabaseException>(new DatabaseException(String.Format("Error: podatak sa id-em {0} ne postoji", id)));
+            }
+}
