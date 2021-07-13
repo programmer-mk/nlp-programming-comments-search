@@ -1,0 +1,28 @@
+// Stvaranje jedinične matrice
+
+static public Matrica KreirajJedinicnuMatricu(int dimenzija)
+        {
+            if (dimenzija < 1)
+            {
+                throw new Exception("Dimenzija zadane jedinične matrice mora biti veća od 0!");
+            }
+
+            Matrica jedinicnaMatrica = new Matrica(dimenzija, dimenzija);
+            for (int i = 0; i < dimenzija; i++)
+            {
+                for (int j = 0; j < dimenzija; j++)
+                {
+                    if (i != j)
+                    {
+                        jedinicnaMatrica[i, j] = 0;
+                    }
+                    else
+                    {
+                        jedinicnaMatrica[i, j] = 1;
+                    }
+                }
+            }
+            return jedinicnaMatrica;
+        }
+
+https://github.com/studosi-fer/AIPR/blob/c62d409fb851ee4852f8a622e7bb48f89f125915/zadace/dz-4/2011-12/by_unknown/Matrica.cs

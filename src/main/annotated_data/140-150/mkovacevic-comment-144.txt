@@ -1,0 +1,9 @@
+//Metoda koja proverava da li se tacka C nalazi da duzi AB
+
+private int Tacka_na_duzi(int A, int B, int C)
+{
+    if (C >= A && C <= B) return 1;
+    else return 0;
+}
+
+https://github.com/Jeruje/CS-zadaci/blob/d05424a946b70c83579fce6f0c91f9aa0eb00c78/TrainGame/TrainGame/Form1.cs

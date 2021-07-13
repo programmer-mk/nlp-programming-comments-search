@@ -1,0 +1,18 @@
+//Ruta koja dohvaca FlySafe rating za vrijeme i lokaciju bez odredenog drona
+
+[HttpPost]
+[Authorize]
+[Route("get-rating")]
+public IHttpActionResult GetRating([FromBody]JObject json)
+{
+    TimeLocation timeLocation = JsonConvert.DeserializeObject<TimeLocation>(JsonConvert.SerializeObject(json));
+
+    if (!timeLocation.TimeIsValid()) return BadRequest("time requested is not valid");
+    if (!timeLocation.LocationIsValid()) return BadRequest("location requested is not valid");
+
+    WeatherRating rating = Weatherer.Instance.GetConditionsRating(timeLocation, null);
+
+    return Ok(rating);
+}
+
+https://github.com/RokoRad/LiftOff/blob/3237771050570292827c35ac6f50719945d689e1/LiftOff.API/Controllers/FlySafeController.cs

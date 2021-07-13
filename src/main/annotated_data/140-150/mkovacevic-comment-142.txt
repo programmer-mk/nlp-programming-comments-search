@@ -1,0 +1,18 @@
+// vraca vezu u blizini tacke (x, y)(ako postoji), inace vraca null;
+// pri trazenju se ne uzimaju u obzir krajevi veze(cvorovi)
+
+public Veza traziVezu(int x, int y)
+{
+    Veza veza = null;
+    for (int i = 0; i < veze.Count; i++)
+    {
+        if (veze[i].pogodjena(x, y))
+        {
+            veza = (Veza)veze[i];
+            break;
+        }
+    }
+    return veza;
+}
+
+https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/Sema.cs

@@ -1,0 +1,45 @@
+/// <summary>
+/// Metoda koja ispisuje zaposlenike koji nisu na godišnjem odmoru i vozače koji nisu na
+/// putnom radnom listu. Metoda radi na isti princip kao i za slobodna vozila.
+/// </summary>
+/// <returns></returns>
+
+public List<zaposlenici> ispisSlobodnihZaposlenika()
+{
+    List<zaposlenici> sviZaposlenici = model.dohvatVozaca("svi_vozači");
+    List<zaposlenici> slobodniZaposlenici = new List<zaposlenici>();
+    List<zaposlenici> slobodniZaposlenici2 = new List<zaposlenici>();
+    if (model.idGodisnjiOdmor().Count == 0)
+    {
+        slobodniZaposlenici = sviZaposlenici;
+    }
+    else
+    {
+        foreach (zaposlenici i in sviZaposlenici)
+        {
+            foreach (int j in model.idGodisnjiOdmor())
+            {
+                if (i.id_zaposlenici != j || j == 0)
+                    slobodniZaposlenici.Add(i);
+            }
+        }
+    }
+    if (model.idPTRZaposlenici().Count == 0)
+    {
+        slobodniZaposlenici2 = slobodniZaposlenici;
+    }
+    else
+    {
+        foreach(zaposlenici i in slobodniZaposlenici)
+        {
+            foreach(int j in model.idPTRZaposlenici())
+            {
+                if (i.id_zaposlenici != j || j == 0)
+                    slobodniZaposlenici2.Add(i);
+            }
+        }
+    }
+    return slobodniZaposlenici2;
+}
+
+https://github.com/foivz/RepositoryTeam25/blob/b79ebfc2e8478b139fc27785cee8585f7d4e2e4d/Projekt/TrApp_desktop_dizajn/DesingPi/TrAppController.cs

@@ -1,0 +1,8 @@
+//dodaje knjigu u listu
+
+public void dodajKnjigu(Knjiga k)
+{
+    list.Add(k);
+}
+
+kameleon00 Delegati2

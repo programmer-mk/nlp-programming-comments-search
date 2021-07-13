@@ -1,0 +1,27 @@
+/// <summary>
+/// Metoda koja šalje serveru objekt - taj objekt serijalizira u json te ga zapisuje na stream sa kojega server
+/// može pročitati podatke.
+/// </summary>
+/// <param name="objekt"></param>
+/// <param name="tipPoruke"></param>
+
+public void PosaljiServeru(object objekt, string tipPoruke = "null")
+{
+    try
+    {
+        stream = klijent.GetStream();
+        string jsonString = JsonPretvarac.Serijalizacija(objekt,tipPoruke);
+        int length = Encoding.UTF8.GetBytes(jsonString).Length;
+        writeBuffer = new byte[length];
+        writeBuffer = Encoding.UTF8.GetBytes(jsonString);
+        stream.Write(writeBuffer, 0, writeBuffer.Length);
+    }
+    catch (Exception)
+    {
+        //MessageBox.Show("Problemi oko komunikacije sa web servisom, pokušajte ponovo kasnije");
+        return;
+    }
+    stream.Flush();
+}
+
+https://github.com/foivz/r16003/blob/a772a8a7ee0a5da227257216ecc675c48e3699c1/CryptoNew/CryptoNew/TcpKlijent.cs

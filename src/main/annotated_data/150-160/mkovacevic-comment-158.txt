@@ -1,0 +1,21 @@
+//======================================================================================================
+//          Funkcija InsidePalet:
+//  Ima 2 parametra:
+//                 int _x - pozicija x
+//                 int _y - pozicija y
+//  Funkcia ispituje da li se tacka na poziciji _x,_y nalazi unutar PaletColor i ako se nalazi vraca ture,
+//  inace false.
+//======================================================================================================
+
+public bool UnutarPalet(int _x, int _y)
+{
+
+    if( ( _x >= x) && (_x <= (x+w))
+        && (_y >= y) && (_y<=(y + h)) )
+        return true;
+
+    return false;
+}
+
+
+https://github.com/ljsimin/gimii/blob/b35fa84673cdd9cdcabbbf9f0079d8533c40f2b7/VRWiiPaint/VRWiiPaint/PaletColor.cs

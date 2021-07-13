@@ -1,0 +1,11 @@
+// event handler za dogadjaj FormClosing(dogadjaj koji se desava uvek kada
+// se pokusa da se zatvori prozor, bilo pritiskom na dugme 'X', bilo pozi-
+// vom metoda prozora Close)
+
+
+private void EditorForm_FormClosing(object sender, FormClosingEventArgs e)
+{
+    e.Cancel = !presenter.canClose();
+}
+
+https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/EditorForm.cs

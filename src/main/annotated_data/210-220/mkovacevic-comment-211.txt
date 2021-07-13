@@ -1,0 +1,14 @@
+/// <summary>
+/// Generiranje javnoga i privatnoga ključa za rsa enkripciju
+/// </summary>
+
+public virtual void AssignRsaKeys()
+{
+    using (var rsa = new RSACryptoServiceProvider(2048))
+    {
+        publicKey = rsa.ToXmlString(false);
+        privateKey = rsa.ToXmlString(true);
+    }
+}
+
+https://github.com/foivz/r16003/blob/a772a8a7ee0a5da227257216ecc675c48e3699c1/CryptoNew/CryptoNew/Enkripcija.cs

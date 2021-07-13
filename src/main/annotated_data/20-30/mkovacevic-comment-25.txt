@@ -1,0 +1,49 @@
+// klik na -
+
+private void Button6_Click(object sender, EventArgs e)
+        {
+            proverabr = false;
+            if (TextBox1.Text.EndsWith("+"))
+            {
+                return;
+            }
+            else if (TextBox1.Text.EndsWith("-"))
+            {
+                return;
+            }
+            else if (TextBox1.Text.EndsWith("*"))
+            {
+                return;
+            }
+            else if (TextBox1.Text.EndsWith("/"))
+            {
+                return;
+            }
+            else if (string.IsNullOrEmpty(TextBox1.Text))
+            {
+                return;
+            }
+            else if (TextBox1.Text.StartsWith("+"))
+            {
+                return;
+            }
+            else if (TextBox1.Text.StartsWith("-"))
+            {
+                return;
+            }
+            else if (TextBox1.Text.StartsWith("*"))
+            {
+                return;
+            }
+            else if (TextBox1.Text.StartsWith("/"))
+            {
+                return;
+            }
+            else
+            {
+                TextBox1.Text = TextBox1.Text + "*";
+            }
+        }
+
+
+sparxMK_MojBroj

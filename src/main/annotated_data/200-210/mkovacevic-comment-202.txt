@@ -1,0 +1,35 @@
+ /// <summary>
+/// Metoda za filtiranje registracija. (U sljedećem tjednu, mjesecu)
+/// </summary>
+/// <param name="podatak"></param>
+/// <returns>Listu vozila</returns>
+
+public List<VozilaRegistracija> filtriraneRegistracije(string podatak)
+{
+    DateTime rok = new DateTime();
+    DateTime sad = new DateTime();
+    List<VozilaRegistracija> filtReg = new List<VozilaRegistracija>();
+
+    if (podatak == "tjedan")
+    {
+        rok = DateTime.Now.AddDays(7);
+        sad = DateTime.Now;
+
+    }
+    else if (podatak == "mjesec")
+    {
+        rok = DateTime.Now.AddMonths(1);
+        sad = DateTime.Now;
+    }
+    foreach (VozilaRegistracija i in vozilaRegistracija())
+    {
+        if (i.sljedeca_registracija > sad && i.sljedeca_registracija < rok)
+        {
+            filtReg.Add(i);
+        }
+
+    }
+    return filtReg.ToList();
+}
+
+https://github.com/foivz/RepositoryTeam25/blob/b79ebfc2e8478b139fc27785cee8585f7d4e2e4d/Projekt/TrApp_desktop_dizajn/DesingPi/TrAppController.cs

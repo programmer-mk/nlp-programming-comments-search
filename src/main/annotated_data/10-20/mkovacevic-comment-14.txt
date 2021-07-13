@@ -1,0 +1,18 @@
+// Transponiranje
+
+public Matrica VratiTransponiranuMatricu()
+        {
+            Matrica transponiranaMatrica = new Matrica(this.brojStupaca, this.brojRedaka);
+
+            for (int i = 0; i < brojRedaka; i++)
+            {
+                for (int j = 0; j < brojStupaca; j++)
+                {
+                    transponiranaMatrica[j, i] = this[i, j];
+                }
+            }
+            return transponiranaMatrica;
+        }
+
+
+https://github.com/studosi-fer/AIPR/blob/c62d409fb851ee4852f8a622e7bb48f89f125915/zadace/dz-4/2011-12/by_unknown/Matrica.cs

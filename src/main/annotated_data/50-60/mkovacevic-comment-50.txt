@@ -1,0 +1,9 @@
+// postavlja novu x koordinatu sredine ekrana kada forma promeni velicinu
+
+private void Form1_Resize(object sender, EventArgs e)
+{
+    elements.MiddleScreen = (sender as Control).Width / 2;
+    Invalidate();
+}
+
+hamzamuric Sortiranje

@@ -1,0 +1,15 @@
+//Ruta za dohvacanje potrebnih podataka o mobilnom uredaju za spajanje na smartwatchu
+
+[HttpPost]
+[AllowAnonymous]
+[Route("get-device-info")]
+public object GetDeviceInfo(JObject json)
+{
+    var deviceID = (string)json["deviceID"];
+
+    var deviceInfo = SmartwatchPairer.Instance.GetRegisteredMobileDeviceInfo(deviceID);
+
+    return new { token = deviceInfo.Token, droneName = deviceInfo.DroneName };
+}
+
+https://github.com/RokoRad/LiftOff/blob/3237771050570292827c35ac6f50719945d689e1/LiftOff.API/Controllers/SmartwatchController.cs

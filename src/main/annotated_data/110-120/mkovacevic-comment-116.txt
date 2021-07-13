@@ -1,0 +1,19 @@
+// Javljanje da je pojedena (trula) kruška.
+
+public void atePear(bool rotten)
+{
+    if (rotten)
+    {
+        rottenPearDuration = Form1.RottenFruitDuration;
+        if (!isRottenPearActive) halveSpeed();
+        isRottenPearActive = true;
+    }
+    else
+    {
+        pearDuration = Form1.SuperCookieDuration;
+        if (!isPearActive) increaseSpeedBy33Percent();
+        isPearActive = true;
+    }
+}
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Pacman.cs

@@ -1,0 +1,10 @@
+// menja koordinata tako da pravi novu (sortiranu) listu od stabla
+
+public void inOrder()
+{
+    i = 0;
+    inOrderRec(root);
+    ElementList.BSTLines = null;
+}
+
+hamzamuric Sortiranje

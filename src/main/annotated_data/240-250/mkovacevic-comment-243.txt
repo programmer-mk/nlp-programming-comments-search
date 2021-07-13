@@ -1,0 +1,25 @@
+/// <summary>
+/// Metoda omogucava spajanje i uredjivanje 2 kolekcije uz pomoc odgovarajuceg poredjenja.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="a"></param>
+/// <param name="b"></param>
+/// <param name="distinct"></param>
+/// <param name="comparer"></param>
+/// <returns></returns>
+
+public static IEnumerable<T> MergeOrderly<T>(this IEnumerable<T> a, IEnumerable<T> b,
+    bool distinct = false, IComparer<T> comparer = null)
+{
+    if (comparer == null)
+        comparer = Comparer<T>.Default;
+
+    var result = a.Concat(b).OrderBy(k => k, comparer);
+
+    if (distinct)
+        return result.Distinct();
+    else
+        return result;
+}
+
+https://github.com/jasaleja/SDD_projekat/blob/5dbfa6e73fd177e1e59790d950cf8761a5fc0fae/SDDLibrary/Utils/HelperMethods.cs

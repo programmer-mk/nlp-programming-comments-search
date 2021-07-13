@@ -1,0 +1,15 @@
+// vraca vezu koja prolazi kroz tacku tacanPolozaj u pravcu pravac
+// (pri trazenju veze ne uzima u obzir krajeve veze); ako veza ne postoji,
+// vraca null
+
+protected Veza dajVezu(Point tacanPolozaj, Pravac pravac)
+{
+    foreach (Veza v in veze)
+    {
+        if (v.dajPravac() == pravac && v.containsExclusive(tacanPolozaj))
+            return v;
+    }
+    return null;
+}
+
+https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/Sema.cs

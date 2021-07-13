@@ -1,0 +1,20 @@
+ ///
+/// Dio vezan za implementaciju voća.
+///
+// Javljanje da je pojedena (trula) trešnja
+
+public void ateCherry(bool rotten)
+{
+    if (rotten)
+    {
+        isRottenCherryActive = true;
+        rottenCherryDuration = Form1.RottenFruitDuration;
+    }
+    else
+    {
+        isCherryActive = true;
+        cherryDuration = Form1.SuperCookieDuration;
+    }
+}
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Pacman.cs

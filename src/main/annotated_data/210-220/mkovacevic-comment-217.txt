@@ -1,0 +1,24 @@
+/// <summary>
+/// Event handler koji se aktivira prilikom promjene algoritma enkripcije - mijenja labele na formi i čisti kontrole
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
+
+private void odabirAlgoritam_SelectedIndexChanged(object sender, EventArgs e)
+{
+    if (odabirAlgoritam.SelectedValue == (object)"RSA")
+    {
+        labelaPrvo.Text = "Javni:";
+        labelaDrugo.Text = "Privatni:";
+        Ocisti();
+    }
+    if (odabirAlgoritam.SelectedValue == (object)"AES" || odabirAlgoritam.SelectedValue == (object)"DES"
+        || odabirAlgoritam.SelectedValue == (object)"TripleDES")
+    {
+        labelaPrvo.Text = "Key:";
+        labelaDrugo.Text = "IV:";
+        Ocisti();
+    }
+}
+
+https://github.com/foivz/r16003/blob/a772a8a7ee0a5da227257216ecc675c48e3699c1/CryptoNew/CryptoNew/LokalnaEnkripcija.cs

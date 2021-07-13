@@ -1,0 +1,26 @@
+// Promjeni izgled duha u njegovu standardnu formu kada lovi pacmana.
+// Ne radi ništa ako duh bježi.
+
+public void loadStandardImage()
+{
+    if (s == State.Flee) return;
+
+    switch (currentDirection)
+    {
+        case Direction.None:
+        case Direction.Up:
+            currentImage = 0;
+            break;
+        case Direction.Left:
+            currentImage = 1;
+            break;
+        case Direction.Down:
+            currentImage = 2;
+            break;
+        case Direction.Right:
+            currentImage = 3;
+            break;
+    }
+}
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Ghosts.cs

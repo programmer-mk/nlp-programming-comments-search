@@ -1,0 +1,35 @@
+/// <summary>
+/// Metoda koja prima json od servera u chunkovima te konsturira kompletnu poruku sve dok su podaci na streamu dohvatljivi.
+/// Deserijalizira json u odgovarajući podatkovni objekt.
+/// </summary>
+/// <returns></returns>
+
+
+public object PrimiOdServera()
+{
+    readBuffer = new byte[1024];
+    int numberOfBytesRead = 0;
+    StringBuilder myCompleteMessage = new StringBuilder();
+    object trenutni = null;
+    try
+    {
+        stream = klijent.GetStream();
+        do
+        {
+            numberOfBytesRead = stream.Read(readBuffer, 0, readBuffer.Length);
+            stream.Flush();
+            myCompleteMessage.AppendFormat("{0}", Encoding.UTF8.GetString(readBuffer, 0, numberOfBytesRead));
+        } while (stream.DataAvailable);
+        stream.Close();
+        string jsonString = myCompleteMessage.ToString();
+        trenutni = JsonPretvarac.Deserijalizacija(jsonString);
+        stream.Flush();
+    }
+    catch (Exception)
+    {
+        MessageBox.Show("Problemi oko komunikacije sa web servisom, pokušajte ponovo kasnije");
+    }
+    return trenutni;
+}
+
+https://github.com/foivz/r16003/blob/a772a8a7ee0a5da227257216ecc675c48e3699c1/CryptoNew/CryptoNew/TcpKlijent.cs

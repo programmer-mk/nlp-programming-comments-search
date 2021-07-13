@@ -1,0 +1,15 @@
+// klik na (
+
+private void Button8_Click(object sender, EventArgs e)
+        {
+            if (proverabr == false)
+            {
+                proverazagrade = true;
+            }
+            else
+
+            TextBox1.Text += ")";
+        }
+
+
+sparxMK_MojBroj

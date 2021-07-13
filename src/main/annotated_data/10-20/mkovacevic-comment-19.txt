@@ -1,0 +1,10 @@
+// provjerava je li matrica vektor
+
+ public bool JeLiVektor()
+        {
+            if ((brojRedaka == 1) || (brojStupaca == 1))
+                return true;
+            else return false;
+        }
+
+https://github.com/studosi-fer/AIPR/blob/c62d409fb851ee4852f8a622e7bb48f89f125915/zadace/dz-4/2011-12/by_unknown/Matrica.cs

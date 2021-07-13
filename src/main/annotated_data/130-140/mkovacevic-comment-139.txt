@@ -1,0 +1,22 @@
+// brise selektovane elemente
+
+public void brisi()
+{
+    List<GrafObjekt> selektovani = dajSelektovane();
+    if (selektovani.Count > 0)
+    {
+        KmdBrisi kmdBrisi = new KmdBrisi(this);
+        for (int i = 0; i < selektovani.Count; i++)
+        {
+            GrafObjekt grafObj = selektovani[i];
+            if (grafObj is Kolo)
+                kmdBrisi.dodajKomandu(new KmdUkloniKolo(grafObj as Kolo, true));
+            else if (grafObj is Veza)
+                kmdBrisi.dodajKomandu(new KmdUkloniVezu(grafObj as Veza));
+        }
+        kmdBrisi.izvrsi();
+        dodajKomandu(kmdBrisi);
+    }
+}
+
+https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/Sema.cs

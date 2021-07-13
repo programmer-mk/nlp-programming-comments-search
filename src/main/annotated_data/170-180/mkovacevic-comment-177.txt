@@ -1,0 +1,19 @@
+//Klasa zadužena za početnu inicijalizaciju baze podataka
+
+public class LiftOffDatabaseInitialization : DropCreateDatabaseIfModelChanges<LiftOffContext>
+{
+    protected override void Seed(LiftOffContext context)
+    {
+        //Lista dronova koje LiftOff podržaje i koji se učitaju u bazu
+        context.Drones.AddRange(LogicParameters.SupportedDrones);
+
+        //Lista dosad registriranih zona zabranjenih letova
+        context.NoFlyZones.AddRange(LogicParameters.NoFlyZones);
+
+        context.SaveChanges();
+
+        base.Seed(context);
+    }
+}
+
+https://github.com/RokoRad/LiftOff/blob/3237771050570292827c35ac6f50719945d689e1/LiftOff.API/Data/LiftOffDatabaseInitialization.cs

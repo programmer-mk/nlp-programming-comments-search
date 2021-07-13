@@ -1,0 +1,13 @@
+// Vrati permutirani vektor
+
+public Matrica VratiPermutiraniVektor(Matrica vektorPermutacije)
+        {
+            Matrica radniVektor = this.VratiKopiju();
+            for (int i = 0; i < brojRedaka; i++)
+            {
+                radniVektor[i, 0] = this[(int)vektorPermutacije[0, i], 0];
+            }
+            return radniVektor;
+        }
+
+https://github.com/studosi-fer/AIPR/blob/c62d409fb851ee4852f8a622e7bb48f89f125915/zadace/dz-4/2011-12/by_unknown/Matrica.cs

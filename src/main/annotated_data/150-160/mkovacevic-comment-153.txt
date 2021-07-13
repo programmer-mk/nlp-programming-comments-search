@@ -1,0 +1,98 @@
+//ovde sam dodao parametar i graf sam po sebi kako bih mogao da manipulisem s grafovima manuelno/pesaci/vozila/taksi
+
+public void drawDijkstraRoute(PointLatLng pt1, PointLatLng pt2, int i)
+{
+
+    double ukupno = 0;
+    currentDijkstra = new GMapRoute("Dijkstra");
+
+    switch (i)
+    {
+        case 0:
+
+            //LUKA : za sve grafove koje su prethodno napravljeni brisem tooltiptexts za svaki cvor
+            //mozda moze da se dobije na efikasnosti  ako se pamti koji je transport izabran pre ovog
+            izbrisiZnamenitosti();
+            //LUKA: ovo je sada <List<GMapMarker>,double>
+            var tmp = graph.getDijkstraRoute(pt1, pt2);
+            List<GMapMarker> listaMarkera = tmp.Item1;
+
+            //LUKA:prolazim kroz svaki marker, uzimam mu ime znamenitosti ako je ima, i ako je ima lepim markeru tooltiptext sa imenom znamenitosti
+            foreach (GMapMarker el in listaMarkera)
+            {
+                currentDijkstra.Points.Add(el.Position);
+                el.ToolTipText = uzimanjeZnamenitostiNaOsnovuIndeksa(int.Parse(el.Tag.ToString()));
+                if (!(el.ToolTipText).Equals(""))
+                {
+                    el.ToolTip.Fill = Brushes.Black;
+                    el.ToolTip.Foreground = Brushes.White;
+                    el.ToolTipMode = MarkerTooltipMode.Always;
+                    gmap.Overlays[0].Markers.Add(el);
+                }
+                //LUKA: dodajem marker overlay
+            }
+            ukupno = tmp.Item2;
+            break;
+        case 1:
+            izbrisiZnamenitosti();
+            var tmpPesaci = graphPesaci.getDijkstraRoute(pt1, pt2);
+            listaMarkera = tmpPesaci.Item1;
+            foreach (GMapMarker el in listaMarkera)
+            {
+                currentDijkstra.Points.Add(el.Position);
+                string znamenitost = uzimanjeZnamenitostiNaOsnovuIndeksa(int.Parse(el.Tag.ToString()));
+                if (znamenitost != "\"\"")
+                {
+                    el.ToolTipText = znamenitost;
+                    el.ToolTip.Fill = Brushes.Black;
+                    el.ToolTip.Foreground = Brushes.White;
+                    el.ToolTipMode = MarkerTooltipMode.Always;
+                    gmap.Overlays[0].Markers.Add(el);
+                }
+            }
+            ukupno = tmpPesaci.Item2;
+            break;
+        case 2:
+            izbrisiZnamenitosti();
+            var tmpVozila = graphVozila.getDijkstraRoute(pt1, pt2);
+            listaMarkera = tmpVozila.Item1;
+
+            foreach (GMapMarker el in listaMarkera)
+            {
+                currentDijkstra.Points.Add(el.Position);
+                string znamenitost = uzimanjeZnamenitostiNaOsnovuIndeksa(int.Parse(el.Tag.ToString()));
+                if (!znamenitost.Equals("\"\""))
+                {
+                    el.ToolTipText = znamenitost;
+                    el.ToolTip.Fill = Brushes.Black;
+                    el.ToolTip.Foreground = Brushes.White;
+                    el.ToolTip.TextPadding = new Size(10, 10);
+                    el.ToolTipMode = MarkerTooltipMode.Always;
+                    gmap.Overlays[0].Markers.Add(el);
+                }
+            }
+            ukupno = tmpVozila.Item2;
+            break;
+        case 3:
+            izbrisiZnamenitosti();
+            var tmpTaxi = graphTaxi.getDijkstraRoute(pt1, pt2);
+            listaMarkera = tmpTaxi.Item1;
+            foreach (GMapMarker el in listaMarkera)
+            {
+                currentDijkstra.Points.Add(el.Position);
+                string znamenitost = uzimanjeZnamenitostiNaOsnovuIndeksa(int.Parse(el.Tag.ToString()));
+                if (!znamenitost.Equals("\"\""))
+                {
+                    el.ToolTipText = znamenitost;
+                    el.ToolTip.Fill = Brushes.Black;
+                    el.ToolTip.Foreground = Brushes.White;
+                    el.ToolTipMode = MarkerTooltipMode.Always;
+                    gmap.Overlays[0].Markers.Add(el);
+                }
+            }
+            ukupno = tmpTaxi.Item2;
+            break;
+    }
+
+
+https://github.com/matf-pp/2020_Manhattan_project/blob/e2b60933b277947f8084029ef85609a3026ae4f3/ManhattanProject/WindowsFormsApp2/Form1.cs

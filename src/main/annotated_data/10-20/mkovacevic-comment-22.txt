@@ -1,0 +1,41 @@
+// Vraća inverz matrice ako postoji
+
+public Matrica VratiInverz()
+        {
+            if (brojRedaka != brojStupaca)
+            {
+                throw new Exception("Nije moguće napraviti inverz nekvadratne matrice!");
+            }
+
+            try
+            {
+
+                Matrica inverznaMatrica = new Matrica(this.brojRedaka, this.brojStupaca);
+
+                Matrica permVektor;
+                Matrica matricaLUP = this.DekompozicijaLUP(out permVektor);
+
+                Matrica matricaL = matricaLUP.VratiMatricuL();
+                Matrica matricaU = matricaLUP.VratiMatricuU();
+
+                for (int i = 0; i < brojRedaka; i++)
+                {
+                    Matrica vektorE = new Matrica(brojRedaka, 1);
+                    vektorE[i, 0] = 1;
+
+                    Matrica matricaSupstitucijaUnaprijed = matricaL.SupstitucijaUnaprijed(vektorE.VratiPermutiraniVektor(permVektor));
+                    Matrica matricaSupstitucijaUnatrag = matricaU.SupstitucijaUnatrag(matricaSupstitucijaUnaprijed);
+
+                    for (int j = 0; j < brojRedaka; j++)
+                        inverznaMatrica[j, i] = matricaSupstitucijaUnatrag[j, 0];
+                }
+
+                return inverznaMatrica;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Neuspjeli inverz matrice! \n" + ex.Message);
+            }
+        }
+
+https://github.com/studosi-fer/AIPR/blob/c62d409fb851ee4852f8a622e7bb48f89f125915/zadace/dz-4/2011-12/by_unknown/Matrica.cs

@@ -1,0 +1,16 @@
+ // Poziva se kada pacman pojede super kolačić. Duh prelazi u stanje bježanja na duration milisekundi.
+
+public void flee()
+{
+    // Duhovi mjenjaju smjer.
+    currentDirection = oppositeDirection(currentDirection);
+
+    remainingFleeDuration = Form1.SuperCookieDuration;
+    // Da se ne stacka debuff.
+    if (s != State.Flee) halveSpeed();
+    s = State.Flee;
+    fleeSprite = 0;
+    loadFleeImage();
+}
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Ghosts.cs

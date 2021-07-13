@@ -1,0 +1,31 @@
+//Metoda koja ažurira korisnikovu statistiku u skladu s novim letom
+
+public StatisticsUser UpdateUserStats(Flight flight, string userId)
+{
+    var user = _liftOffContext.StatisticsUsers.FirstOrDefault(usr => usr.IdentityUserId == userId);
+
+    var drone = _liftOffContext.Drones.FirstOrDefault(dr => dr.Name == flight.Drone.Name);
+
+    user.TotalFlights++;
+    user.TotalTimeFlown += flight.TimeFlown;
+    user.TotalFlySafeScore += flight.FlySafeScore;
+    user.FlightLocations.Add(flight.FlightLocation);
+    user.FavoriteFlightSpot = StatisticsCalculator.CalculateFavoriteFlightLocation(user.FlightLocations.ToList());
+    user.FlightTimes.Add(flight.FlightTime);
+    user.FavoriteFlightTime = StatisticsCalculator.CalculateFavoriteFlightTime(user.FlightTimes.ToList()).ToString();
+    user.Drones.Add(drone);
+    user.FavoriteDrone = StatisticsCalculator.CalculateFavoriteDrone(user.Drones.ToList());
+
+    flight.User = user;
+    flight.Drone = drone;
+
+    _liftOffContext.FlightLocations.Add(flight.FlightLocation);
+    _liftOffContext.FlightTimes.Add(flight.FlightTime);
+    _liftOffContext.Flights.Add(flight);
+
+    _liftOffContext.SaveChanges();
+
+    return user;
+}
+
+https://github.com/RokoRad/LiftOff/blob/3237771050570292827c35ac6f50719945d689e1/LiftOff.API/Data/Repos/LiftOffRepo.cs

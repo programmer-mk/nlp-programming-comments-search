@@ -1,0 +1,12 @@
+// crta pivot ako postoji
+
+public void DrawPivot(Graphics g)
+{
+    StringFormat formatCenter =  new StringFormat();
+    Rectangle rectString = new Rectangle((pivotX ?? 0) + 15, (pivotY ?? 0) + 180 / 3, 60, 60);
+    Font font = new Font("Arial", 20);
+    SolidBrush brush = new SolidBrush(Color.Black);
+    g.DrawString("P", font, brush, rectString, formatCenter);
+}
+
+hamzamuric Sortiranje

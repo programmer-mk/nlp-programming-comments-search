@@ -1,0 +1,8 @@
+// zaustavlja izvrsavanje trenutnog algoritma
+private void btnStop_Click(object sender, EventArgs e)
+{
+    if (sorting)
+        cancelThreads();
+}
+
+hamzamuric Sortiranje

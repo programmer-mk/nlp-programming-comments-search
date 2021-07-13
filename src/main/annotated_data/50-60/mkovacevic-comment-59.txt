@@ -1,0 +1,29 @@
+ // zaustavlja niti koje trenutno rade
+
+private void cancelThreads()
+{
+    iX = iY = jX = jY = pivotX = pivotY = null;
+
+    sorting = false;
+
+    if (t1 != null)
+    {
+        t1.Abort();
+    }
+
+    if (t2 != null)
+    {
+        t1.Abort();
+    }
+
+    if (sortThread != null)
+    {
+        sortThread.Abort();
+        sortThread = null;
+    }
+
+    elements.randomize();
+    Invalidate();
+}
+
+hamzamuric Sortiranje

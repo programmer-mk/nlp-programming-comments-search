@@ -1,0 +1,12 @@
+//======================================================================================================
+//          Funkcija decVrednost:
+//  Ako atribut vrednost ima vrednost vecu od 4 smanjimo ga za 4.
+//======================================================================================================
+
+public void decVrednost()
+{
+    if (vrednost > 4)
+        vrednost -= 4;
+}
+
+https://github.com/ljsimin/gimii/blob/b35fa84673cdd9cdcabbbf9f0079d8533c40f2b7/VRWiiPaint/VRWiiPaint/PaletColor.cs

@@ -1,0 +1,38 @@
+/// <summary>
+/// Metoda koja stvara novu osobu u bazi podataka
+/// </summary>
+/// <param name="osoba">Model osobe sa svim atributima iz tablice osoba</param>
+/// <returns></returns>
+[HttpPost]
+[ValidateAntiForgeryToken]
+
+public IActionResult Create(Osoba osoba)
+{
+    logger.LogTrace(JsonSerializer.Serialize(osoba));
+    if (ModelState.IsValid)
+    {
+
+        try
+        {
+            ctx.Add(osoba);
+            ctx.SaveChanges();
+            TempData[Constants.Message] = $"Osoba {osoba.Ime} {osoba.Prezime} uspješno dodana.";
+            TempData[Constants.ErrorOccurred] = false;
+            logger.LogInformation($"Osoba {osoba.Ime} {osoba.Prezime} dodana");
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception exc)
+        {
+            logger.LogError($"Pogreška prilikom dodavanja osobe {exc.CompleteExceptionMessage()}");
+            ModelState.AddModelError(string.Empty, exc.CompleteExceptionMessage());
+            return View(osoba);
+        }
+    }
+    else
+    {
+        return View(osoba);
+    }
+}
+
+https://github.com/limpskinz/RPPP/blob/e63f1cabb8b99646b69c45dedb10be911e50f4fe/KoronavirusMvc/Controllers/OsobaController.cs

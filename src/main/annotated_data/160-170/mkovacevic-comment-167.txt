@@ -1,0 +1,16 @@
+/// <summary>
+/// Metoda koja traži dohvaćanje podataka od metode DohvatiMojeRezervacije iz DAL sloja
+/// </summary>
+/// <param name="id"></param>
+/// <returns></returns>
+
+public DataTable DohvatiMojeRezervacije(int id)
+{
+    RezervacijaDAL rezervacijaDAL = new RezervacijaDAL();
+
+    DataTable dtRezervacije = rezervacijaDAL.DohvatiMojeRezervacije(id);
+
+    return dtRezervacije;
+}
+
+https://github.com/ffaletar/RentACar/blob/05efca3cb4da5c71ff12dec275d020c31f185cad/Projekt/Projekt%20RentACar%20v2/RentACar.BL/Rezervacija.cs

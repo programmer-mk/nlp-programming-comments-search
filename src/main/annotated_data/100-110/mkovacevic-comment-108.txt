@@ -1,0 +1,13 @@
+// Voće se pojavljuje se na koordinatama (i, j).
+
+public void appear(int _i, int _j)
+{
+    i = _i;
+    j = _j;
+    this.drawCharacter(); // Inače se prvo pojavi na (0, 0).
+    characterPictureBox.Visible = true;
+    characterPictureBox.BringToFront();
+    remainingTimeOnScreen = Form1.FruitOnScreenDuration;
+}
+
+https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Fruits.cs

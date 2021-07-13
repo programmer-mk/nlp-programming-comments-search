@@ -1,0 +1,15 @@
+/// <summary>
+/// Metoda koja dohvaća korisnike aplikacije kako bi im se mogla poslati datoteka
+/// </summary>
+
+private void DohvatiKorisnike()
+{
+    listaKorisnika = new ListaKorisnika();
+    klijent = new TcpKlijent();
+    klijent.PosaljiServeru(listaKorisnika, "DohvatiKorisnike");
+    listaKorisnika = (ListaKorisnika)klijent.PrimiOdServera();
+    odabirKorisnik.DataSource = listaKorisnika.IzdvojiKorisnickaImena();
+    odabirKorisnik.AutoCompleteSource = AutoCompleteSource.ListItems;
+}
+
+https://github.com/foivz/r16003/blob/a772a8a7ee0a5da227257216ecc675c48e3699c1/CryptoNew/CryptoNew/FormaRazmjenaDatoteka.cs

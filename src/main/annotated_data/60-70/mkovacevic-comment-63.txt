@@ -1,0 +1,12 @@
+// korisnik se ulogovao kao admin
+
+private void btnAdmin_Click(object sender, EventArgs e)
+{
+    if (txtUsername.Text.Equals("admin") && txtPassword.Text.Equals("admin"))
+    {
+        AdminPage ap = new AdminPage(_ctx);
+        ap.Show();
+    }
+}
+
+hamzamuric Sortiranje
