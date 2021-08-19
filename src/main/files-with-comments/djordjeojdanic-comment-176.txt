@@ -1,8 +1,0 @@
-Zamena dve promenljive
-
-private static void swap(ref T x, ref T y)
-        {
-            T temp = x;
-            x = y;
-            y = temp;
-        }
