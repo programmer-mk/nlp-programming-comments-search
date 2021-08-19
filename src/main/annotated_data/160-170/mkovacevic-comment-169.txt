@@ -1,8 +1,0 @@
-//Metoda koja vraća listu dronova koji su spremljeni u bazi
-
-public List<Drone> GetDrones()
-{
-    return _liftOffContext.Drones.ToList();
-}
-
-https://github.com/RokoRad/LiftOff/blob/3237771050570292827c35ac6f50719945d689e1/LiftOff.API/Data/Repos/LiftOffRepo.cs

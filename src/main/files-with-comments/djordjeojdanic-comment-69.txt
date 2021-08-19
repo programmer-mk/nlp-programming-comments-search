@@ -1,8 +1,0 @@
-/// Konvertuj decimalnu vrednost u heksadecimalnu.
-
-public string ConvertDecimalToHex(decimal decimalValue) 
-        {
-            int numberValue = Convert.ToInt32(decimalValue);
-            string output = numberValue.ToString("X");
-            return output;
-        }

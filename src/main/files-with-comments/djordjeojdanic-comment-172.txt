@@ -1,6 +1,0 @@
-Konverzija u niz bajtova iz base32 sa alfabetom dizajniranim da smanji slucajne psovke u izlazu (bez padinga, case sensitive)
-
-public static byte[] FromBase32LowProfanity(string input)
-        {
-            return Decode(EncodingType.Base32LowProfanity, input);
-        }

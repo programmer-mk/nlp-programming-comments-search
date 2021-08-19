@@ -1,6 +1,0 @@
-/// Brise sve elemente niza
-
-public void IsprazniNiz(List<int> niz) 
-        {
-            niz.RemoveAll(x => true == true);
-        }

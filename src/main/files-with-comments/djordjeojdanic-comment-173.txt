@@ -1,6 +1,0 @@
-Konverzija u niz bajtova iz base32 sa alfabetom dizajniranim da smanji slucajne psovke u izlazu (bez padinga, case sensitive) - koristi bom-free utf8 za konverziju stringa u niz bajtova
-
-public static string FromBase32LowProfanityToString(string input)
-        {
-            return DecodeToString(EncodingType.Base32LowProfanity, input);
-        }

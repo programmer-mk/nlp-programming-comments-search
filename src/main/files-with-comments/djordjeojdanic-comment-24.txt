@@ -1,8 +1,0 @@
-/// <summary>
-/// Tekstualni opis entiteta.
-/// </summary>
-
-public override string ToString()
-{
-            return string.Format("Entity id: ", Id);
-}

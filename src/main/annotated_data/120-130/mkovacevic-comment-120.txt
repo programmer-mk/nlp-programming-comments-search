@@ -1,8 +1,0 @@
-// event handler za dogadjaj Click stavke menija mnSave
-
-private void mnSave_Click(object sender, EventArgs e)
-{
-    presenter.cmdSave();
-}
-
-https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/EditorForm.cs

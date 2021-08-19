@@ -1,9 +1,0 @@
-//restart aplikacije
-
-private void Button11_Click(object sender, EventArgs e)
-{
-            Application.Restart();
-}
-
-
-sparxMK_MojBroj

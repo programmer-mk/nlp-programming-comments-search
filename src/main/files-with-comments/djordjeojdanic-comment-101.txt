@@ -1,9 +1,0 @@
-/// Uklanjanje prvog elementa iz prioritetnog reda.
-
-public T Dequeue()
-        {
-            var item = _pq[0];
-            _pq.RemoveAt(0);
-
-            return item;
-        }

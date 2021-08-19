@@ -1,8 +1,0 @@
-// Zlatna jabuka ne može biti trula.
-
-public GoldenApple(Form form, bool _rotten) : base(form, false)
-{
-    characterImages[0] = Properties.Resources.AppleGolden;
-}
-
-https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Fruits.cs

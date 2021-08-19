@@ -1,9 +1,0 @@
- // Vraca marginu izmedju leve ivice panela seme i najblize linije grida
-
-private int getLeftMargin()
-{
-    int pinRazmak = sema.dajPinRazmak();
-    return (pinRazmak - form.delta.X % pinRazmak) % pinRazmak;
-}
-
-https://github.com/stankela/Editor/blob/05ec1fc9b9b08494ce4f0a80bdb6e656d2a4b644/Editor/EditorPresenter.cs

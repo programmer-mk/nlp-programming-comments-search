@@ -1,6 +1,0 @@
-Konverzija u string iz zbase32 (bez padinga, case insensitive) - koristi bom-free utf8 za konverziju stringa u niz bajtova
-
-public static string FromZBase32ToString(string input)
-        {
-            return DecodeToString(EncodingType.ZBase32, input);
-        }

@@ -1,6 +1,0 @@
-Konverzija niza bajtova u Base64 string (nije bezbedno za url/uri)
- 
-public static string ToBase64(byte[] input)
-        {
-            return Encode(EncodingType.Base64, input);
-        }

@@ -1,9 +1,0 @@
-// shallow copy
-// virtual je zbog proxy podrske za NHibernate
-public virtual DomainObject shallowCopy()
-{
-    return (DomainObject)this.MemberwiseClone();
-}
-
-
-stankela bilten

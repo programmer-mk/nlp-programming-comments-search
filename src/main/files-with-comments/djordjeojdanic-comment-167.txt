@@ -1,6 +1,0 @@
-Konverzija u niz bajtova iz base64-url po rfc standardu (url bezbedno 63 ili 64 karaktera i bez padinga) - koristi bom-free utf8 za konverziju stringova u niz bajtova
-
-public static string FromBase64UrlToString(string input)
-        {
-            return DecodeToString(EncodingType.Base64Url, input);
-        }

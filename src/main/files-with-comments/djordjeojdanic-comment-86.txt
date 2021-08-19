@@ -1,7 +1,0 @@
-/// Ova metoda radi filtriranje prosledjenog niza i kao rezultat vraca niz svih pozitivnih brojeva.
-
-public int[] VratiPozitivneVrednosti(int[] brojevi) 
-        {
-            var pozitivniBrojevi = brojevi?.Where(x => x > 0).ToArray();
-            return pozitivniBrojevi;
-        }
