@@ -1,7 +1,0 @@
-/// Ova metoda radi sortiranje liste stringova.
-
-public List<string> Sort(List<string> list) 
-        {
-            var sortedList = list?.OrderBy(x => x).ToList();
-            return sortedList;
-        }

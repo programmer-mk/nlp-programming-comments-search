@@ -1,9 +1,0 @@
-Kreiranje sfernog koordinantnog sistema
-
-public Cartesian(Coordinate coordinate)
-        {
-            //formulas:
-            x = Math.Cos(coordinate.Latitude.ToRadians()) * Math.Cos(coordinate.Longitude.ToRadians());
-            y = Math.Cos(coordinate.Latitude.ToRadians()) * Math.Sin(coordinate.Longitude.ToRadians());
-            z = Math.Sin(coordinate.Latitude.ToRadians());
-        }

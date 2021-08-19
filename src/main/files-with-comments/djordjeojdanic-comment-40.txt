@@ -1,8 +1,0 @@
-/// <summary>
-/// Tekstualni opis event-a.
-/// </summary>
-
-public override string ToString()
-{
-            return string.Format("Type: {0}, Time: {1,5:0.00}", EventType, Time);
-}

@@ -1,8 +1,0 @@
-// daje x koordinatu elementa na osnovu indeksa u listi
-
-private int calcX(int index)
-{
-    return (MiddleScreen + index * 50) - 350;
-}
-
-hamzamuric Sortiranje

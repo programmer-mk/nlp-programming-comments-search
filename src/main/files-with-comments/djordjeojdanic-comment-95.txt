@@ -1,9 +1,0 @@
-/// Inicijalizacija niza u ' '
-
-public void InitCharArray(char[] arr)
-        {
-            for (int i = 0; i < arr.Length; i++)
-            {
-                arr[i] = ' ';
-            }
-        }

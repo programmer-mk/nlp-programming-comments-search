@@ -1,8 +1,0 @@
-//zamisljeno je da se samo podaci upisuju u tabelu greska (insert)
-
-public class GreskaController : BaseController<Model.Greska, object>
-{
-    public GreskaController(IService<Greska, object> service) : base(service)
-    {
-    }
-}

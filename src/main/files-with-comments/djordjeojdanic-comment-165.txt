@@ -1,6 +1,0 @@
-Konverzija u niz bajtova iz Base64 (nije bezbedno za url/uri) - koristi bom-free utf8 za konverziju stringova u niz bajtova
-
-public static string FromBase64ToString(string input)
-        {
-            return DecodeToString(EncodingType.Base64, input);
-        }

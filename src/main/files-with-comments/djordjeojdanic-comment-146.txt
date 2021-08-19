@@ -1,6 +1,0 @@
-Konvertuje HTML string u markdown string
-
-public string Convert(string html)
-		{
-			return CleanWhiteSpace(_replacers.Aggregate(html, (current, element) => element.Replace(current)));
-		}

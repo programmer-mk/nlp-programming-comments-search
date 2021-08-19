@@ -1,8 +1,0 @@
-/// <summary>
-/// Enumeracija svih otocnih grana posmatranog bloka.
-/// </summary>
-
-public IEnumerable<EventEdge<EventBlock>> OutEdges()
-{
-            return !Simulator.EventGraph.ContainsVertex(this) ? new EventEdge<EventBlock>[0] : Simulator.EventGraph.OutEdges(this);
-}

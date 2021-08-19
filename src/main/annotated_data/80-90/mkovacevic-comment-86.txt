@@ -1,8 +1,0 @@
-//racuna srednju cenu knjiga
-
-internal decimal srednjaCena()
-{
-    return cenaKnjiga / brojKnjiga;
-}
-
-kameleon00 Delegati2

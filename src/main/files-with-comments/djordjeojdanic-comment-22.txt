@@ -1,8 +1,0 @@
-/// <summary>
-/// Slucajna vrednost po Uniformnoj raspodeli.
-/// </summary>
-
-public override double NextValue()
-{
-            return a + (b - a) * randObj.NextDouble();        
-}

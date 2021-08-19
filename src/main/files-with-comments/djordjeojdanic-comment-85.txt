@@ -1,6 +1,0 @@
-/// Ova metoda dohvata neparne vrednosti iz prosledjene liste.
-
-public List<int> GetOddNumbers(List<int> numbers)
-        {
-            return numbers?.Where(x => x % 2 != 0).ToList();
-        }

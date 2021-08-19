@@ -1,6 +1,0 @@
-/// Konvertovanje celog broja u string.
-
-public string IntToString(int number)
-        {
-            return number.ToString();
-        }

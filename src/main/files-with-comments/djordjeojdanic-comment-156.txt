@@ -1,6 +1,0 @@
-Konverzija niza bajtova u base64-url po rfc standardu
-
-public static string ToBase64Url(byte[] input)
-{
-            return Encode(EncodingType.Base64Url, input);
-}

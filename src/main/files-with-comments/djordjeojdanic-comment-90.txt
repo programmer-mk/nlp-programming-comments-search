@@ -1,6 +1,0 @@
-/// Metoda je kreirana sa ciljem da obrise sadrzaj prosledjenog niza string-ova.
-
-public void IsprazniNiz(string[] niz) 
-        {
-            niz = new string[] { };
-        }

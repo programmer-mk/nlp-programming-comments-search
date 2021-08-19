@@ -1,6 +1,0 @@
-/// Decimalni broj u hex.
-
-public string Decimal2Hex(decimal decValue)
-        {
-            return string.Format("{0:x}", (int)decValue);
-        }

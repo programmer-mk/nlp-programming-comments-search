@@ -1,6 +1,0 @@
-/// Konverzija int u bool.
-
-public bool ConvertIntToBool(int intValue) 
-        {
-            return Convert.ToBoolean(intValue);
-        }

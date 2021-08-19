@@ -1,6 +1,0 @@
-Konverzija u niz bajtova iz base32-url po rfc standardu (standard base bez padinga, case insensitive) - koristi bom-free utf8 za konverziju stringova u niz bajtova
-
-public static string FromBase32UrlToString(string input)
-        {
-            return DecodeToString(EncodingType.Base32Url, input);
-        }

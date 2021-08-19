@@ -1,8 +1,0 @@
-// Pomoćna funkcija.
-
-public static int manhattanDistance(int i1, int j1, int i2, int j2)
-{
-    return Math.Abs(i1 - i2) + Math.Abs(j1 - j2);
-}
-
-https://github.com/0shade0/RP3/blob/3a373d699553f8ee88c3b57e504059e94549160d/Pacman/Form1.cs

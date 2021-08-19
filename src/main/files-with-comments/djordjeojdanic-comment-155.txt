@@ -1,6 +1,0 @@
-Konverzija stringa u Base64 format (nije bezbedno za url/uri) - koristi bom-free utf8 za kodovanje stringova u niz bajtova
-   
-public static string ToBase64(string input)
-{
-    return EncodeString(EncodingType.Base64, input);
-}

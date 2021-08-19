@@ -1,8 +1,0 @@
-//Proizvodi_SelectById
-
-public List<esp_Proizvodi_SelectById_Result> GetSlicneProizvode(int id)
-{
-    Util.RecomendSystem preporuka = new Util.RecomendSystem();
-
-    return preporuka.GetSlicneProizvode(id);
-}

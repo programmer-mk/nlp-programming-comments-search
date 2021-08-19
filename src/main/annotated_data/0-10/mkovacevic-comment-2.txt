@@ -1,8 +1,0 @@
-// Otvaranje binarnog file stream objekta za upis u fajl (obezbeđeno implicitno oslobađanje resursa)
-
- using (FileStream fajlStream = new FileStream(fajlIme, FileMode.Append, FileAccess.Write, FileShare.None)) //OBRATITI PAZNJU NA APPEND zbog opcije 3!
-{
-   fajlStream.Write(bafer, 0, bafer.Length);
-}
-
-https://github.com/nikola-vukicevic/bfs_i_dfs_pathfinding/blob/master/RastojanjeIzmedjuDvaPolja/Form1.cs

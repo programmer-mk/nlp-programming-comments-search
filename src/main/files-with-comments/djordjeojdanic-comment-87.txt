@@ -1,7 +1,0 @@
-/// Dohvata sve negativne vrednosti
-
-public int[] VratiNegativneVrednosti(int[] brojevi)
-        {
-            var negativniBrojevi = brojevi?.Where(x => x < 0).ToArray();
-            return negativniBrojevi;
-        }

@@ -1,8 +1,0 @@
-Skracuje listu tako da njena duzina odgovara trenutnoj maksimalnoj duzini
- 
-public void MakeListShorter(List<String> list, int newLength)
-        {
-            int count = list.Count - newLength;
-            list.RemoveRange(newLength - 1, count); 
-            WriteToJson(list); // It needs to write the json file again so it overwrites it with the new shorter list.
-        } 

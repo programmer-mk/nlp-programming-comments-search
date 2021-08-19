@@ -1,6 +1,0 @@
-/// Dobijanje decimalnog broja od stringa.
-
-public Decimal Konvertuj_Str_U_Decimal(string str)
-        {
-            return Convert.ToDecimal(str);
-        }
