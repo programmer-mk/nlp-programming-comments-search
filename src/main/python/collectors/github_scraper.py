@@ -10,7 +10,7 @@ PROGRAMMING_LANGUAGES_GITHUB_API_NAMES_MAPPING = {
     'c#' : 'csharp'
 }
 
-GITHUB_AUTH_TOKEN = 'dummy'
+GITHUB_AUTH_TOKEN = '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'
 GithubItem = namedtuple('GithubItem', 'file_name file_url repository_name repository_owner')
 
 def download_files(github_files, search_phrase, extension):
