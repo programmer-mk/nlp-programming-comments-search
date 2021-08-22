@@ -5,6 +5,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 import operator
 from wordcloud import WordCloud
 import numpy as np
+from collections import Counter
 
 operating_system = sys.platform
 resources_directory = '../resources'
@@ -26,33 +27,44 @@ Ranges:
     8) 30-35
 '''
 def comment_word_frequency_range(data):
-    vectorizer = CountVectorizer()
-    vectorizer.fit(data['CommentText'])
-
-    print("Vocabulary: ", vectorizer.vocabulary_)
-
+    result = Counter(" ".join(data['CommentText'].values.tolist()).split(" "))
+    word_dict = dict(list(result.items()))
     # look just for distinct comments
-    for key in vectorizer.vocabulary_:
-        value = vectorizer.vocabulary_[key]
-        vectorizer.vocabulary_[key] = value / 99
+    for key in word_dict.keys():
+        value = word_dict[key]
+        word_dict[key] = value / 99
 
     result_dict = {
-        '30-35': 0,
-        '25-30': 0,
+        '300-350': 0,
+        '250-300': 0,
+        '200-250': 0,
+        '150-200': 0,
+        '100-150': 0,
+        '50-100': 0,
+        '25-50': 0,
         '20-25': 0,
         '15-20': 0,
         '10-15': 0,
         '5-10': 0,
-        '2-5': 0,
-        '1-2': 0
+        '0-5': 0
     }
 
-    for key in vectorizer.vocabulary_:
-        value = vectorizer.vocabulary_[key]
-        if 30 <= value <= 35:
-            result_dict['30-35'] = result_dict.get('30-35', 0) + 1
-        elif 25 <= value < 30:
-            result_dict['25-30'] = result_dict.get('25-30', 0) + 1
+    for key in word_dict.keys():
+        value = word_dict[key]
+        if 300 <= value <= 350:
+            result_dict['300-350'] = result_dict.get('300-350', 0) + 1
+        elif 250 <= value < 300:
+            result_dict['250-300'] = result_dict.get('250-300', 0) + 1
+        elif 200 <= value < 250:
+            result_dict['200-250'] = result_dict.get('200-250', 0) + 1
+        elif 150 <= value < 200:
+            result_dict['150-200'] = result_dict.get('150-200', 0) + 1
+        elif 100 <= value < 150:
+            result_dict['100-150'] = result_dict.get('100-150', 0) + 1
+        elif 50 <= value < 100:
+            result_dict['50-100'] = result_dict.get('50-100', 0) + 1
+        elif 25 <= value < 50:
+            result_dict['25-50'] = result_dict.get('25-50', 0) + 1
         elif 20 <= value < 25:
             result_dict['20-25'] = result_dict.get('20-25', 0) + 1
         elif 15 <= value < 20:
@@ -61,10 +73,8 @@ def comment_word_frequency_range(data):
             result_dict['10-15'] = result_dict.get('10-15', 0) + 1
         elif 5 <= value < 10:
             result_dict['5-10'] = result_dict.get('5-10', 0) + 1
-        elif 2 <= value < 5:
-            result_dict['2-5'] = result_dict.get('2-5', 0) + 1
         else:
-            result_dict['1-2'] = result_dict.get('1-2', 0) + 1
+            result_dict['0-5'] = result_dict.get('0-5', 0) + 1
 
 
     plt.bar(*zip(*result_dict.items()))
@@ -111,11 +121,14 @@ def count_avgerage_lengths_per_similarity_score(data):
 
 
 def comment_wordcloud(data):
-    vectorizer = CountVectorizer()
-    vectorizer.fit(data['CommentText'])
-    print("Vocabulary: ", vectorizer.vocabulary_)
+    result = Counter(" ".join(data['CommentText'].values.tolist()).split(" "))
+    word_dict = dict(list(result.items()))
+    # look just for distinct comments
+    for key in word_dict.keys():
+        value = word_dict[key]
+        word_dict[key] = value / 99
 
-    wordcloud = WordCloud(width=1000,height=1000).generate_from_frequencies(vectorizer.vocabulary_)
+    wordcloud = WordCloud(width=1000,height=1000).generate_from_frequencies(word_dict)
     plt.figure(figsize=(9,6))
     plt.imshow(wordcloud)
     plt.axis('off')
@@ -123,16 +136,14 @@ def comment_wordcloud(data):
 
 
 def comment_word_frequency(data):
-    vectorizer = CountVectorizer()
-    vectorizer.fit(data['CommentText'])
-
-    print("Vocabulary: ", vectorizer.vocabulary_)
+    result = Counter(" ".join(data['CommentText'].values.tolist()).split(" "))
+    word_dict = dict(list(result.items()))
     # look just for distinct comments
-    for key in vectorizer.vocabulary_:
-        value = vectorizer.vocabulary_[key]
-        vectorizer.vocabulary_[key] = value / 99
+    for key in word_dict.keys():
+        value = word_dict[key]
+        word_dict[key] = value / 99
 
-    top_20_words_vocabulary = dict(sorted(vectorizer.vocabulary_.items(), key=operator.itemgetter(1), reverse=True)[:20])
+    top_20_words_vocabulary = dict(sorted(word_dict.items(), key=operator.itemgetter(1), reverse=True)[:20])
     print("Top N Vocabulary: ", top_20_words_vocabulary)
     plt.bar(*zip(*top_20_words_vocabulary.items()))
     plt.xticks(rotation='vertical')

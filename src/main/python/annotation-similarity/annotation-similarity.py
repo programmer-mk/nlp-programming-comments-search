@@ -23,6 +23,18 @@ annotators = {
 }
 
 
+def found_percentage_binary_diff(scores1, scores2, scores3, row):
+    similarity_total = 0
+    if len(scores1) == len(scores2) == len(scores3):
+        for idx, score in enumerate(scores1):
+            if scores1[idx] == scores2[idx] == scores3[idx]:
+                similarity_total += 100
+    else:
+        print(f'row {row} is not annotated well.')
+
+    return similarity_total / len(scores1)
+
+
 def found_percentage_diff(scores1, scores2, row):
     similarity_total = 0
     if len(scores1) == len(scores2):
@@ -34,16 +46,17 @@ def found_percentage_diff(scores1, scores2, row):
     return similarity_total / len(scores1)
 
 
-def compute_similarity(data_frame_first_annotator, data_frame_second_annotator, data_frame_third_annotator):
+def compute_similarity(dataframe_aggregated):
     first_second_similariy = 0
     second_third_similariy = 0
     first_third_similariy = 0
-    samples_size = data_frame_first_annotator.shape[0]
+    group_binary_similarity = 0
+    samples_size = dataframe_aggregated.shape[0]
 
-    for row in data_frame_first_annotator.index:
-        first_bucket = data_frame_first_annotator['SimilarityScore'][row]
-        second_bucket = data_frame_second_annotator['SimilarityScore'][row]
-        third_bucket = data_frame_third_annotator['SimilarityScore'][row]
+    for row in dataframe_aggregated.index:
+        first_bucket = dataframe_aggregated['BselicSimilarityScore'][row]
+        second_bucket = dataframe_aggregated['MkovacevicSimilarityScore'][row]
+        third_bucket = dataframe_aggregated['DjojdanicSimilarityScore'][row]
 
         if isinstance(first_bucket, int):
             first_bucket = str(first_bucket)
@@ -61,7 +74,9 @@ def compute_similarity(data_frame_first_annotator, data_frame_second_annotator, 
         second_third_similariy += found_percentage_diff(data2, data3, row)
         first_third_similariy += found_percentage_diff(data1, data3, row)
 
-    return first_second_similariy / samples_size, second_third_similariy / samples_size, first_third_similariy / samples_size
+        group_binary_similarity = found_percentage_binary_diff(data1, data2, data3, row)
+
+    return first_second_similariy / samples_size, second_third_similariy / samples_size, first_third_similariy / samples_size,  group_binary_similarity / samples_size
 
 
 def read_annotated_data():
@@ -87,7 +102,19 @@ if __name__ == '__main__':
         extract_test_set(575, 650)
     else:
         dataframe1, dataframe2, dataframe3 = read_annotated_data()
-        similarity12, similarity23, similarity13 = compute_similarity(dataframe1, dataframe2, dataframe3)
+        dataframe_aggregated = dataframe1.copy()
+        dataframe_aggregated["BselicSimilarityScore"] = dataframe1["SimilarityScore"]
+        dataframe_aggregated["MkovacevicSimilarityScore"] = dataframe2["SimilarityScore"]
+        dataframe_aggregated["DjojdanicSimilarityScore"] = dataframe3["SimilarityScore"]
+        dataframe_aggregated = dataframe_aggregated.drop(columns=['SimilarityScore', "Annotated_By"])
+        similarity12, similarity23, similarity13, group_binary_similarity = compute_similarity(dataframe_aggregated)
         print(f'Annotation similarity between {annotators.get(1)} and {annotators.get(2)} is : {similarity12}')
         print(f'Annotation similarity between {annotators.get(2)} and {annotators.get(3)} is : {similarity23}')
         print(f'Annotation similarity between {annotators.get(1)} and {annotators.get(3)} is : {similarity13}')
+        print(f'Group binary similarity: {group_binary_similarity}')
+
+        dataframe_aggregated.to_csv(f'{resources_directory}/annotation-similarity/shared_programming_comments_annotation_aggreagted.txt',sep = '\t', index = False,
+           columns=[ 'QueryText', 'CommentText','PairID', 'RepoDescription',  'SourceDescription',
+                     'BselicSimilarityScore', 'MkovacevicSimilarityScore', 'DjojdanicSimilarityScore'])
+
+
