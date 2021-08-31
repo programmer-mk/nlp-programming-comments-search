@@ -13,6 +13,47 @@ if(operating_system == 'win32'):
     resources_directory = 'src\main/resources'
     config_directory = 'src\main/config'
 
+def query_frequency_range(data):
+    word_dict = data[data['SimilarityScore'] != '0']['QueryText'].value_counts().to_dict()
+
+    result_dict = {
+        '40-45': 0,
+        '35-40': 0,
+        '30-35': 0,
+        '25-30': 0,
+        '20-25': 0,
+        '15-20': 0,
+        '10-15': 0,
+        '5-10': 0,
+        '0-5': 0
+    }
+
+    for key in word_dict.keys():
+        value = word_dict[key]
+        if 40 <= value <= 45:
+            result_dict['40-45'] = result_dict.get('40-45', 0) + 1
+        elif 35 <= value < 40:
+            result_dict['35-40'] = result_dict.get('35-40', 0) + 1
+        elif 30 <= value < 35:
+            result_dict['30-35'] = result_dict.get('30-35', 0) + 1
+        elif 25 <= value < 30:
+            result_dict['25-30'] = result_dict.get('25-30', 0) + 1
+        elif 20 <= value < 25:
+            result_dict['20-25'] = result_dict.get('20-25', 0) + 1
+        elif 15 <= value < 20:
+            result_dict['15-20'] = result_dict.get('15-20', 0) + 1
+        elif 10 <= value < 15:
+            result_dict['10-15'] = result_dict.get('10-15', 0) + 1
+        elif 5 <= value < 10:
+            result_dict['5-10'] = result_dict.get('5-10', 0) + 1
+        else:
+            result_dict['0-5'] = result_dict.get('0-5', 0) + 1
+
+
+    plt.bar(*zip(*result_dict.items()))
+    plt.xticks(rotation='vertical')
+    plt.show()
+
 
 '''
 Ranges:
@@ -146,7 +187,7 @@ def comment_word_frequency(data):
     top_20_words_vocabulary = dict(sorted(word_dict.items(), key=operator.itemgetter(1), reverse=True)[:20])
     print("Top N Vocabulary: ", top_20_words_vocabulary)
     plt.bar(*zip(*top_20_words_vocabulary.items()))
-    plt.xticks(rotation='vertical')
+    plt.xticks(weight='bold')
     plt.show()
 
 
@@ -175,21 +216,17 @@ def collected_data_per_annotator(data):
 
 
 def similarity_score_per_query(data, top=True):
-    ss = data[data['SimilarityScore'] != '0']['QueryText'].value_counts()
-    print(ss)
     if top:
-        chart = data[data['SimilarityScore'] != '0']['QueryText'].value_counts().nlargest(10).plot.bar()
+        top10 = data[data['SimilarityScore'] != '0']['QueryText'].value_counts().nlargest(10)
     else:
-        chart = data[data['SimilarityScore'] != '0']['QueryText'].value_counts().nsmallest(10).plot.bar()
+        top10 = data[data['SimilarityScore'] != '0']['QueryText'].value_counts().nsmallest(10)
 
-    plt.xticks(size=8, rotation='70')
-    fig = chart.get_figure()
-    fig.set_figwidth(15)
-    fig.set_figheight(15)
-    if top:
-        fig.savefig('query_similarity_score_distribution_largest.pdf')
-    else:
-        fig.savefig('query_similarity_score_distribution_smallest.pdf')
+    values = top10.values.tolist()
+    labels = ['\n'.join(l.split(" ")) for l in top10.index.tolist()]
+    plt.figure()
+    plt.bar(list(range(0, 10)), values)
+    plt.xticks(list(range(0, 10)), labels)
+    plt.show()
 
 
 def similarity_score_value_distribution_per_annotator(data, value):
@@ -217,8 +254,7 @@ visualizations = {
     9: comment_wordcloud,
     10: comment_word_frequency_range,
     11: count_avgerage_lengths_per_similarity_score,
-
-
+    12: query_frequency_range
 }
 
 
@@ -237,10 +273,11 @@ if __name__ == '__main__':
                        "8 - most frequent words \n" \
                        "9 - most frequent words - wordcloud \n" \
                        "10 -  most freqeunt words in ranges \n" \
-                       "11 - average comment lengths per similarity score \n"
+                       "11 - average comment lengths per similarity score \n" \
+                       "12 - most freqeunt queries in ranges \n"
 
         option = int(input(menu_message))
-        if option >= 1 or option <= 9:
+        if option >= 1 or option <= 12:
             print('correct input. Procced with computation and visualization')
             data = load_eda_data()
             correct_input = True
