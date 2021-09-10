@@ -31,7 +31,11 @@ def load_all_data():
 def process_ranking_query(query, all_data, data_set_queries_bow, data_set_comments_bow):
     print(f'Ranking -- query in consideration: {query}')
     index = all_data[all_data['QueryText'] == query].index.values[0]
+    print('1')
     query_bow = data_set_queries_bow.iloc[index].to_frame().values.reshape(1,-1)
+    print('2')
+    data_set_comments_bow = data_set_comments_bow.drop_duplicates(keep='first')
+    print(f'process_ranking_query - after removing duplicates: {data_set_comments_bow.shape[0]}')
     cos_similarity_list = list(map(lambda comment: cosine_similarity(query_bow, comment.reshape(1,-1)), data_set_comments_bow.values))
     query_similarity_list  = {}
     query_similarity_list[query] = cos_similarity_list
@@ -45,7 +49,7 @@ def build_model(data_set_comments_bow, data_set_queries_bow):
     print(distinct_queries)
 
     print('start training ranking model...')
-    results = Parallel(n_jobs=6)(delayed(process_ranking_query)(query[0], all_data, data_set_queries_bow, data_set_comments_bow) for query in distinct_queries)
+    results = Parallel(n_jobs=-1)(delayed(process_ranking_query)(query[0], all_data, data_set_queries_bow, data_set_comments_bow) for query in distinct_queries)
     query_similarity_list = {}
     for dict in results:
         query_similarity_list.update(dict)

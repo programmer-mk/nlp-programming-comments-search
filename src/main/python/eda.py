@@ -53,8 +53,6 @@ def query_frequency_range(data):
     plt.bar(*zip(*result_dict.items()))
     plt.xticks(rotation='vertical')
     plt.show()
-
-
 '''
 Ranges:
 
@@ -122,7 +120,6 @@ def comment_word_frequency_range(data):
     plt.xticks(rotation='vertical')
     plt.show()
 
-
 def count_avgerage_lengths_per_similarity_score(data):
     data['comment_len'] = data['CommentText'].astype(str).apply(len)
     data['word_count'] = data['CommentText'].apply(lambda x: len(str(x).split()))
@@ -160,7 +157,6 @@ def count_avgerage_lengths_per_similarity_score(data):
     fig.tight_layout()
     plt.show()
 
-
 def comment_wordcloud(data):
     result = Counter(" ".join(data['CommentText'].values.tolist()).split(" "))
     word_dict = dict(list(result.items()))
@@ -175,7 +171,6 @@ def comment_wordcloud(data):
     plt.axis('off')
     plt.show()
 
-
 def comment_word_frequency(data):
     result = Counter(" ".join(data['CommentText'].values.tolist()).split(" "))
     word_dict = dict(list(result.items()))
@@ -189,7 +184,6 @@ def comment_word_frequency(data):
     plt.bar(*zip(*top_20_words_vocabulary.items()))
     plt.xticks(weight='bold')
     plt.show()
-
 
 def load_eda_data():
     columns = ['ProgrammingLanguage', 'QueryId','PairID', 'QueryText', 'CommentText','SimilarityScore']
@@ -208,12 +202,10 @@ def load_eda_data():
 
     return data
 
-
 def collected_data_per_annotator(data):
     chart = data['Annotator'].value_counts().plot(kind='pie', autopct='%1.2f%%')
     fig = chart.get_figure()
     fig.savefig(f'collected_data_per_annotator.pdf')
-
 
 def similarity_score_per_query(data, top=True):
     if top:
@@ -228,19 +220,16 @@ def similarity_score_per_query(data, top=True):
     plt.xticks(list(range(0, 10)), labels)
     plt.show()
 
-
 def similarity_score_value_distribution_per_annotator(data, value):
     chart = data[data['SimilarityScore'] == str(value)]['Annotator'].value_counts().plot(kind='pie', autopct='%1.2f%%')
     fig = chart.get_figure()
     fig.savefig(f'{value}_distribution.pdf')
-
 
 def similarity_score_distribution(df):
     # display histogram of non zero values for SimilarityScore
     chart = df[df['SimilarityScore'] != '0']['SimilarityScore'].hist()
     fig = chart.get_figure()
     fig.savefig(f'similarity_score_distribution.pdf')
-
 
 visualizations = {
     1: similarity_score_distribution,
@@ -257,12 +246,11 @@ visualizations = {
     12: query_frequency_range
 }
 
-
 if __name__ == '__main__':
-    correct_input = False
+    exit = False
 
-    while not correct_input:
-        menu_message = "Choose option? \n" \
+    while not exit:
+        menu_message = "Visualization menu: \n" \
                        "1 - similarity score distribution \n" \
                        "2 - collected data per annotator \n" \
                        "3 - similarity score value 1 distribution per annotator \n" \
@@ -274,21 +262,29 @@ if __name__ == '__main__':
                        "9 - most frequent words - wordcloud \n" \
                        "10 -  most freqeunt words in ranges \n" \
                        "11 - average comment lengths per similarity score \n" \
-                       "12 - most freqeunt queries in ranges \n"
+                       "12 - most freqeunt queries in ranges \n" \
+                        "13 - Exit \n" \
+                        "Choose option? " \
 
         option = int(input(menu_message))
-        if option >= 1 or option <= 12:
-            print('correct input. Procced with computation and visualization')
-            data = load_eda_data()
-            correct_input = True
 
-            visualization = visualizations.get(option)
-            if 3 <= option <= 5:
-                visualization(data, option-2)
-            elif option == 7:
-                visualization(data, False)
-            else:
-                visualization(data)
+        if option >= 1 and option <= 13:
 
+            if option == 13:
+                exit = True
+            else:    
+                print('Correct input. Proceed with computation and visualization...')
+                data = load_eda_data()
+
+                visualization = visualizations.get(option)
+                if 3 <= option <= 5:
+                    visualization(data, option-2)
+                elif option == 7:
+                    visualization(data, False)
+                else:
+                    visualization(data)
+
+                print('Done!\n')
+            
         else:
-            print('Wrong input.')
+            print('Wrong input!\n')

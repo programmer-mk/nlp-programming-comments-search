@@ -263,8 +263,9 @@ processing_steps = {
 
 def read_raw_data():
     columns = ['ProgrammingLanguage', 'QueryId','PairID', 'QueryText', 'CommentText','SimilarityScore']
-    comments = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score.csv", sep = "\t", names=columns)
+    comments = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score_new.csv", sep = "\t", names=columns)
     comments.drop(index=comments.index[0], axis=0, inplace=True)
+    # kod klasifikacije kao ulaz se dobijaju dva teksta, QueryText i CommentText 
     return comments[['QueryText', 'CommentText']]
 
 
@@ -342,7 +343,7 @@ def preprocessing_data(separate_query_and_comment_text):
     all_preprocessed_data = []
     raw_data = read_raw_data()
     cleaned_data = init_preprocessing(raw_data)
-    for step in list(range(9)):
+    for step in list(range(1)):
         if separate_query_and_comment_text:
             preprocessed_data_comments, preprocessed_data_queries = start_processing(step, cleaned_data.copy(), False, separate_query_and_comment_text)
             all_preprocessed_data.append((preprocessed_data_comments, preprocessed_data_queries))
