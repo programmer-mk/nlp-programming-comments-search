@@ -1,0 +1,99 @@
+konverzija int u string
+prioritetni red
+konverzija string u datum
+sortiranje liste stringova
+cuvanje liste u fajl
+postgresql konekcija
+matrica konfuzije
+podesavanje radnog direktorijuma
+grupisanje po broju
+binomijalna raspodela
+aes enkripcija
+linearna regresija
+socket recv timeout
+upis u csv
+konverzija decimal u hex
+eksport u excel
+tackasto iscrtavanje
+konverzija json u csv
+lep ispis json
+zamene u fajlu
+k means klasterovanje
+sql konekcija
+html encode string
+racunanje proteklog vremena koristeci tajmer
+parsiranje binarnog fajla u custom klasu
+dohvati trenutnu ip adresu
+konverzija int u bool
+citanje tekstualnog fajla red po red
+dohvati putanju izvrsnog fajla
+httpclient post json
+dohvati sadrzaj unutar html komponente
+konverzija string u broj
+formatiranje datuma
+readonly niz
+filtriranje niza
+mapiranje u json
+parsiranje json fajla
+dohvatanje trenutne posmatrane vrednosti
+dohvatanje imena enum vrednosti
+kodovanje url adrese
+kreiranje kolacica
+kako isprazniti niz
+kako dohvatiti trenutni datum
+kako cekirati checkbox
+inicijalizacija niza
+kako obrnuti string
+citanje informacija o fajlu
+kopiranje na tastaturu
+konverzija html u pdf
+konverzija json u xml
+kako slucajno izabrati broj
+normalna raspodela
+nelder mead optimizacija
+hash set za brojanje jedinstvenih elemenata
+kako dohvatiti ime tabele u bazi
+json deserijalizacija
+nalazenje int u string
+dohvatanje id-ija trenutne niti
+case insensitive regularni izraz
+custom http odgovor greska
+kako odrediti da li je string validna rec
+zamena html entiteta
+postavljanje atributa fajla na sakriven
+sortiranje vise nizova po principu sortiranja drugog niza
+slicnost stringova levenshtein
+kako dohvatiti html web stranice
+buffered file reader citanje teksta
+enkripcija aes ctr mod
+mnozenje matrica
+ispisivanje informacija o modelu
+jedinstveni elementi
+dobijanje podataka iz html sadrzaja
+heatmap iz 3d koordinata
+dohvatanje svih roditelja xml cvora
+kako dobiti zip fajl rekurzijom
+podvlacenje teksta u label widget
+otpakivanje velikih fajlova
+kopiranje fajla u putanju
+dohvatanje opisa http statusnog koda
+nasumicno dohvatanje x clanova iz liste
+konverzija string datuma u format yyyymmdd
+konverzija utc vremena u epoch
+sve permutacije liste
+dobijanje geografske sirine i duzine za zadati ulaz
+kako proveriti da li je checkbox selektovan
+konverzija uint8 niza u sliku
+memoizacija na disk - konstantna memoizacija
+parsiranje argumenta komandne linije
+kako procitati sadrzaj iz .gz fajla
+slanje binarnih podataka serijskom konekcijom
+dobijanje podataka iz tekstualnog fajla
+pozicija substringa u stringu
+citanje elementa iz html <td>
+oduzimanje medijane svakoj koloni
+konkatenacija sadrzaja vise fajlova uz brisanje njihovih zaglavlja
+dohvatanje string upita iz url
+fuzzy match ranking
+ispis u html fajl
+kako citati csv fajl na efikasan nacin?
