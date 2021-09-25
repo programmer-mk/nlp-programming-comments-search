@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import re
 import sys
+import openpyxl
 
 all_queries = []
 
@@ -32,11 +33,11 @@ operating_system = sys.platform
 resources_directory = '../resources'
 config_directory = '../config'
 
-if(operating_system == 'win32'):
+if(operating_system == 'win64'):
     resources_directory = 'src\main/resources'
     config_directory = 'src\main/config'
 
-data_frame_global = pd.read_excel(f'{resources_directory}/programming_comments_annotation.xlsx')
+data_frame_global = pd.read_excel(f'{resources_directory}/programming_comments_annotation.xlsx', engine='openpyxl')
 data_frame_global.dropna(how='any', inplace=True)
 data_frame_global['CommentText'] = data_frame_global.apply(lambda row : remove_special_characters(row['CommentText']), axis=1)
 data_frame_global['PairID'] = data_frame_global.apply(lambda row : trim_pair_id(row['PairID']), axis=1)

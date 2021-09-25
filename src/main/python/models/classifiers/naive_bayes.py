@@ -3,12 +3,12 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import f1_score, confusion_matrix
 import sys
 sys.path.append("../data_preprocessing")
-from .preprocessing import tf_idf, frequency_filtering, bigrams, trigrams
+from preprocessing import tf_idf, frequency_filtering, bigrams, trigrams
 
 PROCESSED_DATA_DIR = '../../resources/classification-results'
 
 operating_system = sys.platform
-if operating_system == 'win32':
+if operating_system == 'win64':
     PROCESSED_DATA_DIR = 'src\main/resources/classification-results'
 
 
@@ -16,9 +16,9 @@ def train_model(train, test, fold_no, processing_technique):
 
     y = ['SimilarityScore']
     y_train = train[y].values.ravel()
-    X_train = train.drop(y, axis = 1)
+    X_train = train.drop(y, axis=1)
     y_test = test[y]
-    X_test = test.drop(y, axis = 1)
+    X_test = test.drop(y, axis=1)
 
     mnb = MultinomialNB()
     mnb.fit(X_train, y_train)
@@ -26,7 +26,7 @@ def train_model(train, test, fold_no, processing_technique):
 
     score = f1_score(y_test, predictions, average='weighted')
 
-    print('Fold',str(fold_no),'F1 SCORE:', score)
+    print('Fold',str(fold_no), 'F1 SCORE:', score)
     f = open(f"{PROCESSED_DATA_DIR}/{processing_technique}/{processing_technique}-fold-{fold_no}-nb.txt", "a")
     f.write("\n")
     f.write(f"'Fold',{str(fold_no)},'F1 SCORE:',{score}")
@@ -40,15 +40,14 @@ def train_model(train, test, fold_no, processing_technique):
 def train_naive_bayes(data_frame, processing_technique):
     skf = StratifiedKFold(n_splits=10)
     data_frame.dropna(how='any', inplace=True)
-    target = data_frame.loc[:,'SimilarityScore']
+    target = data_frame.loc[:, 'SimilarityScore']
 
     fold_no = 1
     average = 0
-    
-
+    vectorizer = None
     for train_index, test_index in skf.split(data_frame, target):
-        train = data_frame.iloc[train_index,:]
-        test = data_frame.iloc[test_index,:]
+        train = data_frame.iloc[train_index, :]
+        test = data_frame.iloc[test_index, :]
 
         if processing_technique == 'TF-IDF':
             train_preprocessed, vectorizer = tf_idf(train.copy(), False)
@@ -56,7 +55,7 @@ def train_naive_bayes(data_frame, processing_technique):
             train_preprocessed['SimilarityScore'] = train['SimilarityScore'].values
             test_preprocessed['SimilarityScore'] = test['SimilarityScore'].values
 
-        elif processing_technique == 'frequency_filtering':
+        elif processing_technique == 'frequency-filtering':
 
             train_preprocessed, vectorizer = frequency_filtering(train.copy(), False)
             test_preprocessed, _ = frequency_filtering(test.copy(), False, vectorizer)
@@ -81,7 +80,7 @@ def train_naive_bayes(data_frame, processing_technique):
             train_preprocessed = train
             test_preprocessed = test
 
-        score, mnb = train_model(train_preprocessed,test_preprocessed,fold_no, processing_technique)
+        score, mnb = train_model(train_preprocessed, test_preprocessed, fold_no, processing_technique)
         average += score
         fold_no += 1
 
@@ -92,10 +91,10 @@ def train_naive_bayes(data_frame, processing_technique):
     f.write("\n")
     f.close()
 
-    return mnb
+    return mnb, vectorizer
 
 
 def naive_bayes_classifier(comments_data, processing_technique):
     print(f"Naive bayes classifier {processing_technique} data")
-    mnb = train_naive_bayes(comments_data, processing_technique)
-    return mnb
+    mnb, vectorizer = train_naive_bayes(comments_data, processing_technique)
+    return mnb, vectorizer

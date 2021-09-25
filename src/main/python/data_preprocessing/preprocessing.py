@@ -20,7 +20,7 @@ RESOURCES_DIR = '../../resources'
 tokenizer = ToktokTokenizer()
 
 operating_system = sys.platform
-if operating_system == 'win32':
+if operating_system == 'win64':
     MAIN_CONFIG_DIR = 'src\main/config'
     PROCESSED_DATA_DIR = 'src\main/resources/processed_data'
     RESOURCES_DIR = 'src\main/resources'
@@ -51,6 +51,8 @@ def read_stop_words():
     merged_text param is used if we want to return vectorized full text( CommentText + QueryText)
     comment_of_query param is used if we want to return vectorized CommentText or QueryText (true -> CommentText, false -> QueryText). Default value is True
 """
+
+
 def create_bag_of_words(data_set, merged_text, comment_or_query=True):
     cv_unigram = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
@@ -126,6 +128,8 @@ def stemming_and_remove_stopwords(data_set, separate_query_and_comment_text):
     This does not mean outputs will have only 0/1 values, only that the tf term in tf-idf is binary.
      (Set idf and normalization to False to get 0/1 outputs).
 """
+
+
 def binary_bow(data_set, separate_query_and_comment_text):
     binary_tf = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False, binary=True)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
@@ -146,7 +150,10 @@ def binary_bow(data_set, separate_query_and_comment_text):
     ignore terms that have a document frequency strictly higher than 0.9 and lower than 0.1
     parameters could be tuned if it's needed
 """
-def frequency_filtering(data_set, separate_query_and_comment_text):
+
+
+def frequency_filtering(data_set, separate_query_and_comment_text, vectorizer=None):
+
     freq_filter = CountVectorizer(ngram_range=(1, 1), analyzer='word', lowercase=False,  min_df=0.03, max_df=0.97)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
@@ -156,13 +163,15 @@ def frequency_filtering(data_set, separate_query_and_comment_text):
         print(freq_filter.get_feature_names())
         return bow_comment, bow_query
     else:
-        freq_filter.fit(data_set["Merged Text"])
-        print(freq_filter.get_feature_names())
-        bow = pd.DataFrame(freq_filter.fit_transform(data_set["Merged Text"]).todense())
-        return bow, None
+        if vectorizer is None:
+            bow = pd.DataFrame(freq_filter.fit_transform(data_set["Merged Text"]).todense())
+        else:
+            bow = pd.DataFrame(vectorizer.transform(data_set["Merged Text"]).todense())
+        return bow, freq_filter
 
 
 def tf(data_set, separate_query_and_comment_text):
+
     tf_vectorizer = TfidfVectorizer(ngram_range=(1, 1), use_idf=False, lowercase=False, analyzer='word') # this guy removes words with  only one character
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
@@ -176,9 +185,10 @@ def tf(data_set, separate_query_and_comment_text):
         return pda, None
 
 
-def tf_idf(data_set, separate_query_and_comment_text, vectorizer = None):
+def tf_idf(data_set, separate_query_and_comment_text, vectorizer=None):
+
     if vectorizer is None:
-        tf_idf_vectorizer =  TfidfVectorizer(ngram_range=(1, 1), use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
+        tf_idf_vectorizer = TfidfVectorizer(ngram_range=(1, 1), use_idf=True, lowercase=False, analyzer='word') # this guy removes words with  only one character
     else:
         tf_idf_vectorizer = vectorizer
 
@@ -199,7 +209,8 @@ def tf_idf(data_set, separate_query_and_comment_text, vectorizer = None):
         return pda, tf_idf_vectorizer
 
 
-def bigrams(data_set, separate_query_and_comment_text):
+def bigrams(data_set, separate_query_and_comment_text, vectorizer=None):
+
     cv_bigram = CountVectorizer(ngram_range=(2, 2), lowercase=False, max_features=5000)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
@@ -210,12 +221,15 @@ def bigrams(data_set, separate_query_and_comment_text):
         return bow_comment, bow_query
 
     else:
-        bow = pd.DataFrame(cv_bigram.fit_transform(data_set["Merged Text"]).todense())
-        print(cv_bigram.get_feature_names())
-        return bow, None
+        if vectorizer is None:
+            bow = pd.DataFrame(cv_bigram.fit_transform(data_set["Merged Text"]).todense())
+        else:
+            bow = pd.DataFrame(vectorizer.transform(data_set["Merged Text"]).todense())
+        return bow, cv_bigram
 
 
-def trigrams(data_set, separate_query_and_comment_text):
+def trigrams(data_set, separate_query_and_comment_text, vectorizer=None):
+
     cv_trigram = CountVectorizer(ngram_range=(3, 3), lowercase=False, max_features=5000)
     data_set["Merged Text"] = data_set["CommentText"] + ' ' + data_set["QueryText"]
     if separate_query_and_comment_text:
@@ -226,10 +240,11 @@ def trigrams(data_set, separate_query_and_comment_text):
         return bow_comment, bow_query
 
     else:
-        cv_trigram.fit(data_set["Merged Text"])
-        print(cv_trigram.get_feature_names())
-        bow = pd.DataFrame(cv_trigram.fit_transform(data_set["Merged Text"]).todense())
-        return bow, None
+        if vectorizer is None:
+            bow = pd.DataFrame(cv_trigram.fit_transform(data_set["Merged Text"]).todense())
+        else:
+            bow = pd.DataFrame(vectorizer.transform(data_set["Merged Text"]).todense())
+        return bow, cv_trigram
 
 
 def without_preprocessing(data_set, separate_query_and_comment_text):
@@ -263,9 +278,8 @@ processing_steps = {
 
 def read_raw_data():
     columns = ['ProgrammingLanguage', 'QueryId','PairID', 'QueryText', 'CommentText','SimilarityScore']
-    comments = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score_new.csv", sep = "\t", names=columns)
+    comments = pd.read_csv(f"{RESOURCES_DIR}/output_similarity_score.csv", sep = "\t", names=columns)
     comments.drop(index=comments.index[0], axis=0, inplace=True)
-    # kod klasifikacije kao ulaz se dobijaju dva teksta, QueryText i CommentText 
     return comments[['QueryText', 'CommentText']]
 
 
@@ -301,7 +315,7 @@ def start_processing(step, data_set, save_to_disk, separate_query_and_comment_te
             return processed_data
 
 
-def init_preprocessing(data, lower_case = False, drop_na = True, remove_html_tags = True, remove_special_chars = True, remove_extra_whitespace = True):
+def init_preprocessing(data, lower_case=False, drop_na=True, remove_html_tags=True, remove_special_chars=True, remove_extra_whitespace=True):
 
     output_data = data.copy()
 
@@ -339,16 +353,20 @@ def init_preprocessing(data, lower_case = False, drop_na = True, remove_html_tag
     used to create separate bag of words for QueryText and CommentText, this is need for ranking if it's enabled(true)
     if it's disabled then processing is used for classifying so one bag of words is needed in that case(for merged CommentText and QueryText)
 """
+
+
 def preprocessing_data(separate_query_and_comment_text):
     all_preprocessed_data = []
     raw_data = read_raw_data()
     cleaned_data = init_preprocessing(raw_data)
-    for step in list(range(1)):
+    for step in list(range(9)):
+
         if separate_query_and_comment_text:
             preprocessed_data_comments, preprocessed_data_queries = start_processing(step, cleaned_data.copy(), False, separate_query_and_comment_text)
             all_preprocessed_data.append((preprocessed_data_comments, preprocessed_data_queries))
         else:
-            if step == 6:
+            if step == 6 or step == 3 or step == 4 or step == 7:
+                # bigrams, trigrams, tf-idf, frequency_filtering
                 preprocessed_data, _ = cleaned_data.copy(), None
             else:
                 preprocessed_data, _ = start_processing(step, cleaned_data.copy(), False, separate_query_and_comment_text)

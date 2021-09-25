@@ -5,16 +5,17 @@ from sklearn.metrics import f1_score, classification_report, confusion_matrix
 # from src.main.python.data_preprocessing.preprocessing import bigrams, frequency_filtering
 from .train_helper import train_test_init
 import sys
-sys.path.append("../data_preprocessing")
-from .preprocessing import tf_idf, frequency_filtering, bigrams, trigrams
-
 import operator
+sys.path.append("../data_preprocessing")
+from preprocessing import tf_idf, frequency_filtering, bigrams, trigrams
+
 
 PROCESSED_DATA_DIR = '../../resources/classification-results'
 
 operating_system = sys.platform
-if operating_system == 'win32':
+if operating_system == 'win64':
     PROCESSED_DATA_DIR = 'src\main/resources/classification-results'
+
 
 def train_model(train, test, fold_no, rf, processing_technique, c_param=0.001):
     print(train)
@@ -22,9 +23,9 @@ def train_model(train, test, fold_no, rf, processing_technique, c_param=0.001):
     print(test)
     y = ['SimilarityScore']
     y_train = train[y].values.ravel()
-    X_train = train.drop(y, axis = 1)
+    X_train = train.drop(y, axis=1)
     y_test = test[y]
-    X_test = test.drop(y, axis = 1)
+    X_test = test.drop(y, axis=1)
 
     from sklearn.utils.class_weight import compute_class_weight
     weights = compute_class_weight('balanced', ['0','1','2','3'], y_train)
@@ -52,6 +53,7 @@ def train_model(train, test, fold_no, rf, processing_technique, c_param=0.001):
 
     return score, svc
 
+
 def find_optimal_c_parameter(data_frame, r_type, processing_technique):
 
     data_frame.dropna(how='any', inplace=True)
@@ -64,12 +66,12 @@ def find_optimal_c_parameter(data_frame, r_type, processing_technique):
     f1_results = {}
 
     # defining c parameter range
-    param_grid = {'C': [0.0001, 0.001, 0.01, 0.1, 1]}
+    c_param_values = [0.0001, 0.001, 0.01, 0.05]
 
     global optimal_svc, svc
     max_f1_result = 0
+    vectorizer = None
 
-    c_param_values = list(param_grid.values())[0]
     for c_parameter in c_param_values:    
 
         for train_index, test_index in skf.split(data_frame, target):
@@ -84,7 +86,7 @@ def find_optimal_c_parameter(data_frame, r_type, processing_technique):
                 train_preprocessed['SimilarityScore'] = train['SimilarityScore'].values
                 test_preprocessed['SimilarityScore'] = test['SimilarityScore'].values
 
-            elif processing_technique == 'frequency_filtering':
+            elif processing_technique == 'frequency-filtering':
 
                 train_preprocessed, vectorizer = frequency_filtering(train.copy(), False)
                 test_preprocessed, _ = frequency_filtering(test.copy(), False, vectorizer)
@@ -133,34 +135,27 @@ def find_optimal_c_parameter(data_frame, r_type, processing_technique):
 
     optimal_c_parameter = max(f1_results.items(), key=operator.itemgetter(1))[0]
 
-    return optimal_c_parameter, max_f1_result, optimal_svc
+    return optimal_c_parameter, max_f1_result, optimal_svc, vectorizer
+
 
 def support_vector_classifier(comments_data, processing_technique_applied):
     print(f"Support vector classifier - Processing technique applied: {processing_technique_applied}")
 
-    # train, test = train_test_split(comments_data, test_size=0.05, random_state=42, shuffle=True)
-
-    # parametri uticu na model; parametri mnoze odlike i definisu ravan
-    # C parametar raste -> manja regularizacija
-    # C parametar blizu nule -> beskonacna regularizacija - losa stvar - parametri ne mogu da
-    # dobiju zeljene vrednosti jer im parametar C to ne dozvoljava
-
     # Testing differences between regularisation functions
     print("Finding an optimal C parameter and comparing max f1 result for l1 and l2...")
-    optimal_c_parameter_for_l1, max_f1_result_for_l1, optimal_svc_l1 = find_optimal_c_parameter(comments_data, 'l1', processing_technique_applied) 
-    #parametri po modulu
-    optimal_c_parameter_for_l2, max_f1_result_for_l2, optimal_svc_l2 = find_optimal_c_parameter(comments_data, 'l2', processing_technique_applied) 
-    #parametri na kvadrat
+    optimal_c_parameter_for_l1, max_f1_result_for_l1, optimal_svc_l1, vectorizer = find_optimal_c_parameter(comments_data, 'l1', processing_technique_applied)
+
+    # optimal_c_parameter_for_l2, max_f1_result_for_l2, optimal_svc_l2 = find_optimal_c_parameter(comments_data, 'l2', processing_technique_applied)
 
     optimal_svc = optimal_svc_l1
     print('\n')
-    if max_f1_result_for_l1 > max_f1_result_for_l2:
-        print(f"l1 has better f1 result; l1 = {max_f1_result_for_l1}, l2 = {max_f1_result_for_l2}")
-    elif max_f1_result_for_l1 < max_f1_result_for_l2:
-        print(f"l2 has better f1 result; l1 = {max_f1_result_for_l1}, l2 = {max_f1_result_for_l2}")
-        optimal_svc = optimal_svc_l2
-    else:
-        print(f"l1 and l2 have the same f1 result; l1 = l2 = {max_f1_result_for_l2}")
+    # if max_f1_result_for_l1 > max_f1_result_for_l2:
+    #     print(f"l1 has better f1 result; l1 = {max_f1_result_for_l1}, l2 = {max_f1_result_for_l2}")
+    # elif max_f1_result_for_l1 < max_f1_result_for_l2:
+    #     print(f"l2 has better f1 result; l1 = {max_f1_result_for_l1}, l2 = {max_f1_result_for_l2}")
+    #     optimal_svc = optimal_svc_l2
+    # else:
+    #     print(f"l1 and l2 have the same f1 result; l1 = l2 = {max_f1_result_for_l2}")
 
-    return optimal_svc
+    return optimal_svc, vectorizer
 
